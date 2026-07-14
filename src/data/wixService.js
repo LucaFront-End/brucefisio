@@ -7,7 +7,7 @@ const SITE_ID = "7bc7f0df-a245-45a3-9797-040d15649851";
  * Obtains an anonymous visitor access token from Wix OAuth
  */
 async function getWixAccessToken() {
-  const baseUrl = typeof window !== 'undefined' ? '/wix-api' : 'https://www.wixapis.com';
+  const baseUrl = 'https://www.wixapis.com';
   const res = await fetch(`${baseUrl}/oauth2/token`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -97,7 +97,7 @@ function stripHtml(htmlString) {
  * Queries Wix Stores V1 collections to map IDs to category names
  */
 async function fetchWixCollections(token) {
-  const baseUrl = typeof window !== 'undefined' ? '/wix-api' : 'https://www.wixapis.com';
+  const baseUrl = 'https://www.wixapis.com';
   const res = await fetch(`${baseUrl}/stores/v1/collections/query`, {
     method: "POST",
     headers: {
@@ -156,7 +156,7 @@ export async function fetchProductsFromWix() {
     let offset = 0;
     const limit = 100;
     let hasMore = true;
-    const baseUrl = typeof window !== 'undefined' ? '/wix-api' : 'https://www.wixapis.com';
+    const baseUrl = 'https://www.wixapis.com';
 
     while (hasMore) {
       const res = await fetch(`${baseUrl}/stores/v1/products/query`, {
@@ -248,7 +248,7 @@ export async function fetchProductsFromWix() {
 export async function fetchProductById(id) {
   try {
     const token = await getWixAccessToken();
-    const baseUrl = typeof window !== 'undefined' ? '/wix-api' : 'https://www.wixapis.com';
+    const baseUrl = 'https://www.wixapis.com';
     const res = await fetch(`${baseUrl}/stores/v1/products/${id}`, {
       method: "GET",
       headers: {
