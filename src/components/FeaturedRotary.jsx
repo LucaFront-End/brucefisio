@@ -167,6 +167,8 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
               const rotateY = angle * (180 / Math.PI) * 0.55;
 
               // CINEMATIC GRAPHIC FILTERS (Depth of field blur & 3D light shading)
+              const blurVal = depthFactor * 3.5; // blur background cards up to 3.5px
+              const brightnessVal = 1 - depthFactor * 0.35; // shade background cards down to 65% brightness
               const cardFilter = isActive 
                 ? "none" 
                 : `blur(${blurVal}px) brightness(${brightnessVal})`;
