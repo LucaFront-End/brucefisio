@@ -173,12 +173,14 @@ export default function App() {
   };
 
   const handleQuickAdd = (product) => {
-    // Adds 1 unit of the very first variant option directly
-    const defaultOption = product.variables.options[0];
+    // Safely get the first option or fallback to null
+    const defaultOption = product.variables?.options?.[0];
+    const optionVal = typeof defaultOption === 'object' ? defaultOption.value : defaultOption;
+
     const quickItem = {
       product,
-      variantName: product.variables.name,
-      variantValue: defaultOption,
+      variantName: product.variables?.name || "Opción",
+      variantValue: optionVal || "Única",
       quantity: 1
     };
 

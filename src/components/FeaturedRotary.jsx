@@ -167,8 +167,9 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
               const rotateY = angle * (180 / Math.PI) * 0.55;
 
               // CINEMATIC GRAPHIC FILTERS (Depth of field blur & 3D light shading)
-              const blurVal = isActive ? 0 : depthFactor * 3.5; // blur background cards up to 3.5px
-              const brightnessVal = 1 - depthFactor * 0.35; // shade background cards down to 65% brightness
+              const cardFilter = isActive 
+                ? "none" 
+                : `blur(${blurVal}px) brightness(${brightnessVal})`;
 
               return (
                 <motion.div
@@ -180,7 +181,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                     opacity: opacity,
                     zIndex: zIndex,
                     rotateY: rotateY,
-                    filter: `blur(${blurVal}px) brightness(${brightnessVal})`
+                    filter: cardFilter
                   }}
                   transition={{ 
                     type: "spring", 
@@ -188,7 +189,13 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                     damping: 16 
                   }}
                   className={`rotary-card-node ${isActive ? "active-node" : ""}`}
-                  onClick={() => setActiveIndex(i)}
+                  onClick={() => {
+                    if (isActive) {
+                      onOpenProductModal(prod);
+                    } else {
+                      setActiveIndex(i);
+                    }
+                  }}
                   style={{ position: "absolute" }}
                 >
                   {/* REALISTIC E-COMMERCE CARD WITH GLASS GLARE SHEEN */}
