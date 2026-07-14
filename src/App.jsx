@@ -245,6 +245,98 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      {/* Premium Global Wix Catalog Preloader */}
+      <AnimatePresence>
+        {loadingWix && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+              background: "var(--bg-primary)",
+              zIndex: 99999,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "2.5rem"
+            }}
+          >
+            {/* Spinning Brand Rings */}
+            <div style={{ position: "relative", width: "80px", height: "80px" }}>
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  border: "4px dashed var(--accent-color)"
+                }}
+              />
+              <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ repeat: Infinity, duration: 2.2, ease: "linear" }}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  left: "10px",
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  border: "3px dashed var(--secondary-accent)",
+                  opacity: 0.7
+                }}
+              />
+              {/* Bruce Médica Symbol / Letter B */}
+              <div style={{
+                position: "absolute",
+                top: "22px",
+                left: "22px",
+                width: "36px",
+                height: "36px",
+                borderRadius: "50%",
+                background: "var(--accent-color)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "var(--white)",
+                fontWeight: "900",
+                fontSize: "1.2rem",
+                fontFamily: "var(--font-heading)"
+              }}>
+                B
+              </div>
+            </div>
+            
+            <div style={{ textAlign: "center" }}>
+              <h3 style={{ 
+                fontFamily: "var(--font-heading)", 
+                fontSize: "1.6rem", 
+                fontWeight: "800",
+                color: "var(--text-primary)",
+                marginBottom: "0.6rem"
+              }}>
+                Conectando con Bruce Médica...
+              </h3>
+              <p style={{ 
+                color: "var(--text-secondary)", 
+                fontSize: "0.95rem",
+                letterSpacing: "0.5px"
+              }}>
+                Sincronizando catálogo en vivo de fisioterapia y alta especialidad
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Sticky Top Header */}
       <Navbar 
         setCategoryFilter={setCategoryFilter}
