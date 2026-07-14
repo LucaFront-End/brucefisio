@@ -102,8 +102,7 @@ async function fetchWixCollections(token) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
-      "wix-site-id": SITE_ID
+      "Authorization": token
     },
     body: JSON.stringify({
       query: { limit: 100 }
@@ -163,8 +162,7 @@ export async function fetchProductsFromWix() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": token,
-          "wix-site-id": SITE_ID
+          "Authorization": token
         },
         body: JSON.stringify({
           query: {
@@ -252,8 +250,8 @@ export async function fetchProductById(id) {
     const res = await fetch(`${baseUrl}/stores/v1/products/${id}`, {
       method: "GET",
       headers: {
-        "Authorization": token,
-        "wix-site-id": SITE_ID
+        "Content-Type": "application/json",
+        "Authorization": token
       }
     });
     
