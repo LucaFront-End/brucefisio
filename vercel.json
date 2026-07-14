@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/wix-api/(.*)",
+      "destination": "https://www.wixapis.com/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

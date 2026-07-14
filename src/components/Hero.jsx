@@ -3,14 +3,16 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, ShieldCheck, Zap, Activity, ShoppingCart, Check } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
-export default function Hero({ onShopClick, onSpecialtyClick, onQuickAdd }) {
+export default function Hero({ onShopClick, onSpecialtyClick, onQuickAdd, products = PRODUCTS }) {
   const [activeStep, setActiveStep] = useState(1);
   const [addedItem, setAddedItem] = useState(null); // 'prod-1' | 'prod-6' | 'prod-2' | null
 
-  // Grab product objects for cart integration
-  const pulseProduct = PRODUCTS.find(p => p.id === "prod-1") || { price: 3899, name: "Bruce Pro Pulse" };
-  const kinesioProduct = PRODUCTS.find(p => p.id === "prod-6") || { price: 320, name: "Kinesio Tex Classic" };
-  const chattanoogaProduct = PRODUCTS.find(p => p.id === "prod-2") || { price: 7499, name: "Electroestimulador Chattanooga" };
+  const sortedProducts = products.length > 0 ? [...products].sort((a, b) => b.price - a.price) : [];
+  
+  // Grab top 3 highest priced products for the hero showcase
+  const pulseProduct = sortedProducts[0] || { price: 3899, name: "Cargando catálogo..." };
+  const kinesioProduct = sortedProducts[1] || { price: 320, name: "Cargando catálogo..." };
+  const chattanoogaProduct = sortedProducts[2] || { price: 7499, name: "Cargando catálogo..." };
 
   // Throttled scroll listener to change step highlights (reduces re-renders)
   useEffect(() => {

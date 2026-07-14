@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Routes, Route, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Check, ShoppingBag, ArrowRight, Zap, Shield, HelpCircle, Activity, Award } from "lucide-react";
 
 // Components
@@ -20,9 +21,104 @@ import HomeReviews from "./components/HomeReviews";
 
 // Mock Data
 import { PRODUCTS } from "./data/products";
+import { fetchProductsFromWix, fetchProductById } from "./data/wixService";
+
+function ProductPageWrapper({ products, loadingWix, onAddToCart, onQuickAdd, onOpenProductModal }) {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const [fullProduct, setFullProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const basicProduct = products.find(p => p.slug === slug || p.id === slug);
+
+  useEffect(() => {
+    if (!basicProduct) {
+      setLoading(false);
+      return;
+    }
+    
+    setLoading(true);
+    fetchProductById(basicProduct.id).then(res => {
+      if (res) {
+        setFullProduct(res);
+      } else {
+        setFullProduct(basicProduct); // fallback
+      }
+      setLoading(false);
+    });
+  }, [basicProduct]);
+
+  if (loading && !fullProduct) {
+    return (
+      <div className="loading-container" style={{
+        minHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'var(--bg-dark)',
+        color: 'var(--white)'
+      }}>
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: '50%',
+            border: '3px solid var(--border-color)',
+            borderTopColor: 'var(--accent-color)',
+            marginBottom: '20px'
+          }}
+        />
+        <p style={{ letterSpacing: '1px', opacity: 0.8 }}>Cargando especificaciones del equipo...</p>
+      </div>
+    );
+  }
+
+  if (!fullProduct) {
+    if (loadingWix) return <div style={{padding: '10rem', textAlign: 'center'}}>Cargando catálogo...</div>;
+    return <div style={{padding: '10rem', textAlign: 'center'}}><h2>Producto no encontrado</h2><button className="btn btn-primary mt-4" onClick={()=>navigate('/shop')}>Volver a tienda</button></div>;
+  }
+  
+  return <ProductPage 
+            product={fullProduct} 
+            onBack={() => navigate("/shop")} 
+            onAddToCart={onAddToCart} 
+            onQuickAdd={onQuickAdd} 
+            onOpenProductModal={onOpenProductModal} 
+            products={products} 
+          />;
+}
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("home");
+  const [products, setProducts] = useState(PRODUCTS);
+  const [loadingWix, setLoadingWix] = useState(true);
+
+  // Fetch catalog dynamically on mount
+  useEffect(() => {
+    async function loadDynamicCatalog() {
+      try {
+        console.log("Cargando catálogo dinámico desde Wix Headless...");
+        const wixProducts = await fetchProductsFromWix();
+        if (wixProducts && wixProducts.length > 0) {
+          console.log(`Catálogo Wix cargado con éxito. ${wixProducts.length} productos obtenidos.`);
+          setProducts(wixProducts);
+        } else {
+          console.log("Colección Wix vacía. Usando catálogo estático de respaldo.");
+        }
+      } catch (err) {
+        console.warn("Fallo al conectar con Wix Headless. Usando catálogo estático de respaldo.", err);
+      } finally {
+        setLoadingWix(false);
+      }
+    }
+    loadDynamicCatalog();
+  }, []);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [brandFilter, setBrandFilter] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,7 +148,7 @@ export default function App() {
   // Manage transitions and page scroll reset
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [activeTab]);
+  }, [location.pathname]);
 
   // Handlers
   const handleAddToCart = (itemsToAdd) => {
@@ -117,7 +213,11 @@ export default function App() {
 
   const handleOpenProductModal = (product) => {
     setSelectedProduct(product);
-    setActiveTab("product");
+    if (product.slug) {
+      navigate(`/product/${product.slug}`);
+    } else {
+      navigate(`/product/${product.id}`);
+    }
   };
 
   const handleCheckout = () => {
@@ -128,8 +228,11 @@ export default function App() {
 
   const cartItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const categoriesList = Array.from(new Set(products.map(p => p.category))).filter(Boolean).sort();
+  const brandsList = Array.from(new Set(products.map(p => p.brand))).filter(Boolean).sort();
+
   // Filtered products for home screen featured list (e.g. first 3 products)
-  const featuredProducts = PRODUCTS.slice(0, 3);
+  const featuredProducts = products.slice(0, 3);
 
   // Subpage wrapper transition variants
   const pageVariants = {
@@ -142,150 +245,67 @@ export default function App() {
     <div className="app-wrapper">
       {/* Sticky Top Header */}
       <Navbar 
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
         setCategoryFilter={setCategoryFilter}
         setBrandFilter={setBrandFilter}
         cartItemsCount={cartItemsCount}
         onCartClick={() => setIsCartOpen(true)}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        categories={categoriesList}
+        brands={brandsList}
       />
 
       {/* Main Page Views switcher */}
       <main className="main-content-flow">
         <AnimatePresence mode="wait">
-          {activeTab === "home" && (
-            <motion.div 
-              key="home-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {/* Luxury Landing Intro */}
-              <Hero 
-                onShopClick={() => setActiveTab("shop")}
-                onSpecialtyClick={() => setActiveTab("specialty")}
-                onQuickAdd={handleQuickAdd}
-              />
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} products={products} />
+                <FeaturedRotary onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                <SpecialtyCurtain onExploreClick={() => navigate("/specialty")} />
+                <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                <HomeCompare onQuickAdd={handleQuickAdd} products={products} />
+                <HomeReviews onOpenProductModal={handleOpenProductModal} products={products} />
+              </motion.div>
+            } />
+            
+            <Route path="/shop" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Shop categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter} brandFilter={brandFilter} setBrandFilter={setBrandFilter} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+              </motion.div>
+            } />
+            
+            <Route path="/specialty" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <HighSpecialty />
+              </motion.div>
+            } />
 
-              {/* Featured rotary circular showcase */}
-              <FeaturedRotary 
-                onOpenProductModal={handleOpenProductModal}
-                onQuickAdd={handleQuickAdd}
-              />
+            <Route path="/about" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <AboutUs />
+              </motion.div>
+            } />
 
-              {/* Split-screen sticky curtain panel */}
-              <SpecialtyCurtain 
-                onExploreClick={() => setActiveTab("specialty")}
-              />
+            <Route path="/community" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Community />
+              </motion.div>
+            } />
 
+            <Route path="/contact" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <Contact />
+              </motion.div>
+            } />
 
-              {/* Personal symptom advisor quiz */}
-              <HomeQuiz 
-                onOpenProductModal={handleOpenProductModal}
-                onQuickAdd={handleQuickAdd}
-              />
-
-              {/* Dynamic product compare matrix */}
-              <HomeCompare 
-                onQuickAdd={handleQuickAdd}
-              />
-
-              {/* Doctor medical testimonials carousel */}
-              <HomeReviews 
-                onOpenProductModal={handleOpenProductModal}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === "shop" && (
-            <motion.div 
-              key="shop-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Shop 
-                categoryFilter={categoryFilter}
-                setCategoryFilter={setCategoryFilter}
-                brandFilter={brandFilter}
-                setBrandFilter={setBrandFilter}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                onOpenProductModal={handleOpenProductModal}
-                onQuickAdd={handleQuickAdd}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === "specialty" && (
-            <motion.div 
-              key="specialty-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <HighSpecialty />
-            </motion.div>
-          )}
-
-          {activeTab === "about" && (
-            <motion.div 
-              key="about-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <AboutUs />
-            </motion.div>
-          )}
-
-          {activeTab === "community" && (
-            <motion.div 
-              key="community-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Community />
-            </motion.div>
-          )}
-
-          {activeTab === "contact" && (
-            <motion.div 
-              key="contact-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Contact />
-            </motion.div>
-          )}
-
-          {activeTab === "product" && selectedProduct && (
-            <motion.div 
-              key="product-page"
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <ProductPage 
-                product={selectedProduct}
-                onBack={() => setActiveTab("shop")}
-                onAddToCart={handleAddToCart}
-                onQuickAdd={handleQuickAdd}
-                onOpenProductModal={handleOpenProductModal}
-              />
-            </motion.div>
-          )}
+            <Route path="/product/:slug" element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <ProductPageWrapper products={products} loadingWix={loadingWix} onAddToCart={handleAddToCart} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} />
+              </motion.div>
+            } />
+          </Routes>
         </AnimatePresence>
       </main>
 

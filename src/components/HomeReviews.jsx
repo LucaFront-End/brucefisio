@@ -89,7 +89,7 @@ const CLINICAL_REVIEWS_ROW_2 = [
   }
 ];
 
-export default function HomeReviews({ onOpenProductModal }) {
+export default function HomeReviews({ onOpenProductModal, products = PRODUCTS }) {
   // Duplicating the items arrays to ensure seamless infinite loops without gaps
   const row1Items = [...CLINICAL_REVIEWS_ROW_1, ...CLINICAL_REVIEWS_ROW_1];
   const row2Items = [...CLINICAL_REVIEWS_ROW_2, ...CLINICAL_REVIEWS_ROW_2];
@@ -113,7 +113,7 @@ export default function HomeReviews({ onOpenProductModal }) {
         <div className="marquee-track-container row-1-track">
           <div className="marquee-row-runner scroll-left-anim">
             {row1Items.map((rev, index) => {
-              const linkedProd = PRODUCTS.find(p => p.id === rev.productId) || PRODUCTS[0];
+              const linkedProd = products.find(p => p.id === rev.productId) || products[index % (products.length || 1)] || { name: "Cargando catálogo..." };
               return (
                 <div key={`${rev.id}-${index}`} className="marquee-review-card glass">
                   <div className="review-card-header">
@@ -160,7 +160,7 @@ export default function HomeReviews({ onOpenProductModal }) {
         <div className="marquee-track-container row-2-track">
           <div className="marquee-row-runner scroll-right-anim">
             {row2Items.map((rev, index) => {
-              const linkedProd = PRODUCTS.find(p => p.id === rev.productId) || PRODUCTS[0];
+              const linkedProd = products.find(p => p.id === rev.productId) || products[(index + 3) % (products.length || 1)] || { name: "Cargando catálogo..." };
               return (
                 <div key={`${rev.id}-${index}`} className="marquee-review-card glass">
                   <div className="review-card-header">

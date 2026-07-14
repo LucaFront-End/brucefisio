@@ -10,7 +10,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   const handleWhatsAppQuote = () => {
     if (cartItems.length === 0) return;
 
-    const phoneNumber = "5215512345678"; // Placeholder, can be updated easily.
+    const phoneNumber = "5215555750108";
     
     let message = "¡Hola Bruce Médica! 👋\n\nMe gustaría solicitar una cotización para los siguientes productos de fisioterapia:\n\n";
     
@@ -87,10 +87,14 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                       >
                         {/* Mini Image */}
                         <div className="cart-item-img-wrapper" style={{ background: item.product.imageBg }}>
-                          <div 
-                            className="cart-item-svg"
-                            dangerouslySetInnerHTML={{ __html: item.product.imageSvg }}
-                          />
+                          {item.product.imageSvg ? (
+                            <div 
+                              className="cart-item-svg"
+                              dangerouslySetInnerHTML={{ __html: item.product.imageSvg }}
+                            />
+                          ) : (
+                            <img src={item.product.image} alt={item.product.name} className="cart-item-img" />
+                          )}
                         </div>
 
                         {/* Product details */}
@@ -309,9 +313,15 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           flex-shrink: 0;
         }
         
+        .cart-item-img {
+          width: 75%;
+          height: 75%;
+          object-fit: contain;
+        }
+
         .cart-item-svg {
-          width: 90%;
-          height: 90%;
+          width: 70%;
+          height: 70%;
         }
         
         .cart-item-svg svg {

@@ -30,7 +30,7 @@ const QUIZ_QUESTIONS = [
   }
 ];
 
-export default function HomeQuiz({ onOpenProductModal, onQuickAdd }) {
+export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PRODUCTS }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -80,19 +80,33 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd }) {
 
   const calculateRecommendation = (finalAnswers) => {
     const [goal, zone, intensity] = finalAnswers;
-    let matchedProdId = "prod-3";
+    let keyword = "";
 
     if (intensity === "clinical" || goal === "pain") {
-      matchedProdId = "prod-2";
+      keyword = "electro"; // Equipos de electroterapia o corrientes
     } else if (goal === "recovery" && (intensity === "athlete" || zone === "upper")) {
-      matchedProdId = "prod-1";
+      keyword = "masaje"; // Masajeadores o percusión
     } else if (goal === "support") {
-      matchedProdId = "prod-6";
+      keyword = "kinesio"; // Vendaje neuromuscular
     } else if (goal === "recovery" && zone === "lower") {
-      matchedProdId = "prod-4";
+      keyword = "compresa"; // Terapia frío/calor
     }
 
-    const matchedProduct = PRODUCTS.find(p => p.id === matchedProdId);
+    // Attempt to match dynamically based on Wix catalog strings
+    let matchedProduct = null;
+    if (products.length > 0) {
+      matchedProduct = products.find(p => 
+        (p.name && p.name.toLowerCase().includes(keyword)) || 
+        (p.category && p.category.toLowerCase().includes(keyword)) || 
+        (p.description && p.description.toLowerCase().includes(keyword))
+      );
+    }
+    
+    // Fallback if no specific match is found, just grab a top product
+    if (!matchedProduct) {
+       matchedProduct = [...products].sort((a,b) => b.price - a.price)[0] || { name: "Cargando catálogo...", price: 0, brand: "Bruce", imageBg: "#0f172a" };
+    }
+
     setRecommendation(matchedProduct);
   };
 
@@ -123,7 +137,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd }) {
       `Quisiera cotizar formalmente este equipo.`;
     
     const encoded = encodeURIComponent(message);
-    window.open(`https://wa.me/5215555555555?text=${encoded}`, "_blank");
+    window.open(`https://wa.me/5215555750108?text=${encoded}`, "_blank");
   };
 
   return (
@@ -511,10 +525,14 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd }) {
 
                     <div className="report-display-workspace">
                       <div className="report-product-image-frame" style={{ background: recommendation.imageBg }}>
-                        <div 
-                          className="report-svg-box"
-                          dangerouslySetInnerHTML={{ __html: recommendation.imageSvg }}
-                        />
+                        {recommendation.imageSvg ? (
+                          <div 
+                            className="report-svg-box"
+                            dangerouslySetInnerHTML={{ __html: recommendation.imageSvg }}
+                          />
+                        ) : (
+                          <img src={recommendation.image} alt={recommendation.name} className="report-svg-box" style={{ objectFit: "contain" }} />
+                        )}
                       </div>
                       
                       <div className="report-product-meta">

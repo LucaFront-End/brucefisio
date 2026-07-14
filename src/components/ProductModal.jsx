@@ -12,7 +12,8 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     if (product) {
       // Initialize all options with 0 quantity
       const initialQuantities = {};
-      product.variables.options.forEach(option => {
+      product.variables.options.forEach(optObj => {
+        const option = typeof optObj === 'object' ? optObj.value : optObj;
         initialQuantities[option] = 0;
       });
       setQuantities(initialQuantities);
@@ -82,16 +83,20 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
             {/* Left: Product Info & Image */}
             <div className="modal-visual-column">
               <div className="modal-image-wrapper" style={{ background: product.imageBg }}>
-                <div 
-                  className="modal-svg-container"
-                  dangerouslySetInnerHTML={{ __html: product.imageSvg }}
-                />
+                {product.imageSvg ? (
+                  <div 
+                    className="modal-svg-container"
+                    dangerouslySetInnerHTML={{ __html: product.imageSvg }}
+                  />
+                ) : (
+                  <img src={product.image} alt={product.name} className="modal-prod-img" />
+                )}
               </div>
               <div className="modal-info-meta">
                 <span className="modal-brand">{product.brand}</span>
                 <h2 className="modal-title">{product.name}</h2>
                 <span className="modal-category">{product.category}</span>
-                <p className="modal-description">{product.description}</p>
+                <div className="modal-description" dangerouslySetInnerHTML={{ __html: product.rawDescription || product.description }} />
                 <div className="modal-base-price">
                   Precio unitario: <span>${product.price.toLocaleString()} MXN</span>
                 </div>
@@ -106,11 +111,16 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
               </div>
 
               <div className="variants-list">
-                {product.variables.options.map((option) => {
+                {product.variables.options.map((optObj) => {
+                  const option = typeof optObj === 'object' ? optObj.value : optObj;
+                  const img = typeof optObj === 'object' ? optObj.image : null;
                   const qty = quantities[option] || 0;
                   return (
-                    <div key={option} className={`variant-row ${qty > 0 ? "active-row" : ""}`}>
-                      <span className="variant-label">{option}</span>
+                    <div key={option || Math.random()} className={`variant-row ${qty > 0 ? "active-row" : ""}`}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {img && <img src={img} alt={option} style={{ width: 24, height: 24, borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--border-color)' }} />}
+                        <span className="variant-label">{option}</span>
+                      </div>
                       
                       <div className="stepper">
                         <button 
@@ -239,6 +249,13 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
             margin-bottom: 2rem;
           }
           
+          .modal-prod-img {
+            max-width: 80%;
+            max-height: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(15, 23, 42, 0.15));
+          }
+
           .modal-svg-container {
             width: 60%;
             height: 100%;

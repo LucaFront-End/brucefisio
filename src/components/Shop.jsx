@@ -1,7 +1,7 @@
 import React from "react";
 import { motion as motionFramer } from "framer-motion";
 import { SlidersHorizontal, ShoppingCart, Eye, AlertCircle, RotateCcw } from "lucide-react";
-import { PRODUCTS, CATEGORIES, BRANDS } from "../data/products";
+import { PRODUCTS } from "../data/products";
 
 export default function Shop({ 
   categoryFilter, 
@@ -11,18 +11,70 @@ export default function Shop({
   searchQuery, 
   setSearchQuery,
   onOpenProductModal, 
-  onQuickAdd 
+  onQuickAdd,
+  products = PRODUCTS
 }) {
+  const categoriesList = Array.from(new Set(products.map(p => p.category))).filter(Boolean).sort();
+  const brandsList = Array.from(new Set(products.map(p => p.brand))).filter(Boolean).sort();
+
+  // Helper to normalize text (accents, casing)
+  const normalizeText = (text) => {
+    if (!text) return "";
+    return text
+      .toString()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  };
+
   // Filter products based on active filters
-  const filteredProducts = PRODUCTS.filter(prod => {
+  const filteredProducts = products.filter(prod => {
     const matchesCategory = categoryFilter ? prod.category === categoryFilter : true;
     const matchesBrand = brandFilter ? prod.brand === brandFilter : true;
-    const matchesSearch = searchQuery 
-      ? prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        prod.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prod.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prod.category.toLowerCase().includes(searchQuery.toLowerCase())
-      : true;
+
+    let matchesSearch = true;
+    if (searchQuery) {
+      const searchTokens = normalizeText(searchQuery).split(/\s+/).filter(Boolean);
+      
+      const nameNorm = normalizeText(prod.name);
+      const descNorm = normalizeText(prod.description || prod.rawDescription);
+      const brandNorm = normalizeText(prod.brand);
+      const catNorm = normalizeText(prod.category);
+      const skuNorm = normalizeText(prod.sku);
+
+      // Collect variant details (choices, SKUs)
+      const variantSearchTerms = [];
+      if (prod.variants && Array.isArray(prod.variants)) {
+        prod.variants.forEach(v => {
+          if (v.sku) variantSearchTerms.push(normalizeText(v.sku));
+          if (v.choices) {
+            Object.values(v.choices).forEach(val => {
+              variantSearchTerms.push(normalizeText(val));
+            });
+          }
+        });
+      }
+
+      // Collect variable option values
+      if (prod.variables && Array.isArray(prod.variables.options)) {
+        prod.variables.options.forEach(o => {
+          const val = typeof o === "object" ? o.value : o;
+          if (val) variantSearchTerms.push(normalizeText(val));
+        });
+      }
+
+      const combinedText = [
+        nameNorm,
+        descNorm,
+        brandNorm,
+        catNorm,
+        skuNorm,
+        ...variantSearchTerms
+      ].join(" ");
+
+      matchesSearch = searchTokens.every(token => combinedText.includes(token));
+    }
+
     return matchesCategory && matchesBrand && matchesSearch;
   });
 
@@ -89,7 +141,7 @@ export default function Shop({
                   Todas las categorías
                 </button>
               </li>
-              {CATEGORIES.map(cat => (
+              {categoriesList.map(cat => (
                 <li key={cat}>
                   <button 
                     className={`filter-btn ${categoryFilter === cat ? "active" : ""}`}
@@ -113,7 +165,7 @@ export default function Shop({
                   Todas las marcas
                 </button>
               </li>
-              {BRANDS.map(brand => (
+              {brandsList.map(brand => (
                 <li key={brand}>
                   <button 
                     className={`filter-btn ${brandFilter === brand ? "active" : ""}`}
@@ -162,10 +214,14 @@ export default function Shop({
                 >
                   {/* Image container with hover overlays */}
                   <div className="prod-img-container" style={{ background: prod.imageBg }}>
-                    <div 
-                      className="prod-card-svg"
-                      dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
-                    />
+                    {prod.imageSvg ? (
+                      <div 
+                        className="prod-card-svg"
+                        dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
+                      />
+                    ) : (
+                      <img src={prod.image} alt={prod.name} className="prod-card-img" />
+                    )}
                     
                     {/* Hover actions panel */}
                     <div className="prod-hover-overlay">
@@ -262,6 +318,8 @@ export default function Shop({
           padding: 1.5rem;
           position: sticky;
           top: calc(var(--navbar-height) + 20px);
+          max-height: calc(100vh - var(--navbar-height) - 40px);
+          overflow-y: auto;
         }
         
         .sidebar-section {
@@ -378,6 +436,17 @@ export default function Shop({
           overflow: hidden;
         }
         
+        .prod-card-img {
+          width: 75%;
+          height: 75%;
+          object-fit: contain;
+          transition: transform var(--transition-medium);
+        }
+        
+        .product-card:hover .prod-card-img {
+          transform: scale(1.08) translateY(-5px);
+        }
+
         .prod-card-svg {
           width: 70%;
           height: 70%;

@@ -1,28 +1,30 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingBag, Menu, X, ChevronDown, Activity, Users, Phone, Info, Award, HelpCircle } from "lucide-react";
-import { CATEGORIES, BRANDS } from "../data/products";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar({ 
-  activeTab, 
-  setActiveTab, 
   setCategoryFilter, 
   setBrandFilter, 
   cartItemsCount, 
   onCartClick,
   searchQuery,
-  setSearchQuery
+  setSearchQuery,
+  categories = [],
+  brands = []
 }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null); // 'categories' | 'brands' | 'specialty' | null
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleNavClick = (tab, catFilter = null, brandFilter = null) => {
-    setActiveTab(tab);
+  const handleNavClick = (path, catFilter = null, brandFilter = null) => {
     setCategoryFilter(catFilter);
     setBrandFilter(brandFilter);
     setActiveDropdown(null);
     setIsMobileMenuOpen(false);
+    navigate(path);
   };
 
   const toggleDropdown = (dropdown) => {
@@ -37,7 +39,7 @@ export default function Navbar({
     <header className="glass sticky-nav">
       <div className="container nav-container">
         {/* Logo */}
-        <div className="logo-container" onClick={() => handleNavClick("home")}>
+        <div className="logo-container" onClick={() => handleNavClick("/")}>
           <motion.div 
             whileHover={{ scale: 1.05 }}
             className="logo-icon"
@@ -52,8 +54,8 @@ export default function Navbar({
           <ul className="nav-links">
             <li>
               <button 
-                className={`nav-btn link-underline ${activeTab === "shop" && "active"}`}
-                onClick={() => handleNavClick("shop")}
+                className={`nav-btn link-underline ${location.pathname === "/shop" && "active"}`}
+                onClick={() => handleNavClick("/shop")}
               >
                 Tienda
               </button>
@@ -78,11 +80,11 @@ export default function Navbar({
                     className="dropdown-menu glass"
                   >
                     <div className="dropdown-grid">
-                      {CATEGORIES.map((cat) => (
+                      {categories.map((cat) => (
                         <button 
                           key={cat} 
                           className="dropdown-item"
-                          onClick={() => handleNavClick("shop", cat, null)}
+                          onClick={() => handleNavClick("/shop", cat, null)}
                         >
                           {cat}
                         </button>
@@ -112,11 +114,11 @@ export default function Navbar({
                     className="dropdown-menu glass"
                   >
                     <div className="dropdown-grid">
-                      {BRANDS.map((brand) => (
+                      {brands.map((brand) => (
                         <button 
                           key={brand} 
                           className="dropdown-item"
-                          onClick={() => handleNavClick("shop", null, brand)}
+                          onClick={() => handleNavClick("/shop", null, brand)}
                         >
                           {brand}
                         </button>
@@ -130,8 +132,8 @@ export default function Navbar({
             {/* Alta Especialidad Dropdown */}
             <li className="dropdown-li" onMouseEnter={() => setActiveDropdown("specialty")} onMouseLeave={() => setActiveDropdown(null)}>
               <button 
-                className={`nav-btn dropdown-trigger link-underline ${activeTab === "specialty" && "active"}`}
-                onClick={() => handleNavClick("specialty")}
+                className={`nav-btn dropdown-trigger link-underline ${location.pathname === "/specialty" && "active"}`}
+                onClick={() => handleNavClick("/specialty")}
               >
                 Alta Especialidad <ChevronDown size={14} className={`chevron ${activeDropdown === "specialty" ? "rotate" : ""}`} />
               </button>
@@ -146,14 +148,14 @@ export default function Navbar({
                     className="dropdown-menu glass specialty-dropdown"
                   >
                     <div className="specialty-links">
-                      <div className="specialty-card" onClick={() => handleNavClick("specialty")}>
+                      <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
                         <div className="specialty-card-icon cureo">C</div>
                         <div>
                           <h4>Cureo</h4>
                           <p>Terapia avanzada de regeneración de tejidos</p>
                         </div>
                       </div>
-                      <div className="specialty-card" onClick={() => handleNavClick("specialty")}>
+                      <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
                         <div className="specialty-card-icon chelt">Ch</div>
                         <div>
                           <h4>Chelt</h4>
@@ -168,8 +170,8 @@ export default function Navbar({
 
             <li>
               <button 
-                className={`nav-btn link-underline ${activeTab === "about" && "active"}`}
-                onClick={() => handleNavClick("about")}
+                className={`nav-btn link-underline ${location.pathname === "/about" && "active"}`}
+                onClick={() => handleNavClick("/about")}
               >
                 Nosotros
               </button>
@@ -177,8 +179,8 @@ export default function Navbar({
 
             <li>
               <button 
-                className={`nav-btn link-underline ${activeTab === "community" && "active"}`}
-                onClick={() => handleNavClick("community")}
+                className={`nav-btn link-underline ${location.pathname === "/community" && "active"}`}
+                onClick={() => handleNavClick("/community")}
               >
                 Comunidad
               </button>
@@ -186,8 +188,8 @@ export default function Navbar({
 
             <li>
               <button 
-                className={`nav-btn link-underline ${activeTab === "contact" && "active"}`}
-                onClick={() => handleNavClick("contact")}
+                className={`nav-btn link-underline ${location.pathname === "/contact" && "active"}`}
+                onClick={() => handleNavClick("/contact")}
               >
                 Contacto
               </button>
@@ -212,8 +214,8 @@ export default function Navbar({
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
-                    if (activeTab !== "shop") {
-                      setActiveTab("shop");
+                    if (location.pathname !== "/shop") {
+                      navigate("/shop");
                     }
                   }}
                   autoFocus
@@ -278,39 +280,39 @@ export default function Navbar({
           >
             <ul className="mobile-menu-links">
               <li>
-                <button onClick={() => handleNavClick("shop")}>Tienda</button>
+                <button onClick={() => handleNavClick("/shop")}>Tienda</button>
               </li>
               <li>
                 <button className="mobile-header-btn">Categorías</button>
                 <div className="mobile-sublinks">
-                  {CATEGORIES.map(cat => (
-                    <button key={cat} onClick={() => handleNavClick("shop", cat, null)}>{cat}</button>
+                  {categories.map(cat => (
+                    <button key={cat} onClick={() => handleNavClick("/shop", cat, null)}>{cat}</button>
                   ))}
                 </div>
               </li>
               <li>
                 <button className="mobile-header-btn">Marcas</button>
                 <div className="mobile-sublinks">
-                  {BRANDS.map(brand => (
-                    <button key={brand} onClick={() => handleNavClick("shop", null, brand)}>{brand}</button>
+                  {brands.map(brand => (
+                    <button key={brand} onClick={() => handleNavClick("/shop", null, brand)}>{brand}</button>
                   ))}
                 </div>
               </li>
               <li>
                 <button className="mobile-header-btn">Alta Especialidad</button>
                 <div className="mobile-sublinks">
-                  <button onClick={() => handleNavClick("specialty")}>Cureo</button>
-                  <button onClick={() => handleNavClick("specialty")}>Chelt</button>
+                  <button onClick={() => handleNavClick("/specialty")}>Cureo</button>
+                  <button onClick={() => handleNavClick("/specialty")}>Chelt</button>
                 </div>
               </li>
               <li>
-                <button onClick={() => handleNavClick("about")}>Nosotros</button>
+                <button onClick={() => handleNavClick("/about")}>Nosotros</button>
               </li>
               <li>
-                <button onClick={() => handleNavClick("community")}>Comunidad</button>
+                <button onClick={() => handleNavClick("/community")}>Comunidad</button>
               </li>
               <li>
-                <button onClick={() => handleNavClick("contact")}>Contacto</button>
+                <button onClick={() => handleNavClick("/contact")}>Contacto</button>
               </li>
             </ul>
           </motion.div>

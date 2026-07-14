@@ -3,68 +3,48 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Check, HelpCircle, Activity, Battery, Award, Star, Settings } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
-// Target comparison products
-const COMPARE_PRODUCTS = PRODUCTS.filter(p => 
-  ["prod-1", "prod-2", "prod-4"].includes(p.id)
-);
+// We will define COMPARE_ROWS dynamically inside the component
 
-const COMPARE_ROWS = [
-  {
-    key: "therapy",
-    label: "Tipo de Terapia",
-    icon: <Activity size={14} />,
-    values: {
-      "prod-1": "Percusión Muscular Profunda",
-      "prod-2": "Electroestimulación (TENS/EMS)",
-      "prod-4": "Vibración Miofascial Focalizada"
-    }
-  },
-  {
-    key: "dose",
-    label: "Dosificación / Salidas",
-    icon: <Settings size={14} />,
-    values: {
-      "prod-1": "5 Velocidades (3200 RPM)",
-      "prod-2": "4 Canales Clínicos Independientes",
-      "prod-4": "3 Frecuencias Activas"
-    }
-  },
-  {
-    key: "battery",
-    label: "Autonomía / Batería",
-    icon: <Battery size={14} />,
-    values: {
-      "prod-1": "Hasta 4 Horas de uso",
-      "prod-2": "Batería recargable Li-Po",
-      "prod-4": "Hasta 2 Horas de uso"
-    }
-  },
-  {
-    key: "focus",
-    label: "Foco de Tratamiento",
-    icon: <Star size={14} />,
-    values: {
-      "prod-1": "Contracturas y liberación fascial",
-      "prod-2": "Analgesia, inflamación y reeducación",
-      "prod-4": "Fascia plantar y calentamiento"
-    }
-  },
-  {
-    key: "cert",
-    label: "Certificación Médica",
-    icon: <Award size={14} />,
-    values: {
-      "prod-1": "Certificado CE Deportivo",
-      "prod-2": "FDA / CE Clínico Hospitalario",
-      "prod-4": "Certificado CE de Fisioterapia"
-    }
-  }
-];
-
-export default function HomeCompare({ onQuickAdd }) {
+export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
   const [addedItem, setAddedItem] = useState(null);
   const [hoveredCol, setHoveredCol] = useState(null);
   const [hoveredRow, setHoveredRow] = useState(null);
+
+  // Dynamic products list for the comparison table
+  const COMPARE_PRODUCTS = products.slice(0, 3);
+  
+  const COMPARE_ROWS = [
+    {
+      key: "therapy",
+      label: "Categoría",
+      icon: <Activity size={14} />,
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, p.category || "Alta Especialidad"]))
+    },
+    {
+      key: "dose",
+      label: "Tecnología Principal",
+      icon: <Settings size={14} />,
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "Alta Eficiencia Clínica"]))
+    },
+    {
+      key: "battery",
+      label: "Aplicación",
+      icon: <Battery size={14} />,
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "Profesional / Clínico"]))
+    },
+    {
+      key: "focus",
+      label: "Foco de Tratamiento",
+      icon: <Star size={14} />,
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, (p.description || "Rehabilitación").substring(0, 38) + "..."]))
+    },
+    {
+      key: "cert",
+      label: "Certificación Médica",
+      icon: <Award size={14} />,
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "FDA / CE Profesional"]))
+    }
+  ];
 
   const handleBuyClick = (product) => {
     if (!onQuickAdd) return;
@@ -97,10 +77,14 @@ export default function HomeCompare({ onQuickAdd }) {
                   onMouseLeave={() => setHoveredCol(null)}
                 >
                   <div className="table-product-image-box" style={{ background: prod.imageBg }}>
-                    <div 
-                      className="table-product-svg"
-                      dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
-                    />
+                    {prod.imageSvg ? (
+                      <div 
+                        className="table-product-svg"
+                        dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
+                      />
+                    ) : (
+                      <img src={prod.image} alt={prod.name} className="table-product-svg" style={{ objectFit: "contain" }} />
+                    )}
                   </div>
                   <div className="table-product-meta">
                     <span className="table-brand">{prod.brand}</span>
@@ -128,7 +112,7 @@ export default function HomeCompare({ onQuickAdd }) {
 
                 {COMPARE_PRODUCTS.map((prod) => {
                   const isColHovered = hoveredCol === prod.id;
-                  const val = row.values[prod.id];
+                  const val = row.values[prod.id] || Object.values(row.values)[COMPARE_PRODUCTS.indexOf(prod)] || "";
                   
                   return (
                     <div 

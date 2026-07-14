@@ -3,15 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ShoppingCart, Eye, Check } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
-// Select 5 distinct products for the rotary showcase
-const ROTARY_PRODUCTS = PRODUCTS.filter(p => 
-  ["prod-1", "prod-2", "prod-3", "prod-4", "prod-6"].includes(p.id)
-);
-
-export default function FeaturedRotary({ onOpenProductModal, onQuickAdd }) {
+export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, products = PRODUCTS }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [addedItem, setAddedItem] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Dynamic products list for the rotary
+  const ROTARY_PRODUCTS = products.slice(0, 5);
 
   // Auto-rotate carousel every 8 seconds, pausing on hover
   useEffect(() => {
@@ -200,10 +198,14 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd }) {
 
                     {/* Image Header */}
                     <div className="card-img-header" style={{ background: prod.imageBg }}>
-                      <div 
-                        className="card-svg"
-                        dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
-                      />
+                      {prod.imageSvg ? (
+                        <div 
+                          className="card-svg"
+                          dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
+                        />
+                      ) : (
+                        <img src={prod.image} alt={prod.name} className="rotary-card-img" />
+                      )}
                     </div>
 
                     {/* Card Content Info */}
@@ -453,9 +455,15 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd }) {
           transition: transform var(--transition-fast);
         }
         
+        .rotary-card-img {
+          width: 70%;
+          height: 70%;
+          object-fit: contain;
+        }
+
         .card-svg {
-          width: 75%;
-          height: 75%;
+          width: 60%;
+          height: 60%;
           filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.15));
         }
         
