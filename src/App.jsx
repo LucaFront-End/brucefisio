@@ -355,7 +355,7 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={
               <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-                <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} products={products} />
+                <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} products={products} />
                 <FeaturedRotary onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
                 <SpecialtyCurtain onExploreClick={() => navigate("/specialty")} />
                 <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
