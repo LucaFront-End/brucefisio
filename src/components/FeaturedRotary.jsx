@@ -1,7 +1,56 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
-import { ShoppingCart, Eye, Check, Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import { ShoppingCart, Eye, Check, Sparkles, ShieldCheck, Award, Layers } from "lucide-react";
 import { PRODUCTS } from "../data/products";
+
+// Sanitizes raw HTML strings and entities (&nbsp;, <p>, etc.) from Wix
+function cleanText(text) {
+  if (!text) return "";
+  return text
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/<[^>]*>?/gm, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getProductHighlights(prod) {
+  const text = cleanText(prod.description || "");
+
+  let origin = "Origen Certificado";
+  if (text.includes("U.S.A") || text.includes("USA") || text.includes("Origen: U.S.A.")) {
+    origin = "Importación U.S.A.";
+  } else if (text.includes("Alemania") || text.includes("Germany")) {
+    origin = "Importación Alemania";
+  }
+
+  let material = "Material de Grado Clínico";
+  if (text.toLowerCase().includes("acero inoxidable")) {
+    material = "Acero Inoxidable Quirúrgico";
+  } else if (text.toLowerCase().includes("aluminio")) {
+    material = "Aluminio Aeronáutico";
+  } else if (text.toLowerCase().includes("terapéutico")) {
+    material = "Grado Terapéutico";
+  }
+
+  let capacity = "Uso Profesional 24/7";
+  if (text.includes("12 COMPRESAS") || text.includes("12 compresas")) {
+    capacity = "Capacidad 12 Compresas";
+  } else if (text.includes("6 COMPRESAS") || text.includes("6 compresas")) {
+    capacity = "Capacidad 6 Compresas";
+  } else if (prod.variables?.options?.length > 0) {
+    capacity = `${prod.variables.options.length} Opciones de Tamaño`;
+  }
+
+  return [
+    { icon: ShieldCheck, label: "Estructura", val: material },
+    { icon: Award, label: "Garantía", val: "2 Años Cobertura Directa" },
+    { icon: Sparkles, label: "Especificación", val: capacity },
+    { icon: Layers, label: "Calidad", val: origin }
+  ];
+}
 
 export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, products = PRODUCTS }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -55,10 +104,17 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
     window.scrollTo({ top: targetScroll, behavior: "smooth" });
   };
 
+  const cleanDescription = cleanText(activeProduct.description);
+  const shortSummary = cleanDescription.length > 120 
+    ? cleanDescription.substring(0, 120) + "..." 
+    : cleanDescription || "Equipamiento médico certificado para clínicas de fisioterapia y alta especialidad.";
+  
+  const highlights = getProductHighlights(activeProduct);
+
   return (
     <section ref={containerRef} className="scroll-rotary-track">
       
-      {/* Sticky Viewport (Pins in screen while user scrolls 300vh) */}
+      {/* Sticky Viewport */}
       <div className="scroll-rotary-sticky">
         
         {/* Background Glows */}
@@ -67,7 +123,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         <div className="container rotary-layout-grid">
           
-          {/* Left Panel: Scroll Progress, Active Product Copy & CTAs */}
+          {/* Left Panel: Scroll Progress & Clean Clinical Specs Deck */}
           <div className="rotary-intro-panel">
             
             <div className="scroll-progress-badge">
@@ -80,7 +136,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
               <span className="text-gradient">Tecnología de Rehabilitación</span>
             </h2>
 
-            {/* Dynamic Active Product Meta */}
+            {/* Dynamic Active Product Meta Card */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProduct.id}
@@ -97,10 +153,26 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
                 <h3 className="meta-product-name">{activeProduct.name}</h3>
 
-                <p className="meta-product-desc">
-                  {activeProduct.description || "Equipamiento profesional diseñado para clínicas de fisioterapia y aceleración de recuperación muscular."}
-                </p>
+                {/* Clean Short Summary */}
+                <p className="meta-short-summary">{shortSummary}</p>
 
+                {/* 2x2 Clinical Specs Highlights Grid */}
+                <div className="highlights-grid">
+                  {highlights.map((h, i) => {
+                    const HIcon = h.icon;
+                    return (
+                      <div key={i} className="highlight-item-chip">
+                        <HIcon size={15} className="chip-icon text-accent" />
+                        <div className="chip-text-block">
+                          <span className="chip-label">{h.label}</span>
+                          <span className="chip-val">{h.val}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Footer Price & Buttons */}
                 <div className="meta-price-action-bar">
                   <div className="meta-price-block">
                     <span className="meta-price-val">${activeProduct.price?.toLocaleString()} MXN</span>
@@ -160,7 +232,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           <div className="rotary-carousel-panel">
             <div className="rotary-carousel-viewport">
               
-              {/* ROTATING SPOKE WHEEL GRAPHIC (Bound to scroll progress) */}
+              {/* ROTATING SPOKE WHEEL GRAPHIC */}
               <div className="rotary-wheel-graphic">
                 <motion.svg 
                   viewBox="0 0 100 100" 
@@ -205,7 +277,6 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                 const N = ROTARY_PRODUCTS.length;
                 const angle = ((i - activeIndex) * (360 / N)) * (Math.PI / 180);
                 
-                // Ellipse placement
                 const rx = 180;
                 const ry = 95;
                 const x = Math.sin(angle) * rx;
@@ -334,8 +405,8 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           position: relative;
           z-index: 1;
           display: grid;
-          grid-template-columns: 1fr 1.15fr;
-          gap: 3.5rem;
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: 3rem;
           align-items: center;
           width: 100%;
         }
@@ -343,7 +414,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .rotary-intro-panel {
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1.1rem;
         }
 
         .scroll-progress-badge {
@@ -372,15 +443,15 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .active-product-meta-card {
-          padding: 1.5rem 1.75rem;
+          padding: 1.5rem 1.65rem;
           border-radius: 24px;
-          background: rgba(255, 255, 255, 0.85);
+          background: rgba(255, 255, 255, 0.88);
           backdrop-filter: blur(16px);
           border: 1px solid var(--border-color);
           box-shadow: var(--shadow-md);
           display: flex;
           flex-direction: column;
-          gap: 0.85rem;
+          gap: 0.9rem;
         }
 
         .meta-brand-row {
@@ -411,16 +482,60 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .meta-product-name {
           font-family: var(--font-heading);
-          font-size: 1.5rem;
+          font-size: 1.35rem;
           font-weight: 800;
           color: var(--text-primary);
           line-height: 1.25;
         }
 
-        .meta-product-desc {
-          font-size: 0.9rem;
-          line-height: 1.55;
+        .meta-short-summary {
+          font-size: 0.88rem;
+          line-height: 1.5;
           color: var(--text-secondary);
+        }
+
+        /* 2x2 Highlights Grid */
+        .highlights-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.6rem;
+          padding: 0.4rem 0;
+        }
+
+        .highlight-item-chip {
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+          background: rgba(13, 148, 136, 0.05);
+          padding: 0.55rem 0.75rem;
+          border-radius: 12px;
+          border: 1px solid rgba(13, 148, 136, 0.12);
+        }
+
+        .chip-icon {
+          flex-shrink: 0;
+        }
+
+        .chip-text-block {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .chip-label {
+          font-size: 0.68rem;
+          font-weight: 700;
+          color: var(--text-tertiary);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
+        .chip-val {
+          font-size: 0.78rem;
+          font-weight: 700;
+          color: var(--text-primary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .meta-price-action-bar {
@@ -504,7 +619,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           display: flex;
           align-items: center;
           gap: 1.25rem;
-          padding-top: 0.5rem;
+          padding-top: 0.25rem;
         }
 
         .vertical-track {
@@ -735,6 +850,9 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           .rotary-layout-grid {
             grid-template-columns: 1fr;
             gap: 3rem;
+          }
+          .highlights-grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
