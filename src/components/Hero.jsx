@@ -15,10 +15,10 @@ import {
   Plus,
   Minus,
   Sliders,
-  Layers,
   Info,
   Flame,
-  UserCheck
+  UserCheck,
+  Star
 } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
@@ -28,7 +28,7 @@ const SMART_CATEGORIES = [
     label: "Electroterapia & Bio-Estímulo",
     icon: Zap,
     categoryMatch: ["electroterapia", "ultrasonido", "chattanooga"],
-    tagline: "Estímulo bio-eléctrico de alta precisión para acelerar cicatrización y regeneración tisular.",
+    tagline: "Estímulo bio-eléctrico de alta precisión para acelerar la cicatrización y regeneración celular.",
     specs: [
       { x: 30, y: 35, title: "Frecuencia Bio-Modulada", desc: "Ondas interferenciales de 4000Hz" },
       { x: 70, y: 65, title: "Electrodos Grado Médico", desc: "Gel conductivo biocompatible" }
@@ -181,6 +181,7 @@ export default function Hero({
       {/* Background Interactive Ambient Particles & Glows */}
       <div className="hero-ambient-glow glow-teal"></div>
       <div className="hero-ambient-glow glow-copper"></div>
+      <div className="hero-ambient-glow glow-cyan"></div>
       <div className="hero-grid-pattern"></div>
 
       <div className="container hero-x1000-grid">
@@ -188,9 +189,20 @@ export default function Hero({
         {/* Left Column: Cyber-Clinical Selector Deck & Copy */}
         <div className="hero-left-deck">
           
-          <div className="hero-live-chip">
-            <span className="live-pulse"></span>
-            Catálogo en Vivo & Control Bio-Médico
+          <div className="hero-top-meta">
+            <div className="hero-live-chip">
+              <span className="live-pulse"></span>
+              Catálogo en Vivo & Control Bio-Médico
+            </div>
+            
+            <div className="hero-rating-badge">
+              <div className="stars-row">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={13} fill="var(--secondary-accent)" color="var(--secondary-accent)" />
+                ))}
+              </div>
+              <span>4.9/5 por +120 Clínicas</span>
+            </div>
           </div>
 
           <h1 className="hero-x1000-title">
@@ -317,7 +329,7 @@ export default function Hero({
               <div 
                 className="card-specular-glare"
                 style={{
-                  background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.4) 0%, transparent 60%)`
+                  background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.45) 0%, transparent 60%)`
                 }}
               />
 
@@ -533,6 +545,7 @@ export default function Hero({
           background: var(--bg-primary);
         }
 
+        /* Ambient Floating Orbs */
         .hero-ambient-glow {
           position: absolute;
           border-radius: 50%;
@@ -542,19 +555,35 @@ export default function Hero({
         }
 
         .hero-ambient-glow.glow-teal {
-          width: 500px;
-          height: 500px;
-          top: -120px;
+          width: 550px;
+          height: 550px;
+          top: -140px;
           right: -80px;
-          background: rgba(13, 148, 136, 0.09);
+          background: rgba(13, 148, 136, 0.12);
+          animation: floatOrb 8s ease-in-out infinite alternate;
         }
 
         .hero-ambient-glow.glow-copper {
-          width: 420px;
-          height: 420px;
-          bottom: -100px;
+          width: 450px;
+          height: 450px;
+          bottom: -120px;
           left: -80px;
-          background: rgba(249, 115, 22, 0.07);
+          background: rgba(249, 115, 22, 0.08);
+          animation: floatOrb 10s ease-in-out infinite alternate-reverse;
+        }
+
+        .hero-ambient-glow.glow-cyan {
+          width: 350px;
+          height: 350px;
+          top: 40%;
+          left: 40%;
+          background: rgba(6, 182, 212, 0.05);
+          animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatOrb {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(30px, -25px) scale(1.08); }
         }
 
         .hero-grid-pattern {
@@ -581,6 +610,13 @@ export default function Hero({
           gap: 1.5rem;
         }
 
+        .hero-top-meta {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+
         .hero-live-chip {
           display: inline-flex;
           align-items: center;
@@ -588,11 +624,32 @@ export default function Hero({
           font-size: 0.82rem;
           font-weight: 700;
           color: var(--accent-color);
-          background: var(--accent-light);
-          padding: 0.4rem 0.95rem;
+          background: linear-gradient(135deg, rgba(204, 251, 241, 0.85) 0%, rgba(204, 251, 241, 0.45) 100%);
+          backdrop-filter: blur(8px);
+          padding: 0.45rem 1rem;
           border-radius: 50px;
           width: fit-content;
-          border: 1px solid rgba(13, 148, 136, 0.25);
+          border: 1px solid rgba(13, 148, 136, 0.3);
+          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.1);
+        }
+
+        .hero-rating-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: var(--text-secondary);
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(8px);
+          padding: 0.45rem 0.9rem;
+          border-radius: 50px;
+          border: 1px solid var(--border-color);
+        }
+
+        .stars-row {
+          display: flex;
+          gap: 0.15rem;
         }
 
         .live-pulse {
@@ -621,7 +678,7 @@ export default function Hero({
 
         .hero-x1000-title {
           font-family: var(--font-heading);
-          font-size: 3rem;
+          font-size: 3.1rem;
           font-weight: 800;
           line-height: 1.12;
           letter-spacing: -0.035em;
@@ -629,14 +686,14 @@ export default function Hero({
         }
 
         .gradient-text {
-          background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
+          background: linear-gradient(135deg, var(--accent-color) 0%, #06b6d4 50%, var(--accent-dark) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
 
         .hero-x1000-desc {
           font-size: 1.05rem;
-          line-height: 1.6;
+          line-height: 1.65;
           color: var(--text-secondary);
           max-width: 580px;
         }
@@ -654,12 +711,13 @@ export default function Hero({
           display: inline-flex;
           align-items: center;
           gap: 0.55rem;
-          padding: 0.65rem 1.2rem;
+          padding: 0.65rem 1.25rem;
           border-radius: 50px;
           font-family: var(--font-heading);
           font-size: 0.88rem;
           font-weight: 600;
-          background: var(--white);
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(8px);
           border: 1px solid var(--border-color);
           color: var(--text-primary);
           box-shadow: var(--shadow-sm);
@@ -694,16 +752,18 @@ export default function Hero({
 
         .category-clinical-banner {
           position: relative;
-          padding: 0.85rem 1.25rem;
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.7);
+          padding: 0.95rem 1.35rem;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(12px);
           border: 1px solid var(--border-color);
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          font-size: 0.92rem;
+          gap: 0.85rem;
+          font-size: 0.93rem;
           color: var(--text-secondary);
           overflow: hidden;
+          box-shadow: var(--shadow-sm);
         }
 
         .banner-accent-line {
@@ -712,7 +772,7 @@ export default function Hero({
           top: 0;
           bottom: 0;
           width: 4px;
-          background: var(--accent-color);
+          background: linear-gradient(to bottom, var(--accent-color), var(--accent-dark));
         }
 
         .text-copper {
@@ -757,33 +817,34 @@ export default function Hero({
         }
 
         .btn-accent-hero {
+          position: relative;
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          padding: 0.85rem 1.6rem;
+          padding: 0.9rem 1.75rem;
           border-radius: 14px;
           font-family: var(--font-heading);
           font-weight: 700;
           font-size: 0.98rem;
-          background: var(--accent-color);
+          background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border: none;
           box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
           cursor: pointer;
           transition: all 0.25s ease;
+          overflow: hidden;
         }
 
         .btn-accent-hero:hover {
-          background: var(--accent-dark);
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
+          box-shadow: 0 10px 28px rgba(13, 148, 136, 0.45);
         }
 
         .btn-whatsapp-quote {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.85rem 1.5rem;
+          gap: 0.55rem;
+          padding: 0.9rem 1.6rem;
           border-radius: 14px;
           font-family: var(--font-heading);
           font-weight: 700;
@@ -799,14 +860,14 @@ export default function Hero({
         .btn-whatsapp-quote:hover {
           background: #20ba5a;
           transform: translateY(-2px);
-          box-shadow: 0 8px 22px rgba(37, 211, 102, 0.35);
+          box-shadow: 0 10px 24px rgba(37, 211, 102, 0.38);
         }
 
         /* Right Column Showcase */
         .hero-right-showcase {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.1rem;
           align-items: center;
         }
 
@@ -814,7 +875,8 @@ export default function Hero({
           display: flex;
           padding: 0.35rem;
           border-radius: 50px;
-          background: rgba(255, 255, 255, 0.8);
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(12px);
           border: 1px solid var(--border-color);
           gap: 0.25rem;
           box-shadow: var(--shadow-sm);
@@ -823,8 +885,8 @@ export default function Hero({
         .mode-btn {
           display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
-          padding: 0.45rem 1rem;
+          gap: 0.45rem;
+          padding: 0.5rem 1.1rem;
           border-radius: 50px;
           font-family: var(--font-heading);
           font-size: 0.82rem;
@@ -851,18 +913,26 @@ export default function Hero({
 
         .showcase-3d-card {
           position: relative;
-          border-radius: 30px;
+          border-radius: 32px;
           overflow: hidden;
-          background: rgba(255, 255, 255, 0.9);
-          border: 1px solid var(--border-color);
-          box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12);
+          background: rgba(255, 255, 255, 0.88);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          box-shadow: 
+            0 25px 50px -12px rgba(15, 23, 42, 0.12),
+            0 0 0 1px rgba(13, 148, 136, 0.1),
+            inset 0 1px 1px rgba(255, 255, 255, 0.9);
           transform-style: preserve-3d;
           cursor: pointer;
-          transition: border-color 0.3s ease;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .showcase-3d-card:hover {
           border-color: rgba(13, 148, 136, 0.35);
+          box-shadow: 
+            0 30px 60px -12px rgba(13, 148, 136, 0.2),
+            0 0 0 1px rgba(13, 148, 136, 0.25);
         }
 
         .card-specular-glare {
@@ -874,7 +944,7 @@ export default function Hero({
         }
 
         .card-image-stage {
-          height: 250px;
+          height: 260px;
           width: 100%;
           position: relative;
           display: flex;
@@ -882,6 +952,7 @@ export default function Hero({
           justify-content: center;
           padding: 2.25rem;
           overflow: hidden;
+          transition: background 0.5s ease;
         }
 
         .card-top-badges {
@@ -900,7 +971,8 @@ export default function Hero({
           letter-spacing: 0.05em;
           text-transform: uppercase;
           background: rgba(255, 255, 255, 0.92);
-          padding: 0.25rem 0.7rem;
+          backdrop-filter: blur(8px);
+          padding: 0.28rem 0.75rem;
           border-radius: 50px;
           color: var(--text-primary);
           box-shadow: var(--shadow-sm);
@@ -910,7 +982,8 @@ export default function Hero({
           font-size: 0.72rem;
           font-weight: 700;
           background: rgba(255, 255, 255, 0.92);
-          padding: 0.25rem 0.7rem;
+          backdrop-filter: blur(8px);
+          padding: 0.28rem 0.75rem;
           border-radius: 50px;
           color: var(--text-primary);
           display: flex;
@@ -920,19 +993,19 @@ export default function Hero({
         }
 
         .card-hero-img {
-          max-height: 185px;
+          max-height: 190px;
           object-fit: contain;
-          transition: transform 0.4s ease;
-          filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.12));
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.12));
         }
 
         .showcase-3d-card:hover .card-hero-img {
-          transform: scale(1.07);
+          transform: scale(1.08);
         }
 
         .card-svg-wrapper {
-          width: 160px;
-          height: 160px;
+          width: 165px;
+          height: 165px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -941,8 +1014,8 @@ export default function Hero({
         /* Hotspots */
         .hotspot-pin {
           position: absolute;
-          width: 22px;
-          height: 22px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -963,57 +1036,58 @@ export default function Hero({
         .hotspot-core {
           position: relative;
           z-index: 2;
-          width: 16px;
-          height: 16px;
+          width: 18px;
+          height: 18px;
           border-radius: 50%;
-          background: var(--accent-color);
+          background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
           color: var(--white);
-          font-size: 0.75rem;
+          font-size: 0.8rem;
           font-weight: 900;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
         }
 
         .hotspot-popover {
           position: absolute;
-          bottom: 28px;
+          bottom: 30px;
           left: 50%;
           transform: translateX(-50%);
-          width: 190px;
-          padding: 0.65rem 0.85rem;
-          border-radius: 12px;
-          background: rgba(15, 23, 42, 0.92);
+          width: 200px;
+          padding: 0.75rem 0.95rem;
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.94);
+          backdrop-filter: blur(12px);
           color: var(--white);
           box-shadow: var(--shadow-lg);
           pointer-events: none;
           z-index: 20;
-          border: 1px solid rgba(255, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
         .popover-title {
-          font-size: 0.78rem;
+          font-size: 0.8rem;
           font-weight: 800;
           color: var(--accent-light);
           display: flex;
           align-items: center;
-          gap: 0.3rem;
+          gap: 0.35rem;
           margin-bottom: 0.2rem;
         }
 
         .popover-desc {
-          font-size: 0.72rem;
-          line-height: 1.3;
-          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.74rem;
+          line-height: 1.35;
+          color: rgba(255, 255, 255, 0.85);
         }
 
         /* Card Content Stage */
         .card-content-stage {
-          padding: 1.5rem 1.75rem;
+          padding: 1.6rem 1.85rem;
           display: flex;
           flex-direction: column;
-          gap: 1.1rem;
+          gap: 1.15rem;
         }
 
         .card-header-info {
@@ -1032,7 +1106,7 @@ export default function Hero({
 
         .card-title {
           font-family: var(--font-heading);
-          font-size: 1.3rem;
+          font-size: 1.35rem;
           font-weight: 800;
           color: var(--text-primary);
           line-height: 1.3;
@@ -1041,13 +1115,13 @@ export default function Hero({
         .view-mode-panel {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.05rem;
         }
 
         .variants-selector-box {
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          gap: 0.45rem;
         }
 
         .selector-label {
@@ -1058,7 +1132,7 @@ export default function Hero({
 
         .variant-pills-row {
           display: flex;
-          gap: 0.4rem;
+          gap: 0.45rem;
           flex-wrap: wrap;
         }
 
@@ -1066,8 +1140,8 @@ export default function Hero({
           font-size: 0.78rem;
           font-family: var(--font-body);
           font-weight: 600;
-          padding: 0.3rem 0.7rem;
-          border-radius: 8px;
+          padding: 0.32rem 0.75rem;
+          border-radius: 10px;
           background: var(--bg-secondary);
           border: 1px solid var(--border-color);
           color: var(--text-secondary);
@@ -1092,21 +1166,21 @@ export default function Hero({
           justify-content: space-between;
           align-items: center;
           background: var(--bg-secondary);
-          padding: 0.5rem 0.85rem;
-          border-radius: 12px;
+          padding: 0.55rem 0.95rem;
+          border-radius: 14px;
           border: 1px solid var(--border-color);
         }
 
         .quantity-counter {
           display: flex;
           align-items: center;
-          gap: 0.6rem;
+          gap: 0.65rem;
         }
 
         .qty-btn {
-          width: 26px;
-          height: 26px;
-          border-radius: 6px;
+          width: 28px;
+          height: 28px;
+          border-radius: 8px;
           background: var(--white);
           border: 1px solid var(--border-color);
           color: var(--text-primary);
@@ -1115,6 +1189,7 @@ export default function Hero({
           justify-content: center;
           cursor: pointer;
           transition: all 0.2s ease;
+          box-shadow: var(--shadow-sm);
         }
 
         .qty-btn:hover {
@@ -1126,7 +1201,7 @@ export default function Hero({
         .qty-val {
           font-family: var(--font-heading);
           font-weight: 800;
-          font-size: 0.95rem;
+          font-size: 0.98rem;
           color: var(--text-primary);
           min-width: 16px;
           text-align: center;
@@ -1145,7 +1220,7 @@ export default function Hero({
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 0.85rem;
+          padding-top: 0.9rem;
           border-top: 1px solid var(--border-color);
         }
 
@@ -1156,7 +1231,7 @@ export default function Hero({
 
         .subtotal-price {
           font-family: var(--font-heading);
-          font-size: 1.4rem;
+          font-size: 1.45rem;
           font-weight: 800;
           color: var(--text-primary);
         }
@@ -1178,8 +1253,8 @@ export default function Hero({
           gap: 0.35rem;
           font-size: 0.85rem;
           font-weight: 700;
-          padding: 0.6rem 0.9rem;
-          border-radius: 10px;
+          padding: 0.65rem 0.95rem;
+          border-radius: 12px;
           background: var(--bg-secondary);
           border: 1px solid var(--border-color);
           color: var(--text-primary);
@@ -1199,25 +1274,24 @@ export default function Hero({
           gap: 0.45rem;
           font-size: 0.85rem;
           font-weight: 700;
-          padding: 0.6rem 1.15rem;
-          border-radius: 10px;
-          background: var(--accent-color);
+          padding: 0.65rem 1.25rem;
+          border-radius: 12px;
+          background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border: none;
-          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
+          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.28);
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
         .buy-now-btn:hover {
-          background: var(--accent-dark);
           transform: translateY(-1px);
-          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+          box-shadow: 0 8px 20px rgba(13, 148, 136, 0.4);
         }
 
         .buy-now-btn.added {
           background: #10b981;
-          box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
         }
 
         /* Diagnostic Mode Panel */
@@ -1226,14 +1300,14 @@ export default function Hero({
         }
 
         .diagnostic-spec-card {
-          background: rgba(13, 148, 136, 0.06);
-          padding: 0.85rem 1rem;
-          border-radius: 12px;
-          border-left: 3px solid var(--accent-color);
+          background: rgba(13, 148, 136, 0.07);
+          padding: 0.9rem 1.1rem;
+          border-radius: 14px;
+          border-left: 4px solid var(--accent-color);
         }
 
         .diagnostic-spec-card h5 {
-          font-size: 0.82rem;
+          font-size: 0.84rem;
           font-weight: 800;
           color: var(--accent-color);
           display: flex;
@@ -1251,14 +1325,14 @@ export default function Hero({
         .diagnostic-specs-list {
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          gap: 0.45rem;
         }
 
         .spec-row {
           display: flex;
           justify-content: space-between;
-          font-size: 0.8rem;
-          padding: 0.3rem 0;
+          font-size: 0.82rem;
+          padding: 0.35rem 0;
           border-bottom: 1px dashed var(--border-color);
         }
 
@@ -1276,13 +1350,13 @@ export default function Hero({
           justify-content: center;
           gap: 0.5rem;
           width: 100%;
-          padding: 0.65rem;
-          border-radius: 10px;
+          padding: 0.7rem;
+          border-radius: 12px;
           background: var(--text-primary);
           color: var(--white);
           font-family: var(--font-heading);
           font-weight: 700;
-          font-size: 0.85rem;
+          font-size: 0.88rem;
           border: none;
           cursor: pointer;
           transition: all 0.2s ease;
@@ -1291,6 +1365,7 @@ export default function Hero({
 
         .btn-full-spec:hover {
           background: var(--accent-color);
+          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.3);
         }
 
         @media (max-width: 1024px) {
