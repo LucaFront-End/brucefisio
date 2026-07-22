@@ -1,35 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, ShoppingCart, Eye, Check } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { ShoppingCart, Eye, Check, Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
 export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, products = PRODUCTS }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [addedItem, setAddedItem] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
 
-  // Dynamic products list for the rotary
+  const containerRef = useRef(null);
+  
+  // Track scroll progress inside 300vh container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Top 5 products for the scroll rotary
   const ROTARY_PRODUCTS = products.slice(0, 5);
 
-  // Auto-rotate carousel every 8 seconds, pausing on hover
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      handleNext();
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [activeIndex, isHovered]);
+  // Bind wheel SVG rotation to scroll progress: 0 to -288 degrees
+  const wheelRotation = useTransform(scrollYProgress, [0, 1], [0, -288]);
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % ROTARY_PRODUCTS.length);
-  };
+  // Bind vertical progress bar height
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + ROTARY_PRODUCTS.length) % ROTARY_PRODUCTS.length);
-  };
+  // Calculate active index dynamically from scroll progress
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const total = ROTARY_PRODUCTS.length;
+    const step = 1 / total;
+    const idx = Math.min(total - 1, Math.floor(latest / step));
+    if (idx !== activeIndex) {
+      setActiveIndex(idx);
+    }
+  });
+
+  const activeProduct = ROTARY_PRODUCTS[activeIndex] || ROTARY_PRODUCTS[0];
 
   const handleBuyClick = (e, product) => {
-    e.stopPropagation(); // Prevent active node trigger
+    e.stopPropagation();
     if (!onQuickAdd) return;
     onQuickAdd(product);
     setAddedItem(product.id);
@@ -38,613 +46,695 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
     }, 2000);
   };
 
+  const handleBulletClick = (idx) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const scrollTop = window.scrollY + rect.top;
+    const sectionHeight = rect.height - window.innerHeight;
+    const targetScroll = scrollTop + (idx / (ROTARY_PRODUCTS.length - 1)) * sectionHeight;
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+  };
+
   return (
-    <section 
-      className="rotary-section container"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="rotary-layout-grid">
-        {/* Left Side: Editorial Introduction & Controls */}
-        <div className="rotary-intro-panel">
-          <span className="section-label">Línea Destacada</span>
-          <h2 className="heading-section">Selección Premium para Fisioterapia</h2>
-          <p className="rotary-intro-desc">
-            Tecnología innovadora diseñada para optimizar los tratamientos de rehabilitación. 
-            Inspecciona las tarjetas en el carrusel circular interactivo y agrégalas directamente a tu cotización.
-          </p>
+    <section ref={containerRef} className="scroll-rotary-track">
+      
+      {/* Sticky Viewport (Pins in screen while user scrolls 300vh) */}
+      <div className="scroll-rotary-sticky">
+        
+        {/* Background Glows */}
+        <div className="rotary-glow glow-1"></div>
+        <div className="rotary-glow glow-2"></div>
 
-          <div className="rotary-controls">
-            <button className="ctrl-arrow-btn" onClick={handlePrev} title="Anterior">
-              <ChevronLeft size={20} />
-            </button>
-            <div className="ctrl-bullets">
-              {ROTARY_PRODUCTS.map((_, idx) => (
-                <button 
-                  key={idx} 
-                  className={`bullet ${idx === activeIndex ? "active" : ""}`}
-                  onClick={() => setActiveIndex(idx)}
-                />
-              ))}
-            </div>
-            <button className="ctrl-arrow-btn" onClick={handleNext} title="Siguiente">
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
-
-        {/* Right Side: Tilted 3D Cylinder Card Carousel with Depth of Field & Lighting Shading */}
-        <div className="rotary-carousel-panel">
-          <div className="rotary-carousel-viewport">
+        <div className="container rotary-layout-grid">
+          
+          {/* Left Panel: Scroll Progress, Active Product Copy & CTAs */}
+          <div className="rotary-intro-panel">
             
-            {/* ROTATING SPOKE WHEEL GRAPHIC (With active radar pulses at tips) */}
-            <div className="rotary-wheel-graphic">
-              <svg 
-                viewBox="0 0 100 100" 
-                className="wheel-svg"
-                style={{ 
-                  transform: `rotate(${activeIndex * -72}deg)`,
-                  transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)"
-                }}
-              >
-                {/* Concentric rings */}
-                <circle cx="50" cy="50" r="44" stroke="rgba(13, 148, 136, 0.16)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
-                <circle cx="50" cy="50" r="41" stroke="rgba(13, 148, 136, 0.06)" strokeWidth="0.5" fill="none" />
-                <circle cx="50" cy="50" r="32" stroke="rgba(13, 148, 136, 0.05)" strokeWidth="0.5" fill="none" />
-                
-                {/* Central hub */}
-                <circle cx="50" cy="50" r="6" stroke="rgba(13, 148, 136, 0.2)" strokeWidth="0.75" fill="rgba(255, 255, 255, 0.85)" />
-                <circle cx="50" cy="50" r="2" fill="var(--accent-color)" />
-                
-                {/* 5 Spoke lines with connector pins */}
-                {[0, 1, 2, 3, 4].map(idx => {
-                  const rad = (idx * 72) * (Math.PI / 180);
-                  const sx = 50 + Math.sin(rad) * 6;
-                  const sy = 50 - Math.cos(rad) * 6;
-                  const ex = 50 + Math.sin(rad) * 44;
-                  const ey = 50 - Math.cos(rad) * 44;
-                  
-                  // Index 0 represents the spoke that rotates to the top (active product position)
-                  const isActiveSpoke = idx === 0;
-
-                  return (
-                    <g key={idx}>
-                      <line 
-                        x1={sx} 
-                        y1={sy} 
-                        x2={ex} 
-                        y2={ey} 
-                        stroke={isActiveSpoke ? "rgba(13, 148, 136, 0.35)" : "rgba(13, 148, 136, 0.12)"} 
-                        strokeWidth={isActiveSpoke ? "0.85" : "0.5"} 
-                      />
-                      
-                      {/* Spoke tip node */}
-                      <circle 
-                        cx={ex} 
-                        cy={ey} 
-                        r={isActiveSpoke ? "2" : "1.2"} 
-                        fill={isActiveSpoke ? "var(--accent-color)" : "rgba(13, 148, 136, 0.3)"} 
-                      />
-
-                      {/* Radar pulse effect at active tip */}
-                      {isActiveSpoke && (
-                        <circle 
-                          cx={ex} 
-                          cy={ey} 
-                          r="4" 
-                          stroke="var(--accent-color)" 
-                          strokeWidth="0.5" 
-                          fill="none" 
-                          className="pulse-ring"
-                          style={{ transformOrigin: `${ex}px ${ey}px` }}
-                        />
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
+            <div className="scroll-progress-badge">
+              <span className="step-counter">0{activeIndex + 1} / 0{ROTARY_PRODUCTS.length}</span>
+              <span className="pulse-indicator">● Guiado por Scroll</span>
             </div>
 
-            {/* Rotating Product Cards */}
-            {ROTARY_PRODUCTS.map((prod, i) => {
-              const N = ROTARY_PRODUCTS.length;
-              const angle = ((i - activeIndex) * (360 / N)) * (Math.PI / 180);
+            <h2 className="heading-section">
+              Línea Destacada & <br />
+              <span className="text-gradient">Tecnología de Rehabilitación</span>
+            </h2>
+
+            {/* Dynamic Active Product Meta */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeProduct.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.3 }}
+                className="active-product-meta-card glass"
+              >
+                <div className="meta-brand-row">
+                  <span className="meta-brand-tag">{activeProduct.brand || "Bruce Médica"}</span>
+                  <span className="meta-cat-pill">{activeProduct.category || "Alta Especialidad"}</span>
+                </div>
+
+                <h3 className="meta-product-name">{activeProduct.name}</h3>
+
+                <p className="meta-product-desc">
+                  {activeProduct.description || "Equipamiento profesional diseñado para clínicas de fisioterapia y aceleración de recuperación muscular."}
+                </p>
+
+                <div className="meta-price-action-bar">
+                  <div className="meta-price-block">
+                    <span className="meta-price-val">${activeProduct.price?.toLocaleString()} MXN</span>
+                    <span className="meta-tax-info">IVA Incluido</span>
+                  </div>
+
+                  <div className="meta-buttons-group">
+                    <button 
+                      className="btn-meta-inspect"
+                      onClick={() => onOpenProductModal && onOpenProductModal(activeProduct)}
+                    >
+                      <Eye size={16} /> Ver Detalles
+                    </button>
+
+                    <button 
+                      className={`btn-meta-buy ${addedItem === activeProduct.id ? "added" : ""}`}
+                      onClick={(e) => handleBuyClick(e, activeProduct)}
+                    >
+                      {addedItem === activeProduct.id ? (
+                        <><Check size={16} /> ¡Añadido!</>
+                      ) : (
+                        <><ShoppingCart size={16} /> Comprar</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Vertical Scroll Progress Bar & Bullet Indicators */}
+            <div className="scroll-controls-bar">
+              <div className="vertical-track">
+                <motion.div 
+                  className="vertical-fill" 
+                  style={{ height: progressHeight }} 
+                />
+              </div>
+
+              <div className="rotary-bullets-list">
+                {ROTARY_PRODUCTS.map((p, idx) => (
+                  <button
+                    key={p.id}
+                    className={`scroll-bullet-btn ${idx === activeIndex ? "active" : ""}`}
+                    onClick={() => handleBulletClick(idx)}
+                    title={`Ver ${p.name}`}
+                  >
+                    <span className="bullet-num">0{idx + 1}</span>
+                    <span className="bullet-title">{p.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Panel: Tilted 3D Cylinder Card Showcase */}
+          <div className="rotary-carousel-panel">
+            <div className="rotary-carousel-viewport">
               
-              // Coordinates on ellipse (Rx = 175px, Ry = 95px)
-              const rx = 175;
-              const ry = 95;
-              const x = Math.sin(angle) * rx;
-              const y = -Math.cos(angle) * ry;
-
-              // Perspective calculations
-              const depthFactor = (1 - Math.cos(angle)) / 2; // 0 in front, 1 in back
-              const scale = 1.15 - depthFactor * 0.45; // Front: 1.15, Back: 0.7
-              const opacity = 1 - depthFactor * 0.4; // Front: 1, Back: 0.6
-              const zIndex = 15 - Math.round(depthFactor * 10);
-              const isActive = i === activeIndex;
-
-              // Tilt Cards on Y axis to simulate cylindrical rotation
-              const rotateY = angle * (180 / Math.PI) * 0.55;
-
-              // CINEMATIC GRAPHIC FILTERS (Depth of field blur & 3D light shading)
-              const blurVal = depthFactor * 3.5; // blur background cards up to 3.5px
-              const brightnessVal = 1 - depthFactor * 0.35; // shade background cards down to 65% brightness
-              const cardFilter = isActive 
-                ? "none" 
-                : `blur(${blurVal}px) brightness(${brightnessVal})`;
-
-              return (
-                <motion.div
-                  key={prod.id}
-                  animate={{ 
-                    x: x, 
-                    y: y, 
-                    scale: scale, 
-                    opacity: opacity,
-                    zIndex: zIndex,
-                    rotateY: rotateY,
-                    filter: cardFilter
-                  }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 90, 
-                    damping: 16 
-                  }}
-                  className={`rotary-card-node ${isActive ? "active-node" : ""}`}
-                  onClick={() => {
-                    if (isActive) {
-                      onOpenProductModal(prod);
-                    } else {
-                      setActiveIndex(i);
-                    }
-                  }}
-                  style={{ position: "absolute" }}
+              {/* ROTATING SPOKE WHEEL GRAPHIC (Bound to scroll progress) */}
+              <div className="rotary-wheel-graphic">
+                <motion.svg 
+                  viewBox="0 0 100 100" 
+                  className="wheel-svg"
+                  style={{ rotate: wheelRotation }}
                 >
-                  {/* REALISTIC E-COMMERCE CARD WITH GLASS GLARE SHEEN */}
-                  <div className="rotary-product-card glass">
-                    {/* Hover reflection sheen overlay */}
-                    <div className="card-glass-glare"></div>
+                  <circle cx="50" cy="50" r="44" stroke="rgba(13, 148, 136, 0.16)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
+                  <circle cx="50" cy="50" r="41" stroke="rgba(13, 148, 136, 0.06)" strokeWidth="0.5" fill="none" />
+                  <circle cx="50" cy="50" r="32" stroke="rgba(13, 148, 136, 0.05)" strokeWidth="0.5" fill="none" />
+                  
+                  <circle cx="50" cy="50" r="6" stroke="rgba(13, 148, 136, 0.2)" strokeWidth="0.75" fill="rgba(255, 255, 255, 0.85)" />
+                  <circle cx="50" cy="50" r="2" fill="var(--accent-color)" />
+                  
+                  {[0, 1, 2, 3, 4].map(idx => {
+                    const rad = (idx * 72) * (Math.PI / 180);
+                    const sx = 50 + Math.sin(rad) * 6;
+                    const sy = 50 - Math.cos(rad) * 6;
+                    const ex = 50 + Math.sin(rad) * 44;
+                    const ey = 50 - Math.cos(rad) * 44;
+                    const isActiveSpoke = idx === 0;
 
-                    {/* Image Header */}
-                    <div className="card-img-header" style={{ background: prod.imageBg }}>
+                    return (
+                      <g key={idx}>
+                        <line 
+                          x1={sx} y1={sy} x2={ex} y2={ey} 
+                          stroke={isActiveSpoke ? "rgba(13, 148, 136, 0.4)" : "rgba(13, 148, 136, 0.12)"} 
+                          strokeWidth={isActiveSpoke ? "0.9" : "0.5"} 
+                        />
+                        <circle 
+                          cx={ex} cy={ey} 
+                          r={isActiveSpoke ? "2.2" : "1.2"} 
+                          fill={isActiveSpoke ? "var(--accent-color)" : "rgba(13, 148, 136, 0.3)"} 
+                        />
+                      </g>
+                    );
+                  })}
+                </motion.svg>
+              </div>
+
+              {/* Rotating Product Cards */}
+              {ROTARY_PRODUCTS.map((prod, i) => {
+                const N = ROTARY_PRODUCTS.length;
+                const angle = ((i - activeIndex) * (360 / N)) * (Math.PI / 180);
+                
+                // Ellipse placement
+                const rx = 180;
+                const ry = 95;
+                const x = Math.sin(angle) * rx;
+                const y = -Math.cos(angle) * ry;
+
+                const depthFactor = (1 - Math.cos(angle)) / 2;
+                const scale = 1.15 - depthFactor * 0.45;
+                const opacity = 1 - depthFactor * 0.4;
+                const zIndex = 15 - Math.round(depthFactor * 10);
+                const isActive = i === activeIndex;
+
+                const rotateY = angle * (180 / Math.PI) * 0.55;
+
+                const blurVal = depthFactor * 3.5;
+                const brightnessVal = 1 - depthFactor * 0.35;
+                const cardFilter = isActive ? "none" : `blur(${blurVal}px) brightness(${brightnessVal})`;
+
+                return (
+                  <motion.div
+                    key={prod.id}
+                    animate={{ 
+                      x: x, 
+                      y: y, 
+                      scale: scale, 
+                      opacity: opacity,
+                      rotateY: rotateY
+                    }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ 
+                      zIndex: zIndex,
+                      filter: cardFilter
+                    }}
+                    className={`rotary-card glass ${isActive ? "active-spotlight" : ""}`}
+                    onClick={() => {
+                      if (isActive && onOpenProductModal) {
+                        onOpenProductModal(prod);
+                      } else {
+                        handleBulletClick(i);
+                      }
+                    }}
+                  >
+                    <div 
+                      className="card-img-wrapper"
+                      style={{ background: prod.imageBg || "linear-gradient(135deg, #ccfbf1 0%, #0d9488 100%)" }}
+                    >
+                      <span className="card-brand-badge">{prod.brand || "Bruce"}</span>
                       {prod.imageSvg ? (
                         <div 
-                          className="card-svg"
+                          className="svg-box"
                           dangerouslySetInnerHTML={{ __html: prod.imageSvg }}
                         />
                       ) : (
-                        <img src={prod.image} alt={prod.name} className="rotary-card-img" />
+                        <img src={prod.image} alt={prod.name} className="product-rotary-img" />
                       )}
                     </div>
 
-                    {/* Card Content Info */}
-                    <div className="card-info">
-                      <span className="card-brand">{prod.brand}</span>
-                      <h4 className="card-title">{prod.name}</h4>
+                    <div className="card-info-body">
+                      <span className="cat-tag">{prod.category || "Fisioterapia"}</span>
+                      <h4 className="prod-name">{prod.name}</h4>
                       
-                      <div className="card-footer-row">
-                        <span className="card-price">${prod.price.toLocaleString()}</span>
+                      <div className="card-price-row">
+                        <span className="price-tag">${prod.price?.toLocaleString()} MXN</span>
                         
-                        <div className="card-actions">
-                          {isActive ? (
-                            <>
-                              <button 
-                                className="action-circle view-btn"
-                                onClick={() => onOpenProductModal(prod)}
-                                title="Ver variantes y detalles"
-                              >
-                                <Eye size={12} />
-                              </button>
-                              <button 
-                                className={`action-circle buy-btn ${addedItem === prod.id ? "success" : ""}`}
-                                onClick={(e) => handleBuyClick(e, prod)}
-                                disabled={addedItem === prod.id}
-                                title="Añadir rápido al carrito"
-                              >
-                                {addedItem === prod.id ? <Check size={12} /> : <ShoppingCart size={12} />}
-                              </button>
-                            </>
-                          ) : (
-                            <span className="click-to-inspect">Girar</span>
-                          )}
-                        </div>
+                        <button 
+                          className={`rotary-buy-btn ${addedItem === prod.id ? "added" : ""}`}
+                          onClick={(e) => handleBuyClick(e, prod)}
+                          title="Añadir al carrito"
+                        >
+                          {addedItem === prod.id ? <Check size={14} /> : <ShoppingCart size={14} />}
+                        </button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
+                );
+              })}
 
-                  {/* Active Card Glow */}
-                  {isActive && (
-                    <motion.div 
-                      layoutId="cardActiveGlow" 
-                      className="card-active-glow-shadow"
-                      transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                    />
-                  )}
-                </motion.div>
-              );
-            })}
-
-            {/* Circular shadow floor reflection */}
-            <div className="carousel-reflection-floor"></div>
-
+            </div>
           </div>
+
         </div>
+
       </div>
 
+      {/* Styled JSX CSS Rules */}
       <style>{`
-        .rotary-section {
-          padding: 6rem 2rem;
+        .scroll-rotary-track {
+          position: relative;
+          height: 300vh;
           background: var(--bg-primary);
+        }
+
+        .scroll-rotary-sticky {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          display: flex;
+          align-items: center;
           overflow: hidden;
         }
-        
-        .rotary-layout-grid {
-          display: grid;
-          grid-template-columns: 0.95fr 1.05fr;
-          gap: 4rem;
-          align-items: center;
+
+        .rotary-glow {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(100px);
+          pointer-events: none;
+          z-index: 0;
         }
-        
-        /* Intro text panel */
+
+        .rotary-glow.glow-1 {
+          width: 480px;
+          height: 480px;
+          top: 10%;
+          left: -100px;
+          background: rgba(13, 148, 136, 0.08);
+        }
+
+        .rotary-glow.glow-2 {
+          width: 420px;
+          height: 420px;
+          bottom: 10%;
+          right: -100px;
+          background: rgba(249, 115, 22, 0.06);
+        }
+
+        .rotary-layout-grid {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: 1fr 1.15fr;
+          gap: 3.5rem;
+          align-items: center;
+          width: 100%;
+        }
+
         .rotary-intro-panel {
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
         }
-        
-        .rotary-intro-desc {
-          font-size: 0.95rem;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-        
-        /* Stepper navigation arrows */
-        .rotary-controls {
-          display: flex;
+
+        .scroll-progress-badge {
+          display: inline-flex;
           align-items: center;
-          gap: 1.5rem;
-          margin-top: 1rem;
+          gap: 0.75rem;
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: var(--accent-color);
+          background: var(--accent-light);
+          padding: 0.4rem 0.95rem;
+          border-radius: 50px;
+          width: fit-content;
+          border: 1px solid rgba(13, 148, 136, 0.25);
         }
-        
-        .ctrl-arrow-btn {
-          width: 42px;
-          height: 42px;
-          border-radius: 50%;
+
+        .step-counter {
+          font-family: var(--font-heading);
+          font-weight: 800;
+          color: var(--accent-dark);
+        }
+
+        .pulse-indicator {
+          font-size: 0.78rem;
+          color: var(--text-secondary);
+        }
+
+        .active-product-meta-card {
+          padding: 1.5rem 1.75rem;
+          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(16px);
           border: 1px solid var(--border-color);
+          box-shadow: var(--shadow-md);
           display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+        }
+
+        .meta-brand-row {
+          display: flex;
+          gap: 0.5rem;
           align-items: center;
-          justify-content: center;
+        }
+
+        .meta-brand-tag {
+          font-size: 0.72rem;
+          font-weight: 800;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          background: var(--bg-secondary);
+          padding: 0.2rem 0.6rem;
+          border-radius: 50px;
+          color: var(--text-primary);
+        }
+
+        .meta-cat-pill {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: var(--accent-color);
+          background: var(--accent-light);
+          padding: 0.2rem 0.6rem;
+          border-radius: 50px;
+        }
+
+        .meta-product-name {
+          font-family: var(--font-heading);
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          line-height: 1.25;
+        }
+
+        .meta-product-desc {
+          font-size: 0.9rem;
+          line-height: 1.55;
           color: var(--text-secondary);
-          background: var(--white);
-          transition: all var(--transition-fast);
-          box-shadow: var(--shadow-sm);
         }
-        
-        .ctrl-arrow-btn:hover {
-          background: var(--text-primary);
-          color: var(--white);
-          border-color: var(--text-primary);
-        }
-        
-        .ctrl-bullets {
+
+        .meta-price-action-bar {
           display: flex;
-          gap: 0.65rem;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 0.75rem;
+          border-top: 1px solid var(--border-color);
         }
-        
-        .bullet {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: var(--text-tertiary);
-          transition: all var(--transition-fast);
+
+        .meta-price-block {
+          display: flex;
+          flex-direction: column;
         }
-        
-        .bullet.active {
-          width: 24px;
-          border-radius: 4px;
+
+        .meta-price-val {
+          font-family: var(--font-heading);
+          font-size: 1.4rem;
+          font-weight: 800;
+          color: var(--text-primary);
+        }
+
+        .meta-tax-info {
+          font-size: 0.7rem;
+          color: var(--text-tertiary);
+        }
+
+        .meta-buttons-group {
+          display: flex;
+          gap: 0.5rem;
+        }
+
+        .btn-meta-inspect {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          font-size: 0.85rem;
+          font-weight: 700;
+          padding: 0.6rem 0.9rem;
+          border-radius: 10px;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          color: var(--text-primary);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-meta-inspect:hover {
+          background: var(--white);
+          border-color: var(--accent-color);
+          color: var(--accent-color);
+        }
+
+        .btn-meta-buy {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.85rem;
+          font-weight: 700;
+          padding: 0.6rem 1.15rem;
+          border-radius: 10px;
           background: var(--accent-color);
+          color: var(--white);
+          border: none;
+          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
-        
-        /* Circular 3D Carousel Viewport */
-        .rotary-carousel-panel {
-          height: 520px;
+
+        .btn-meta-buy:hover {
+          background: var(--accent-dark);
+          transform: translateY(-1px);
+        }
+
+        .btn-meta-buy.added {
+          background: #10b981;
+        }
+
+        /* Scroll Controls & Bullets */
+        .scroll-controls-bar {
           display: flex;
           align-items: center;
-          justify-content: center;
-          position: relative;
+          gap: 1.25rem;
+          padding-top: 0.5rem;
         }
-        
+
+        .vertical-track {
+          position: relative;
+          width: 4px;
+          height: 120px;
+          background: rgba(15, 23, 42, 0.1);
+          border-radius: 10px;
+          overflow: hidden;
+        }
+
+        .vertical-fill {
+          width: 100%;
+          background: var(--accent-color);
+          border-radius: 10px;
+        }
+
+        .rotary-bullets-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+
+        .scroll-bullet-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.25rem 0.5rem;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          opacity: 0.5;
+          transition: all 0.25s ease;
+        }
+
+        .scroll-bullet-btn:hover,
+        .scroll-bullet-btn.active {
+          opacity: 1;
+        }
+
+        .scroll-bullet-btn.active .bullet-num {
+          color: var(--accent-color);
+          font-weight: 800;
+        }
+
+        .scroll-bullet-btn.active .bullet-title {
+          color: var(--text-primary);
+          font-weight: 700;
+        }
+
+        .bullet-num {
+          font-family: var(--font-heading);
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--text-tertiary);
+        }
+
+        .bullet-title {
+          font-size: 0.82rem;
+          color: var(--text-secondary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 220px;
+        }
+
+        /* Right Panel Carousel Viewport */
+        .rotary-carousel-panel {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
         .rotary-carousel-viewport {
           position: relative;
           width: 100%;
-          height: 100%;
+          height: 480px;
           display: flex;
           align-items: center;
           justify-content: center;
-          perspective: 1100px; /* Enables 3D perspective space */
+          perspective: 1000px;
         }
-        
-        /* Rotating spoke wheel graphic behind cards */
+
         .rotary-wheel-graphic {
           position: absolute;
-          width: 440px;
-          height: 440px;
-          transform: scaleY(0.55); /* Squashes the circle */
-          z-index: 1;
+          width: 420px;
+          height: 420px;
           pointer-events: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
-        
+
         .wheel-svg {
           width: 100%;
           height: 100%;
-          filter: drop-shadow(0 4px 12px rgba(13, 148, 136, 0.05));
         }
 
-        /* Pulse ring animation at top of spoke wheel */
-        .pulse-ring {
-          animation: tipRadarPulse 1.8s infinite ease-out;
-        }
-
-        @keyframes tipRadarPulse {
-          0% { transform: scale(0.6); opacity: 0.8; }
-          100% { transform: scale(2.8); opacity: 0; }
-        }
-        
-        .carousel-reflection-floor {
+        .rotary-card {
           position: absolute;
-          width: 340px;
-          height: 50px;
-          bottom: 8%;
-          background: radial-gradient(ellipse, rgba(13, 148, 136, 0.06) 0%, transparent 70%);
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 1;
-        }
-        
-        /* Product Card Nodes */
-        .rotary-card-node {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transform-style: preserve-3d;
-        }
-        
-        .rotary-product-card {
-          width: 180px;
-          height: 260px;
-          background: var(--white);
-          border: 1px solid var(--border-color);
-          border-radius: 18px;
+          width: 260px;
+          border-radius: 24px;
           overflow: hidden;
-          box-shadow: var(--shadow-sm);
-          display: flex;
-          flex-direction: column;
-          z-index: 3;
-          transition: all var(--transition-fast);
-          pointer-events: auto;
-          backface-visibility: hidden;
+          background: rgba(255, 255, 255, 0.92);
+          backdrop-filter: blur(16px);
+          border: 1px solid var(--border-color);
+          box-shadow: var(--shadow-lg);
+          cursor: pointer;
+          transform-style: preserve-3d;
+          transition: border-color 0.3s ease;
+        }
+
+        .rotary-card.active-spotlight {
+          border-color: rgba(13, 148, 136, 0.4);
+          box-shadow: 0 20px 40px rgba(13, 148, 136, 0.2);
+        }
+
+        .card-img-wrapper {
+          height: 170px;
           position: relative;
-        }
-        
-        /* Glare effect sweeping on card hover */
-        .card-glass-glare {
-          position: absolute;
-          top: 0;
-          left: -150%;
-          width: 120%;
-          height: 100%;
-          background: linear-gradient(
-            90deg, 
-            transparent 0%, 
-            rgba(255, 255, 255, 0.25) 50%, 
-            transparent 100%
-          );
-          transform: skewX(-25deg);
-          z-index: 10;
-          pointer-events: none;
-          transition: left 0.6s ease;
-        }
-
-        .rotary-product-card:hover .card-glass-glare {
-          left: 150%;
-        }
-
-        /* Header Image Inside Card */
-        .card-img-header {
-          height: 110px;
-          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 1rem;
-          transition: transform var(--transition-fast);
-        }
-        
-        .rotary-card-img {
-          width: 70%;
-          height: 70%;
-          object-fit: contain;
+          padding: 1.25rem;
         }
 
-        .card-svg {
-          width: 60%;
-          height: 60%;
-          filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.15));
+        .card-brand-badge {
+          position: absolute;
+          top: 0.75rem;
+          left: 0.75rem;
+          font-size: 0.68rem;
+          font-weight: 800;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          background: rgba(255, 255, 255, 0.9);
+          padding: 0.2rem 0.55rem;
+          border-radius: 50px;
+          color: var(--text-primary);
         }
-        
-        .card-svg svg {
-          width: 100%;
-          height: 100%;
+
+        .product-rotary-img {
+          max-height: 130px;
+          object-fit: contain;
+          transition: transform 0.3s ease;
         }
-        
-        /* Card details */
-        .card-info {
-          padding: 0.95rem;
-          flex-grow: 1;
+
+        .rotary-card:hover .product-rotary-img {
+          transform: scale(1.06);
+        }
+
+        .svg-box {
+          width: 110px;
+          height: 110px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .card-info-body {
+          padding: 1.1rem 1.25rem;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          gap: 0.4rem;
         }
-        
-        .card-brand {
-          font-size: 0.65rem;
+
+        .cat-tag {
+          font-size: 0.72rem;
           font-weight: 700;
           color: var(--accent-color);
           text-transform: uppercase;
-          letter-spacing: 0.05em;
-          font-family: var(--font-heading);
         }
-        
-        .card-title {
-          font-size: 0.8rem;
-          font-weight: 700;
+
+        .prod-name {
+          font-family: var(--font-heading);
+          font-size: 1.05rem;
+          font-weight: 800;
           color: var(--text-primary);
           line-height: 1.3;
-          margin-top: 0.15rem;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
+          white-space: nowrap;
           overflow: hidden;
+          text-overflow: ellipsis;
         }
-        
-        .card-footer-row {
+
+        .card-price-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-top: 1px solid var(--border-color);
-          padding-top: 0.65rem;
-          margin-top: 0.5rem;
+          padding-top: 0.4rem;
         }
-        
-        .card-price {
+
+        .price-tag {
           font-family: var(--font-heading);
-          font-weight: 700;
-          font-size: 0.85rem;
+          font-size: 1.15rem;
+          font-weight: 800;
           color: var(--text-primary);
         }
-        
-        .card-actions {
-          display: flex;
-          gap: 0.35rem;
-          align-items: center;
-        }
-        
-        .action-circle {
-          width: 22px;
-          height: 22px;
-          border-radius: 50%;
+
+        .rotary-buy-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: var(--accent-color);
+          color: var(--white);
+          border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: all var(--transition-fast);
-        }
-        
-        .view-btn {
-          background: var(--bg-secondary);
-          color: var(--text-secondary);
-        }
-        
-        .view-btn:hover {
-          background: var(--text-primary);
-          color: var(--white);
-        }
-        
-        .buy-btn {
-          background: var(--text-primary);
-          color: var(--white);
-        }
-        
-        .buy-btn:hover {
-          background: var(--accent-color);
-        }
-        
-        .buy-btn.success {
-          background: #25d366;
-        }
-        
-        .click-to-inspect {
-          font-size: 0.65rem;
-          font-weight: 700;
-          color: var(--text-tertiary);
-          text-transform: uppercase;
-        }
-        
-        /* Active Node Enhancements */
-        .active-node .rotary-product-card {
-          border-color: var(--accent-light);
-          box-shadow: var(--shadow-lg);
-        }
-        
-        .active-node .card-img-header {
-          transform: scale(1.04);
-        }
-        
-        .card-active-glow-shadow {
-          position: absolute;
-          width: 200px;
-          height: 280px;
-          border-radius: 22px;
-          background: radial-gradient(circle, rgba(13, 148, 136, 0.05) 0%, transparent 80%);
-          z-index: 1;
-          pointer-events: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
 
-        /* Mobile and Tablet responsive adaptation */
+        .rotary-buy-btn:hover {
+          background: var(--accent-dark);
+          transform: scale(1.05);
+        }
+
+        .rotary-buy-btn.added {
+          background: #10b981;
+        }
+
         @media (max-width: 1024px) {
+          .scroll-rotary-track {
+            height: auto;
+          }
+          .scroll-rotary-sticky {
+            position: relative;
+            height: auto;
+            padding: 4rem 0;
+          }
           .rotary-layout-grid {
             grid-template-columns: 1fr;
-            gap: 2.5rem;
-            text-align: center;
-          }
-          .rotary-intro-panel {
-            align-items: center;
-          }
-          .rotary-controls {
-            justify-content: center;
-          }
-          .rotary-carousel-panel {
-            height: auto;
-            overflow-x: auto;
-            justify-content: flex-start;
-            padding: 1.5rem 0.5rem;
-          }
-          .rotary-carousel-viewport {
-            display: flex;
-            position: relative;
-            width: auto;
-            height: auto;
-            gap: 1.25rem;
-          }
-          .rotary-card-node {
-            position: relative !important;
-            transform: none !important;
-            opacity: 1 !important;
-            x: 0 !important;
-            y: 0 !important;
-            scale: 1 !important;
-            filter: none !important;
-          }
-          .rotary-wheel-graphic, .carousel-reflection-floor, .card-active-glow-shadow {
-            display: none;
-          }
-          .rotary-product-card {
-            width: 170px;
-            height: 250px;
-            box-shadow: var(--shadow-sm);
-          }
-          .click-to-inspect {
-            display: none;
-          }
-          .card-actions {
-            display: flex !important;
-          }
-          .card-actions .view-btn, .card-actions .buy-btn {
-            width: 26px;
-            height: 26px;
+            gap: 3rem;
           }
         }
       `}</style>
