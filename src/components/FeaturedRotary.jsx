@@ -70,6 +70,9 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
   // Bind wheel SVG rotation to scroll progress: 0 to -288 degrees
   const wheelRotation = useTransform(scrollYProgress, [0, 1], [0, -288]);
 
+  // Bind vertical progress bar height
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
   // Calculate active index dynamically from scroll progress
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const total = ROTARY_PRODUCTS.length;
@@ -120,7 +123,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         <div className="container rotary-layout-grid">
           
-          {/* Left Panel: 100% Flush Left Alignment */}
+          {/* Left Panel: Scroll Progress & Clean Clinical Specs Deck */}
           <div className="rotary-intro-panel">
             
             <div className="scroll-progress-badge">
@@ -199,28 +202,27 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
               </motion.div>
             </AnimatePresence>
 
-            {/* Horizontal Step Navigation Bar (Flush-Left) */}
-            <div className="horizontal-step-nav">
-              <div className="step-pills-row">
-                {ROTARY_PRODUCTS.map((p, idx) => {
-                  const isActive = idx === activeIndex;
-                  return (
-                    <button
-                      key={p.id}
-                      className={`step-nav-pill ${isActive ? "active" : ""}`}
-                      onClick={() => handleBulletClick(idx)}
-                    >
-                      <span className="step-pill-num">0{idx + 1}</span>
-                      <span className="step-pill-name">{p.name}</span>
-                      {isActive && (
-                        <motion.div 
-                          layoutId="rotaryActivePillBar" 
-                          className="pill-active-bar" 
-                        />
-                      )}
-                    </button>
-                  );
-                })}
+            {/* Vertical Scroll Progress Bar & Bullet Indicators */}
+            <div className="scroll-controls-bar">
+              <div className="vertical-track">
+                <motion.div 
+                  className="vertical-fill" 
+                  style={{ height: progressHeight }} 
+                />
+              </div>
+
+              <div className="rotary-bullets-list">
+                {ROTARY_PRODUCTS.map((p, idx) => (
+                  <button
+                    key={p.id}
+                    className={`scroll-bullet-btn ${idx === activeIndex ? "active" : ""}`}
+                    onClick={() => handleBulletClick(idx)}
+                    title={`Ver ${p.name}`}
+                  >
+                    <span className="bullet-num">0{idx + 1}</span>
+                    <span className="bullet-title">{p.name}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -414,16 +416,13 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .rotary-intro-panel {
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
-          align-items: flex-start;
-          text-align: left;
+          gap: 0.7rem;
         }
 
         .heading-section {
           font-size: 1.85rem !important;
           line-height: 1.25 !important;
           margin: 0 !important;
-          text-align: left;
         }
 
         .scroll-progress-badge {
@@ -452,7 +451,6 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .active-product-meta-card {
-          width: 100%;
           padding: 1.1rem 1.35rem;
           border-radius: 20px;
           background: rgba(255, 255, 255, 0.88);
@@ -624,82 +622,77 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           background: #10b981;
         }
 
-        /* Horizontal Step Navigation Bar */
-        .horizontal-step-nav {
-          width: 100%;
-          padding-top: 0.25rem;
-        }
-
-        .step-pills-row {
+        /* Scroll Controls & Bullets Compact */
+        .scroll-controls-bar {
           display: flex;
-          gap: 0.45rem;
-          width: 100%;
-          overflow-x: auto;
-          padding-bottom: 0.25rem;
-          scrollbar-width: none;
-        }
-
-        .step-pills-row::-webkit-scrollbar {
-          display: none;
-        }
-
-        .step-nav-pill {
-          position: relative;
-          display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
-          padding: 0.4rem 0.75rem;
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.8);
-          border: 1px solid var(--border-color);
-          cursor: pointer;
-          transition: all 0.25s ease;
-          white-space: nowrap;
-          flex-shrink: 0;
+          gap: 1rem;
+          padding-top: 0.15rem;
         }
 
-        .step-nav-pill:hover {
-          border-color: var(--accent-color);
-          background: var(--white);
-          transform: translateY(-1px);
-        }
-
-        .step-nav-pill.active {
-          background: var(--accent-light);
-          border-color: var(--accent-color);
-          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
-        }
-
-        .step-pill-num {
-          font-family: var(--font-heading);
-          font-size: 0.75rem;
-          font-weight: 800;
-          color: var(--accent-dark);
-        }
-
-        .step-pill-name {
-          font-size: 0.78rem;
-          font-weight: 600;
-          color: var(--text-secondary);
-          max-width: 110px;
+        .vertical-track {
+          position: relative;
+          width: 4px;
+          height: 90px;
+          background: rgba(15, 23, 42, 0.1);
+          border-radius: 10px;
           overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
         }
 
-        .step-nav-pill.active .step-pill-name {
+        .vertical-fill {
+          width: 100%;
+          background: var(--accent-color);
+          border-radius: 10px;
+        }
+
+        .rotary-bullets-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+
+        .scroll-bullet-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.15rem 0.4rem;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          text-align: left;
+          opacity: 0.5;
+          transition: all 0.25s ease;
+        }
+
+        .scroll-bullet-btn:hover,
+        .scroll-bullet-btn.active {
+          opacity: 1;
+        }
+
+        .scroll-bullet-btn.active .bullet-num {
+          color: var(--accent-color);
+          font-weight: 800;
+        }
+
+        .scroll-bullet-btn.active .bullet-title {
           color: var(--text-primary);
           font-weight: 700;
         }
 
-        .pill-active-bar {
-          position: absolute;
-          bottom: -2px;
-          left: 15%;
-          right: 15%;
-          height: 2px;
-          background: var(--accent-color);
-          border-radius: 4px;
+        .bullet-num {
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: var(--text-tertiary);
+        }
+
+        .bullet-title {
+          font-size: 0.78rem;
+          color: var(--text-secondary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 210px;
         }
 
         /* Right Panel Carousel Viewport Compact */
