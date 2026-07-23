@@ -12,22 +12,89 @@ import {
   Cpu, 
   CheckCircle,
   ArrowRight,
-  Flame
+  Flame,
+  Target,
+  Layers,
+  Thermometer,
+  Shield
 } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
 const ANATOMICAL_ZONES = [
-  { id: "cervical", name: "Cervical & Cuello", cx: 50, cy: 22, desc: "Tensión muscular trapezoide, cervicalgia y cefaleas tensionales." },
-  { id: "hombro", name: "Hombro & Brazo", cx: 35, cy: 30, desc: "Manguito rotador, tendinitis supraespinoso y restricción de movilidad." },
-  { id: "lumbar", name: "Lumbar & Espalda", cx: 50, cy: 45, desc: "Lumbalgia aguda/crónica, ciática y espasmos paravertebrales." },
-  { id: "rodilla", name: "Rodilla & Articulación", cx: 42, cy: 70, desc: "Desgaste articular, sobrecarga ligamentosa y meniscos." },
-  { id: "tobillo", name: "Tobillo & Pie", cx: 40, cy: 88, desc: "Esguinces, fascitis plantar y necesidad de estabilización." }
+  { 
+    id: "cervical", 
+    name: "Cervical & Cuello", 
+    cx: 50, 
+    cy: 19, 
+    icon: Target,
+    muscles: "Trapecio, Esternocleidomastoideo & C7-T1",
+    conditions: "Cervicalgia, cefaleas tensionales y contracturas por postura",
+    dosageLevel: "Dosificación Media (2.2 - 3.5 MHz)"
+  },
+  { 
+    id: "hombro", 
+    name: "Hombro & Brazo", 
+    cx: 31, 
+    cy: 28, 
+    icon: Flame,
+    muscles: "Manguito Rotador, Deltoides & Biceps",
+    conditions: "Tendinitis supraespinoso, bursitis subacromial y pinzamiento",
+    dosageLevel: "Dosificación Alta (3.5 - 4.4 MHz)"
+  },
+  { 
+    id: "lumbar", 
+    name: "Lumbar & Espalda", 
+    cx: 50, 
+    cy: 44, 
+    icon: Zap,
+    muscles: "Paravertebrales, Lumbales L1-L5 & Cuadrado Lumbar",
+    conditions: "Lumbalgia aguda/crónica, ciática y espasmos musculares",
+    dosageLevel: "Dosificación Máxima (4.4 MHz)"
+  },
+  { 
+    id: "rodilla", 
+    name: "Rodilla & Articulación", 
+    cx: 41, 
+    cy: 71, 
+    icon: Activity,
+    muscles: "Cuádriceps, Tendón Rotuliano & Meniscos",
+    conditions: "Desgaste articular, sobrecarga ligamentosa y condromalacia",
+    dosageLevel: "Dosificación Regulada (2.0 - 4.0 MHz)"
+  },
+  { 
+    id: "tobillo", 
+    name: "Tobillo & Pie", 
+    cx: 39, 
+    cy: 90, 
+    icon: Shield,
+    muscles: "Ligamento Peroneoastrogalino & Tendón de Aquiles",
+    conditions: "Esguinces, fascitis plantar y espolón calcáneo",
+    dosageLevel: "Dosificación Focalizada (1.5 - 3.0 MHz)"
+  }
 ];
 
 const CLINICAL_OBJECTIVES = [
-  { id: "pain", label: "Alivio del Dolor & Desinflamación", icon: Zap, subtext: "Bloqueo analgésico y reabsorción de edemas" },
-  { id: "recovery", label: "Recuperación & Masaje Deportivo", icon: Activity, subtext: "Drenaje de ácido láctico y oxigenación tisular" },
-  { id: "support", label: "Estabilidad & Soporte Articular", icon: ShieldCheck, subtext: "Soporte dinámico y prevención de lesiones" }
+  { 
+    id: "pain", 
+    label: "Alivio del Dolor & Desinflamación", 
+    icon: Zap, 
+    subtext: "Bloqueo analgésico de fibras nociceptivas y reabsorción de edemas",
+    accentColor: "teal"
+  },
+  { 
+    id: "recovery", 
+    label: "Recuperación & Masaje Deportivo", 
+    icon: Activity, 
+    subtext: "Drenaje metabólico de ácido láctico y oxigenación tisular acelerada",
+    accentColor: "copper"
+  },
+  { 
+    id: "support", 
+    label: "Estabilidad & Soporte Articular", 
+    icon: ShieldCheck, 
+    subtext: "Estabilización biomecánica y prevención de lesiones recurrentes",
+    accentColor: "cyan"
+  }
 ];
 
 export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PRODUCTS }) {
@@ -96,7 +163,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
     return [
       {
         tier: "Solución Personal / Doméstica",
-        tierBadge: "🏠 Nivel 1: Hogar",
+        tierBadge: "🏠 Nivel 1: Hogar & Portátil",
         match: "94% MATCH",
         product: pPersonal
       },
@@ -125,9 +192,9 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         {/* Section Editorial Header */}
         <div className="scanner-header text-center">
           <span className="section-label">Diagnóstico Clínico Inteligente</span>
-          <h2 className="display-large">Escáner Anatómico 3D & Recomendación</h2>
+          <h2 className="display-large">Escáner Anatómico 3D & Prescripción</h2>
           <p className="scanner-sub">
-            Selecciona la articulación o zona muscular afectada en nuestro holograma bio-médico para calcular tu tratamiento ideal.
+            Selecciona la zona muscular o articular afectada en nuestro modelo vectorial humano para calcular la dosificación y equipo ideal.
           </p>
         </div>
 
@@ -135,7 +202,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           /* Interactive Scanner Setup Grid */
           <div className="grid-2 scanner-interactive-stage">
             
-            {/* Left Stage: Hologram Body Canvas */}
+            {/* Left Stage: Realistic Anatomical Human Vector Body */}
             <div className="hologram-body-card glass">
               <div className="hologram-bg-grid"></div>
               
@@ -149,27 +216,70 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                 />
               )}
 
-              {/* Holographic Body SVG Silhouette */}
+              {/* REALISTIC ANATOMICAL HUMAN BODY VECTOR SVG */}
               <div className="body-silhouette-wrapper">
                 <svg viewBox="0 0 100 100" className="body-svg">
-                  {/* Grid Lines */}
-                  <circle cx="50" cy="50" r="45" stroke="rgba(13, 148, 136, 0.12)" strokeWidth="0.5" strokeDasharray="3 3" fill="none" />
-                  <circle cx="50" cy="50" r="35" stroke="rgba(13, 148, 136, 0.08)" strokeWidth="0.5" fill="none" />
-                  
-                  {/* Head */}
-                  <circle cx="50" cy="15" r="7" fill="rgba(13, 148, 136, 0.25)" stroke="var(--accent-color)" strokeWidth="0.8" />
-                  {/* Neck */}
-                  <line x1="50" y1="22" x2="50" y2="26" stroke="var(--accent-color)" strokeWidth="1.2" />
-                  {/* Torso & Shoulders */}
-                  <path d="M 35 28 L 65 28 L 58 52 L 42 52 Z" fill="rgba(13, 148, 136, 0.18)" stroke="var(--accent-color)" strokeWidth="0.8" />
-                  {/* Arms */}
-                  <line x1="35" y1="28" x2="28" y2="48" stroke="var(--accent-color)" strokeWidth="1" />
-                  <line x1="65" y1="28" x2="72" y2="48" stroke="var(--accent-color)" strokeWidth="1" />
-                  {/* Legs */}
-                  <line x1="44" y1="52" x2="42" y2="90" stroke="var(--accent-color)" strokeWidth="1" />
-                  <line x1="56" y1="52" x2="58" y2="90" stroke="var(--accent-color)" strokeWidth="1" />
+                  <defs>
+                    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(13, 148, 136, 0.35)" />
+                      <stop offset="50%" stopColor="rgba(6, 182, 212, 0.2)" />
+                      <stop offset="100%" stopColor="rgba(15, 23, 42, 0.4)" />
+                    </linearGradient>
+                    <linearGradient id="muscleGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="var(--accent-color)" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.4" />
+                    </linearGradient>
+                  </defs>
 
-                  {/* Hotspot Pins for Anatomical Zones */}
+                  {/* Background Medical Telemetry Circles */}
+                  <circle cx="50" cy="50" r="48" stroke="rgba(13, 148, 136, 0.12)" strokeWidth="0.5" strokeDasharray="2 2" fill="none" />
+                  <circle cx="50" cy="50" r="38" stroke="rgba(6, 182, 212, 0.08)" strokeWidth="0.5" fill="none" />
+                  
+                  {/* REALISTIC HUMAN BODY ANATOMICAL SILHOUETTE */}
+                  <g className="anatomical-human-group">
+                    {/* Head & Cranium Contour */}
+                    <path d="M 45 10 C 44 4, 56 4, 55 10 C 56 15, 54 16, 50 16 C 46 16, 44 15, 45 10 Z" fill="url(#bodyGradient)" stroke="var(--accent-color)" strokeWidth="0.6" />
+                    
+                    {/* Cervical & Neck (Trapezius) */}
+                    <path d="M 47 16 C 44 18, 38 21, 31 23 L 30 27 C 37 25, 43 23, 47 21 Z" fill="rgba(13, 148, 136, 0.25)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 53 16 C 56 18, 62 21, 69 23 L 70 27 C 63 25, 57 23, 53 21 Z" fill="rgba(13, 148, 136, 0.25)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Deltoids & Shoulders */}
+                    <path d="M 31 23 C 26 24, 23 28, 25 34 C 27 34, 30 31, 31 27 Z" fill="rgba(13, 148, 136, 0.3)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 69 23 C 74 24, 77 28, 75 34 C 73 34, 70 31, 69 27 Z" fill="rgba(13, 148, 136, 0.3)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Pectorals & Torso Chest */}
+                    <path d="M 31 27 C 37 25, 47 24, 50 27 C 50 33, 38 35, 31 32 Z" fill="url(#bodyGradient)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 69 27 C 63 25, 53 24, 50 27 C 50 33, 62 35, 69 32 Z" fill="url(#bodyGradient)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Rectus Abdominis (Abs Grid) */}
+                    <path d="M 43 36 L 57 36 L 55 48 L 45 48 Z" fill="rgba(13, 148, 136, 0.15)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <line x1="50" y1="36" x2="50" y2="48" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.4" />
+                    <line x1="44" y1="40" x2="56" y2="40" stroke="rgba(13, 148, 136, 0.3)" strokeWidth="0.4" />
+                    <line x1="44" y1="44" x2="56" y2="44" stroke="rgba(13, 148, 136, 0.3)" strokeWidth="0.4" />
+
+                    {/* Arms (Biceps & Forearms) */}
+                    <path d="M 25 34 C 23 38, 22 44, 25 50 C 27 50, 29 44, 28 38 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 75 34 C 77 38, 78 44, 75 50 C 73 50, 71 44, 72 38 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Pelvis & Hip Joint */}
+                    <path d="M 45 48 C 40 50, 36 53, 38 58 C 46 58, 50 54, 50 50 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 55 48 C 60 50, 64 53, 62 58 C 54 58, 50 54, 50 50 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Quadriceps (Thigh Muscles) */}
+                    <path d="M 38 58 C 36 65, 38 72, 42 75 C 45 72, 46 64, 45 58 Z" fill="url(#bodyGradient)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 62 58 C 64 65, 62 72, 58 75 C 55 72, 54 64, 55 58 Z" fill="url(#bodyGradient)" stroke="var(--accent-color)" strokeWidth="0.5" />
+
+                    {/* Knees (Patella Joints) */}
+                    <ellipse cx="42" cy="76" rx="2.5" ry="3" fill="rgba(249, 115, 22, 0.3)" stroke="var(--secondary-accent)" strokeWidth="0.6" />
+                    <ellipse cx="58" cy="76" rx="2.5" ry="3" fill="rgba(249, 115, 22, 0.3)" stroke="var(--secondary-accent)" strokeWidth="0.6" />
+
+                    {/* Calves & Lower Legs */}
+                    <path d="M 40 79 C 38 84, 38 88, 41 93 C 43 92, 44 87, 43 80 Z" fill="rgba(13, 148, 136, 0.25)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                    <path d="M 60 79 C 62 84, 62 88, 59 93 C 57 92, 56 87, 57 80 Z" fill="rgba(13, 148, 136, 0.25)" stroke="var(--accent-color)" strokeWidth="0.5" />
+                  </g>
+
+                  {/* Interactive Hotspot Nodes with Concentric Pulse Rings */}
                   {ANATOMICAL_ZONES.map((zone, idx) => {
                     const isSelected = idx === selectedZoneIdx;
                     return (
@@ -182,21 +292,16 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                         <circle 
                           cx={zone.cx} 
                           cy={zone.cy} 
-                          r={isSelected ? "5" : "3.5"} 
+                          r={isSelected ? "4.5" : "3"} 
                           fill={isSelected ? "var(--secondary-accent)" : "var(--accent-color)"}
                           stroke="var(--white)"
                           strokeWidth="0.8"
                         />
                         {isSelected && (
-                          <circle 
-                            cx={zone.cx} 
-                            cy={zone.cy} 
-                            r="8" 
-                            stroke="var(--secondary-accent)" 
-                            strokeWidth="0.6" 
-                            fill="none" 
-                            className="pulse-node" 
-                          />
+                          <>
+                            <circle cx={zone.cx} cy={zone.cy} r="8" stroke="var(--secondary-accent)" strokeWidth="0.6" fill="none" className="pulse-node" />
+                            <circle cx={zone.cx} cy={zone.cy} r="13" stroke="rgba(249, 115, 22, 0.4)" strokeWidth="0.4" strokeDasharray="2 2" fill="none" />
+                          </>
                         )}
                       </g>
                     );
@@ -229,34 +334,53 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
               )}
             </div>
 
-            {/* Right Stage: Controls & Scanning Trigger */}
+            {/* Right Stage: Elevated x1000 Selectors & Preview Panel */}
             <div className="scanner-controls-card">
               
-              {/* Step 1: Zone Select Pills */}
+              {/* Step 1: Zone Selectors with Icons & Number Badges */}
               <div className="control-block">
-                <span className="control-num">Paso 1:</span>
-                <h4 className="control-title">Selecciona la Zona Anatómica</h4>
+                <div className="control-header-row">
+                  <span className="control-num-badge">01</span>
+                  <h4 className="control-title">Selecciona la Zona Anatómica</h4>
+                </div>
+
                 <div className="zone-pills-grid">
                   {ANATOMICAL_ZONES.map((zone, idx) => {
+                    const ZoneIcon = zone.icon;
                     const isActive = idx === selectedZoneIdx;
                     return (
                       <button
                         key={zone.id}
-                        className={`zone-pill ${isActive ? "active" : ""}`}
+                        className={`zone-pill-x1000 ${isActive ? "active" : ""}`}
                         onClick={() => setSelectedZoneIdx(idx)}
                       >
-                        {zone.name}
+                        <ZoneIcon size={14} className="pill-icon" />
+                        <span>{zone.name}</span>
                       </button>
                     );
                   })}
                 </div>
-                <p className="zone-desc-box">{activeZone.desc}</p>
               </div>
 
-              {/* Step 2: Clinical Objective Select */}
+              {/* Illuminated Clinical Preview Box for Active Zone */}
+              <div className="zone-clinical-spec-box glass">
+                <div className="spec-header">
+                  <span className="spec-badge"><Layers size={13} /> Diagnóstico Focalizado</span>
+                  <strong className="spec-dosage">{activeZone.dosageLevel}</strong>
+                </div>
+                <div className="spec-body">
+                  <p><strong>Músculos / Articulación:</strong> {activeZone.muscles}</p>
+                  <p><strong>Patologías Comunes:</strong> {activeZone.conditions}</p>
+                </div>
+              </div>
+
+              {/* Step 2: Clinical Objective Select (Elevated Cards) */}
               <div className="control-block">
-                <span className="control-num">Paso 2:</span>
-                <h4 className="control-title">Objetivo Terapéutico Principal</h4>
+                <div className="control-header-row">
+                  <span className="control-num-badge">02</span>
+                  <h4 className="control-title">Objetivo Terapéutico Principal</h4>
+                </div>
+
                 <div className="objective-options-list">
                   {CLINICAL_OBJECTIVES.map((obj, idx) => {
                     const ObjIcon = obj.icon;
@@ -264,30 +388,42 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                     return (
                       <button
                         key={obj.id}
-                        className={`objective-card ${isActive ? "active" : ""}`}
+                        className={`objective-card-x1000 ${isActive ? "active" : ""} theme-${obj.accentColor}`}
                         onClick={() => setSelectedObjectiveIdx(idx)}
                       >
-                        <ObjIcon size={18} className="obj-icon" />
-                        <div className="obj-text">
-                          <span className="obj-label">{obj.label}</span>
-                          <span className="obj-sub">{obj.subtext}</span>
+                        <div className="obj-icon-wrapper">
+                          <ObjIcon size={20} />
                         </div>
+                        <div className="obj-text-content">
+                          <span className="obj-label-title">{obj.label}</span>
+                          <span className="obj-sub-desc">{obj.subtext}</span>
+                        </div>
+                        {isActive && (
+                          <span className="active-check-chip">
+                            <Check size={14} />
+                          </span>
+                        )}
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Trigger Scan Button */}
+              {/* Trigger Scan Button (High-End CTA) */}
               <div className="trigger-scan-box">
+                <div className="scan-ready-bar">
+                  <span className="status-pulse"></span>
+                  <span>SISTEMA CLINICO LISTO Y CALIBRADO</span>
+                </div>
+
                 <button 
-                  className={`btn btn-scan-trigger ${isScanning ? "scanning" : ""}`}
+                  className={`btn btn-scan-trigger-x1000 ${isScanning ? "scanning" : ""}`}
                   onClick={handleRunScan}
                   disabled={isScanning}
                 >
                   {isScanning ? (
                     <>
-                      <RefreshCw size={18} className="spin-icon" /> Escaneando Tejidos...
+                      <RefreshCw size={18} className="spin-icon" /> Escaneando Tejidos Musculares...
                     </>
                   ) : (
                     <>
@@ -418,22 +554,22 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           position: relative;
           border-radius: 28px;
           padding: 2rem;
-          background: rgba(15, 23, 42, 0.92) !important;
+          background: rgba(15, 23, 42, 0.94) !important;
           color: var(--white);
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 480px;
+          min-height: 520px;
           overflow: hidden;
-          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
-          border: 1px solid rgba(13, 148, 136, 0.3);
+          box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
+          border: 1px solid rgba(13, 148, 136, 0.35);
         }
 
         .hologram-bg-grid {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(13, 148, 136, 0.15) 1px, transparent 1px);
+          background-image: radial-gradient(rgba(13, 148, 136, 0.18) 1px, transparent 1px);
           background-size: 24px 24px;
           pointer-events: none;
         }
@@ -449,8 +585,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         }
 
         .body-silhouette-wrapper {
-          width: 260px;
-          height: 360px;
+          width: 280px;
+          height: 380px;
           position: relative;
           z-index: 5;
         }
@@ -463,6 +599,11 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         .pulse-node {
           animation: pulseRing 1.8s infinite;
           transform-origin: center;
+        }
+
+        @keyframes pulseRing {
+          0% { r: 5px; opacity: 1; }
+          100% { r: 16px; opacity: 0; }
         }
 
         .zone-overlay-badge {
@@ -485,7 +626,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: var(--accent-color);
+          background: var(--secondary-accent);
+          box-shadow: 0 0 8px var(--secondary-accent);
         }
 
         .telemetry-hud-box {
@@ -494,7 +636,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           right: 1.25rem;
           padding: 0.75rem 1rem;
           border-radius: 14px;
-          background: rgba(0, 0, 0, 0.6) !important;
+          background: rgba(0, 0, 0, 0.65) !important;
           border: 1px solid rgba(13, 148, 136, 0.4);
           display: flex;
           flex-direction: column;
@@ -509,153 +651,266 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           gap: 1rem;
         }
 
-        /* Right Stage Scanner Controls */
+        /* Right Stage Elevated x1000 Selectors */
         .scanner-controls-card {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 1.25rem;
           justify-content: center;
         }
 
         .control-block {
           display: flex;
           flex-direction: column;
+          gap: 0.65rem;
+        }
+
+        .control-header-row {
+          display: flex;
+          align-items: center;
           gap: 0.6rem;
         }
 
-        .control-num {
-          font-size: 0.78rem;
+        .control-num-badge {
+          font-family: var(--font-heading);
+          font-size: 0.75rem;
           font-weight: 800;
           color: var(--accent-color);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          background: var(--accent-light);
+          padding: 0.2rem 0.6rem;
+          border-radius: 50px;
         }
 
         .control-title {
           font-family: var(--font-heading);
-          font-size: 1.25rem;
+          font-size: 1.15rem;
           font-weight: 800;
           color: var(--text-primary);
         }
 
+        /* x1000 Zone Selector Pills */
         .zone-pills-grid {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.45rem;
+          gap: 0.5rem;
         }
 
-        .zone-pill {
+        .zone-pill-x1000 {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
           font-size: 0.82rem;
           font-weight: 700;
-          padding: 0.45rem 0.9rem;
-          border-radius: 50px;
+          padding: 0.5rem 0.95rem;
+          border-radius: 12px;
           background: var(--white);
           border: 1px solid var(--border-color);
           color: var(--text-secondary);
           cursor: pointer;
           transition: all 0.25s ease;
+          box-shadow: var(--shadow-sm);
         }
 
-        .zone-pill:hover {
+        .zone-pill-x1000:hover {
           border-color: var(--accent-color);
           color: var(--accent-color);
+          transform: translateY(-1px);
         }
 
-        .zone-pill.active {
-          background: var(--accent-color);
+        .zone-pill-x1000.active {
+          background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border-color: var(--accent-color);
-          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
         }
 
-        .zone-desc-box {
-          font-size: 0.85rem;
+        .pill-icon {
+          flex-shrink: 0;
+        }
+
+        /* Illuminated Clinical Zone Preview Card */
+        .zone-clinical-spec-box {
+          padding: 1rem 1.25rem;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(13, 148, 136, 0.25);
+          box-shadow: var(--shadow-sm);
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .spec-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .spec-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: var(--accent-dark);
+          text-transform: uppercase;
+        }
+
+        .spec-dosage {
+          font-size: 0.74rem;
+          font-weight: 800;
+          color: var(--secondary-accent);
+        }
+
+        .spec-body p {
+          font-size: 0.8rem;
+          line-height: 1.45;
           color: var(--text-secondary);
-          background: rgba(13, 148, 136, 0.05);
-          padding: 0.6rem 0.85rem;
-          border-radius: 10px;
-          border-left: 3px solid var(--accent-color);
         }
 
+        /* x1000 Objective Cards */
         .objective-options-list {
           display: flex;
           flex-direction: column;
-          gap: 0.55rem;
+          gap: 0.6rem;
         }
 
-        .objective-card {
+        .objective-card-x1000 {
+          position: relative;
           display: flex;
           align-items: center;
-          gap: 0.85rem;
-          padding: 0.75rem 1rem;
-          border-radius: 14px;
+          gap: 0.95rem;
+          padding: 0.85rem 1.1rem;
+          border-radius: 16px;
           background: var(--white);
           border: 1px solid var(--border-color);
           cursor: pointer;
           text-align: left;
           transition: all 0.25s ease;
-        }
-
-        .objective-card:hover {
-          border-color: var(--accent-color);
-        }
-
-        .objective-card.active {
-          border-color: var(--accent-color);
-          background: var(--accent-light);
           box-shadow: var(--shadow-sm);
         }
 
-        .obj-icon {
+        .objective-card-x1000:hover {
+          border-color: var(--accent-color);
+          transform: translateX(2px);
+        }
+
+        .objective-card-x1000.active {
+          border-color: var(--accent-color);
+          background: rgba(13, 148, 136, 0.05);
+          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.12);
+        }
+
+        .objective-card-x1000.active::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 15%;
+          bottom: 15%;
+          width: 4px;
+          background: var(--accent-color);
+          border-radius: 0 4px 4px 0;
+        }
+
+        .obj-icon-wrapper {
+          width: 38px;
+          height: 38px;
+          border-radius: 10px;
+          background: var(--bg-secondary);
           color: var(--accent-color);
+          display: flex;
+          align-items: center;
+          justify-content: center;
           flex-shrink: 0;
         }
 
-        .obj-text {
-          display: flex;
-          flex-direction: column;
+        .objective-card-x1000.active .obj-icon-wrapper {
+          background: var(--accent-color);
+          color: var(--white);
         }
 
-        .obj-label {
-          font-size: 0.9rem;
-          font-weight: 700;
+        .obj-text-content {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+
+        .obj-label-title {
+          font-family: var(--font-heading);
+          font-size: 0.92rem;
+          font-weight: 800;
           color: var(--text-primary);
         }
 
-        .obj-sub {
+        .obj-sub-desc {
           font-size: 0.78rem;
           color: var(--text-secondary);
+          line-height: 1.35;
         }
 
+        .active-check-chip {
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: var(--accent-color);
+          color: var(--white);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        /* High-End CTA Button Box */
         .trigger-scan-box {
-          padding-top: 0.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          padding-top: 0.35rem;
         }
 
-        .btn-scan-trigger {
+        .scan-ready-bar {
+          display: flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-size: 0.7rem;
+          font-weight: 800;
+          color: var(--text-tertiary);
+          letter-spacing: 0.05em;
+        }
+
+        .status-pulse {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 8px #10b981;
+        }
+
+        .btn-scan-trigger-x1000 {
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.6rem;
-          padding: 0.9rem;
-          border-radius: 14px;
+          gap: 0.65rem;
+          padding: 1rem;
+          border-radius: 16px;
           font-family: var(--font-heading);
-          font-size: 1rem;
+          font-size: 1.02rem;
           font-weight: 800;
           background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border: none;
-          box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
+          box-shadow: 0 8px 24px rgba(13, 148, 136, 0.32);
           cursor: pointer;
           transition: all 0.25s ease;
         }
 
-        .btn-scan-trigger:hover {
+        .btn-scan-trigger-x1000:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(13, 148, 136, 0.4);
+          box-shadow: 0 12px 30px rgba(13, 148, 136, 0.45);
         }
 
-        .btn-scan-trigger.scanning {
+        .btn-scan-trigger-x1000.scanning {
           opacity: 0.85;
         }
 
