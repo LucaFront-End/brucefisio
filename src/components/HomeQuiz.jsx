@@ -23,8 +23,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "cervical", 
     name: "Cervical & Cuello", 
-    cx: 50, 
-    cy: 22, 
+    cx: 100, 
+    cy: 65, 
     icon: Target,
     muscles: "Trapecio, Esternocleidomastoideo & C7-T1",
     conditions: "Cervicalgia, cefaleas tensionales y contracturas por postura",
@@ -33,8 +33,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "hombro", 
     name: "Hombro & Brazo", 
-    cx: 32, 
-    cy: 28, 
+    cx: 52, 
+    cy: 92, 
     icon: Flame,
     muscles: "Manguito Rotador, Deltoides & Biceps",
     conditions: "Tendinitis supraespinoso, bursitis subacromial y pinzamiento",
@@ -43,8 +43,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "lumbar", 
     name: "Lumbar & Espalda", 
-    cx: 50, 
-    cy: 45, 
+    cx: 100, 
+    cy: 162, 
     icon: Zap,
     muscles: "Paravertebrales, Lumbales L1-L5 & Cuadrado Lumbar",
     conditions: "Lumbalgia aguda/crónica, ciática y espasmos musculares",
@@ -53,8 +53,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "rodilla", 
     name: "Rodilla & Articulación", 
-    cx: 41, 
-    cy: 71, 
+    cx: 78, 
+    cy: 272, 
     icon: Activity,
     muscles: "Cuádriceps, Tendón Rotuliano & Meniscos",
     conditions: "Desgaste articular, sobrecarga ligamentosa y condromalacia",
@@ -63,8 +63,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "tobillo", 
     name: "Tobillo & Pie", 
-    cx: 38, 
-    cy: 89, 
+    cx: 74, 
+    cy: 350, 
     icon: Shield,
     muscles: "Ligamento Peroneoastrogalino & Tendón de Aquiles",
     conditions: "Esguinces, fascitis plantar y espolón calcáneo",
@@ -191,9 +191,9 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         {/* Section Editorial Header */}
         <div className="scanner-header text-center">
           <span className="section-label">Diagnóstico Clínico Inteligente</span>
-          <h2 className="display-large">Escáner Anatómico 3D & Prescripción</h2>
+          <h2 className="display-large">Escáner Anatómico Vectorial 3D</h2>
           <p className="scanner-sub">
-            Selecciona la zona muscular o articular afectada en nuestro modelo 3D realista para calcular la dosificación y equipo ideal.
+            Selecciona la zona muscular o articular afectada en nuestro modelo vectorial de alta precisión para calcular tu tratamiento ideal.
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           /* Interactive Scanner Setup Grid */
           <div className="grid-2 scanner-interactive-stage">
             
-            {/* Left Stage: Real 3D Medical Anatomy Render Canvas */}
+            {/* Left Stage: Pure Vector SVG Anatomical Human Body Stage */}
             <div className="hologram-body-card glass">
               <div className="hologram-bg-grid"></div>
               
@@ -215,16 +215,78 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                 />
               )}
 
-              {/* REALISTIC 3D HUMAN BODY ANATOMY IMAGE & OVERLAY SVG */}
+              {/* HIGH-PRECISION PURE VECTOR SVG ANATOMICAL HUMAN BODY */}
               <div className="body-silhouette-wrapper">
-                <img 
-                  src="/realistic_human_body.png" 
-                  alt="Anatomía Humana 3D Realista" 
-                  className="realistic-3d-body-img"
-                />
+                <svg viewBox="0 0 200 400" className="anatomical-svg-full">
+                  <defs>
+                    <linearGradient id="vectorGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(13, 148, 136, 0.45)" />
+                      <stop offset="50%" stopColor="rgba(6, 182, 212, 0.25)" />
+                      <stop offset="100%" stopColor="rgba(13, 148, 136, 0.1)" />
+                    </linearGradient>
+                    <filter id="neonGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="1.5" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
 
-                {/* SVG Overlay for Target Radar Rings */}
-                <svg viewBox="0 0 100 100" className="body-target-overlay-svg">
+                  {/* Telemetry Radar Rings */}
+                  <circle cx="100" cy="200" r="180" stroke="rgba(13, 148, 136, 0.12)" strokeWidth="0.5" strokeDasharray="3 3" fill="none" />
+                  <circle cx="100" cy="200" r="130" stroke="rgba(6, 182, 212, 0.08)" strokeWidth="0.5" fill="none" />
+                  <line x1="100" y1="10" x2="100" y2="390" stroke="rgba(13, 148, 136, 0.2)" strokeWidth="0.5" strokeDasharray="2 2" />
+
+                  {/* ANATOMICAL VECTOR HUMAN BODY SHAPES */}
+                  <g className="anatomical-vector-body">
+                    {/* Head & Cranium Contour */}
+                    <path d="M 88 38 C 88 22, 112 22, 112 38 C 112 52, 107 58, 100 58 C 93 58, 88 52, 88 38 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1.2" />
+
+                    {/* Neck & Trapezius */}
+                    <path d="M 93 58 C 88 64, 70 75, 52 82 L 48 95 C 65 88, 85 82, 93 72 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
+                    <path d="M 107 58 C 112 64, 130 75, 148 82 L 152 95 C 135 88, 115 82, 107 72 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Deltoids (Shoulder Muscular Contours) */}
+                    <path d="M 52 82 C 40 86, 32 98, 36 116 C 42 116, 48 106, 52 95 Z" fill="rgba(13, 148, 136, 0.25)" stroke="#06b6d4" strokeWidth="1" />
+                    <path d="M 148 82 C 160 86, 168 98, 164 116 C 158 116, 152 106, 148 95 Z" fill="rgba(13, 148, 136, 0.25)" stroke="#06b6d4" strokeWidth="1" />
+
+                    {/* Pectorals & Upper Chest */}
+                    <path d="M 52 95 C 68 90, 95 88, 100 96 C 100 112, 72 118, 52 110 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
+                    <path d="M 148 95 C 132 90, 105 88, 100 96 C 100 112, 128 118, 148 110 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Ribcage & Core Axis */}
+                    <path d="M 52 110 C 60 118, 62 145, 56 160 C 72 165, 88 165, 100 162 C 112 165, 128 165, 144 160 C 138 145, 140 118, 148 110 Z" fill="rgba(13, 148, 136, 0.12)" stroke="rgba(13, 148, 136, 0.5)" strokeWidth="0.8" />
+                    
+                    {/* Abdominal Muscle Grid Lines (Rectus Abdominis) */}
+                    <path d="M 85 120 L 115 120 M 83 136 L 117 136 M 85 152 L 115 152" stroke="rgba(6, 182, 212, 0.4)" strokeWidth="0.8" />
+
+                    {/* Biceps & Forearms */}
+                    <path d="M 36 116 C 32 128, 30 148, 34 168 C 40 168, 44 150, 42 130 Z" fill="rgba(13, 148, 136, 0.18)" stroke="var(--accent-color)" strokeWidth="1" />
+                    <path d="M 164 116 C 168 128, 170 148, 166 168 C 160 168, 156 150, 158 130 Z" fill="rgba(13, 148, 136, 0.18)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Hands */}
+                    <path d="M 34 168 C 30 180, 26 195, 30 205 C 34 205, 38 190, 40 178 Z" fill="rgba(13, 148, 136, 0.15)" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" />
+                    <path d="M 166 168 C 170 180, 174 195, 170 205 C 166 205, 162 190, 160 178 Z" fill="rgba(13, 148, 136, 0.15)" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" />
+
+                    {/* Pelvis & Hips */}
+                    <path d="M 56 160 C 48 172, 44 195, 54 205 C 72 208, 88 202, 100 198 C 112 202, 128 208, 146 205 C 156 195, 152 172, 144 160 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Quadriceps (Thigh Muscles) */}
+                    <path d="M 54 205 C 50 230, 56 258, 68 270 C 78 258, 82 230, 80 205 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
+                    <path d="M 146 205 C 150 230, 144 258, 132 270 C 122 258, 118 230, 120 205 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Patella (Knee Joints) */}
+                    <ellipse cx="78" cy="272" rx="8" ry="10" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1.2" />
+                    <ellipse cx="122" cy="272" rx="8" ry="10" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1.2" />
+
+                    {/* Calves & Lower Legs */}
+                    <path d="M 68 278 C 64 300, 64 330, 72 350 C 78 350, 82 325, 80 282 Z" fill="rgba(13, 148, 136, 0.22)" stroke="var(--accent-color)" strokeWidth="1" />
+                    <path d="M 132 278 C 136 300, 136 330, 128 350 C 122 350, 118 325, 120 282 Z" fill="rgba(13, 148, 136, 0.22)" stroke="var(--accent-color)" strokeWidth="1" />
+
+                    {/* Feet & Ankles */}
+                    <path d="M 72 350 C 68 360, 60 372, 70 375 C 80 375, 80 360, 78 350 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.8" />
+                    <path d="M 128 350 C 132 360, 140 372, 130 375 C 120 375, 120 360, 122 350 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.8" />
+                  </g>
+
+                  {/* Interactive Hotspot Nodes with Concentric Pulse Radar Rings */}
                   {ANATOMICAL_ZONES.map((zone, idx) => {
                     const isSelected = idx === selectedZoneIdx;
                     return (
@@ -237,15 +299,16 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                         <circle 
                           cx={zone.cx} 
                           cy={zone.cy} 
-                          r={isSelected ? "4.5" : "3"} 
+                          r={isSelected ? "9" : "6"} 
                           fill={isSelected ? "var(--secondary-accent)" : "var(--accent-color)"}
                           stroke="var(--white)"
-                          strokeWidth="0.8"
+                          strokeWidth="1.5"
+                          filter="url(#neonGlowFilter)"
                         />
                         {isSelected && (
                           <>
-                            <circle cx={zone.cx} cy={zone.cy} r="8" stroke="var(--secondary-accent)" strokeWidth="0.7" fill="none" className="pulse-node" />
-                            <circle cx={zone.cx} cy={zone.cy} r="14" stroke="rgba(249, 115, 22, 0.4)" strokeWidth="0.5" strokeDasharray="2 2" fill="none" />
+                            <circle cx={zone.cx} cy={zone.cy} r="16" stroke="var(--secondary-accent)" strokeWidth="1.2" fill="none" className="pulse-node" />
+                            <circle cx={zone.cx} cy={zone.cy} r="26" stroke="rgba(249, 115, 22, 0.5)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
                           </>
                         )}
                       </g>
@@ -494,7 +557,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           align-items: stretch;
         }
 
-        /* Left Stage Hologram Body Card with Real 3D Medical Render */
+        /* Left Stage Hologram Body Card with Pure Vector SVG */
         .hologram-body-card {
           position: relative;
           border-radius: 28px;
@@ -530,8 +593,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         }
 
         .body-silhouette-wrapper {
-          width: 300px;
-          height: 400px;
+          width: 270px;
+          height: 440px;
           position: relative;
           z-index: 5;
           display: flex;
@@ -539,19 +602,9 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           justify-content: center;
         }
 
-        .realistic-3d-body-img {
+        .anatomical-svg-full {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          filter: drop-shadow(0 0 25px rgba(13, 148, 136, 0.35));
-        }
-
-        .body-target-overlay-svg {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 6;
         }
 
         .pulse-node {
@@ -560,8 +613,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         }
 
         @keyframes pulseRing {
-          0% { r: 5px; opacity: 1; }
-          100% { r: 16px; opacity: 0; }
+          0% { r: 10px; opacity: 1; }
+          100% { r: 24px; opacity: 0; }
         }
 
         .zone-overlay-badge {
