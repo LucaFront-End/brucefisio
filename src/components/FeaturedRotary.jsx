@@ -28,7 +28,7 @@ function getProductHighlights(prod) {
 
   let material = "Material de Grado Clínico";
   if (text.toLowerCase().includes("acero inoxidable")) {
-    material = "Acero Inoxidable Quirúrgico";
+    material = "Acero Quirúrgico";
   } else if (text.toLowerCase().includes("aluminio")) {
     material = "Aluminio Aeronáutico";
   } else if (text.toLowerCase().includes("terapéutico")) {
@@ -41,7 +41,7 @@ function getProductHighlights(prod) {
   } else if (text.includes("6 COMPRESAS") || text.includes("6 compresas")) {
     capacity = "Capacidad 6 Compresas";
   } else if (prod.variables?.options?.length > 0) {
-    capacity = `${prod.variables.options.length} Opciones de Tamaño`;
+    capacity = `${prod.variables.options.length} Opciones Tamaño`;
   }
 
   return [
@@ -105,8 +105,8 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
   };
 
   const cleanDescription = cleanText(activeProduct.description);
-  const shortSummary = cleanDescription.length > 120 
-    ? cleanDescription.substring(0, 120) + "..." 
+  const shortSummary = cleanDescription.length > 100 
+    ? cleanDescription.substring(0, 100) + "..." 
     : cleanDescription || "Equipamiento médico certificado para clínicas de fisioterapia y alta especialidad.";
   
   const highlights = getProductHighlights(activeProduct);
@@ -128,7 +128,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
             
             <div className="scroll-progress-badge">
               <span className="step-counter">0{activeIndex + 1} / 0{ROTARY_PRODUCTS.length}</span>
-              <span className="pulse-indicator">● Guiado por Scroll</span>
+              <span className="pulse-indicator">● Selección Premium</span>
             </div>
 
             <h2 className="heading-section">
@@ -140,10 +140,10 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProduct.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
                 className="active-product-meta-card glass"
               >
                 <div className="meta-brand-row">
@@ -162,7 +162,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                     const HIcon = h.icon;
                     return (
                       <div key={i} className="highlight-item-chip">
-                        <HIcon size={15} className="chip-icon text-accent" />
+                        <HIcon size={14} className="chip-icon text-accent" />
                         <div className="chip-text-block">
                           <span className="chip-label">{h.label}</span>
                           <span className="chip-val">{h.val}</span>
@@ -184,7 +184,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                       className="btn-meta-inspect"
                       onClick={() => onOpenProductModal && onOpenProductModal(activeProduct)}
                     >
-                      <Eye size={16} /> Ver Detalles
+                      <Eye size={15} /> Ver
                     </button>
 
                     <button 
@@ -192,9 +192,9 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                       onClick={(e) => handleBuyClick(e, activeProduct)}
                     >
                       {addedItem === activeProduct.id ? (
-                        <><Check size={16} /> ¡Añadido!</>
+                        <><Check size={15} /> ¡Añadido!</>
                       ) : (
-                        <><ShoppingCart size={16} /> Comprar</>
+                        <><ShoppingCart size={15} /> Comprar</>
                       )}
                     </button>
                   </div>
@@ -277,13 +277,13 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                 const N = ROTARY_PRODUCTS.length;
                 const angle = ((i - activeIndex) * (360 / N)) * (Math.PI / 180);
                 
-                const rx = 180;
-                const ry = 95;
+                const rx = 160;
+                const ry = 80;
                 const x = Math.sin(angle) * rx;
                 const y = -Math.cos(angle) * ry;
 
                 const depthFactor = (1 - Math.cos(angle)) / 2;
-                const scale = 1.15 - depthFactor * 0.45;
+                const scale = 1.1 - depthFactor * 0.4;
                 const opacity = 1 - depthFactor * 0.4;
                 const zIndex = 15 - Math.round(depthFactor * 10);
                 const isActive = i === activeIndex;
@@ -304,7 +304,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                       opacity: opacity,
                       rotateY: rotateY
                     }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     style={{ 
                       zIndex: zIndex,
                       filter: cardFilter
@@ -374,7 +374,9 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           height: 100vh;
           display: flex;
           align-items: center;
+          justify-content: center;
           overflow: hidden;
+          padding: 5.5rem 0 1.5rem 0;
         }
 
         .rotary-glow {
@@ -386,16 +388,16 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .rotary-glow.glow-1 {
-          width: 480px;
-          height: 480px;
+          width: 440px;
+          height: 440px;
           top: 10%;
           left: -100px;
           background: rgba(13, 148, 136, 0.08);
         }
 
         .rotary-glow.glow-2 {
-          width: 420px;
-          height: 420px;
+          width: 380px;
+          height: 380px;
           bottom: 10%;
           right: -100px;
           background: rgba(249, 115, 22, 0.06);
@@ -406,7 +408,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           z-index: 1;
           display: grid;
           grid-template-columns: 1.05fr 0.95fr;
-          gap: 3rem;
+          gap: 2.5rem;
           align-items: center;
           width: 100%;
         }
@@ -414,18 +416,24 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .rotary-intro-panel {
           display: flex;
           flex-direction: column;
-          gap: 1.1rem;
+          gap: 0.7rem;
+        }
+
+        .heading-section {
+          font-size: 1.85rem !important;
+          line-height: 1.25 !important;
+          margin: 0 !important;
         }
 
         .scroll-progress-badge {
           display: inline-flex;
           align-items: center;
-          gap: 0.75rem;
-          font-size: 0.82rem;
+          gap: 0.65rem;
+          font-size: 0.78rem;
           font-weight: 700;
           color: var(--accent-color);
           background: var(--accent-light);
-          padding: 0.4rem 0.95rem;
+          padding: 0.35rem 0.85rem;
           border-radius: 50px;
           width: fit-content;
           border: 1px solid rgba(13, 148, 136, 0.25);
@@ -438,77 +446,77 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .pulse-indicator {
-          font-size: 0.78rem;
+          font-size: 0.75rem;
           color: var(--text-secondary);
         }
 
         .active-product-meta-card {
-          padding: 1.5rem 1.65rem;
-          border-radius: 24px;
+          padding: 1.1rem 1.35rem;
+          border-radius: 20px;
           background: rgba(255, 255, 255, 0.88);
           backdrop-filter: blur(16px);
           border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-md);
+          box-shadow: var(--shadow-sm);
           display: flex;
           flex-direction: column;
-          gap: 0.9rem;
+          gap: 0.6rem;
         }
 
         .meta-brand-row {
           display: flex;
-          gap: 0.5rem;
+          gap: 0.4rem;
           align-items: center;
         }
 
         .meta-brand-tag {
-          font-size: 0.72rem;
+          font-size: 0.68rem;
           font-weight: 800;
           letter-spacing: 0.05em;
           text-transform: uppercase;
           background: var(--bg-secondary);
-          padding: 0.2rem 0.6rem;
+          padding: 0.15rem 0.55rem;
           border-radius: 50px;
           color: var(--text-primary);
         }
 
         .meta-cat-pill {
-          font-size: 0.72rem;
+          font-size: 0.68rem;
           font-weight: 700;
           color: var(--accent-color);
           background: var(--accent-light);
-          padding: 0.2rem 0.6rem;
+          padding: 0.15rem 0.55rem;
           border-radius: 50px;
         }
 
         .meta-product-name {
           font-family: var(--font-heading);
-          font-size: 1.35rem;
+          font-size: 1.2rem;
           font-weight: 800;
           color: var(--text-primary);
           line-height: 1.25;
         }
 
         .meta-short-summary {
-          font-size: 0.88rem;
-          line-height: 1.5;
+          font-size: 0.82rem;
+          line-height: 1.4;
           color: var(--text-secondary);
         }
 
-        /* 2x2 Highlights Grid */
+        /* 2x2 Highlights Grid Compact */
         .highlights-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 0.6rem;
-          padding: 0.4rem 0;
+          gap: 0.45rem;
+          padding: 0.15rem 0;
         }
 
         .highlight-item-chip {
           display: flex;
           align-items: center;
-          gap: 0.55rem;
+          gap: 0.45rem;
           background: rgba(13, 148, 136, 0.05);
-          padding: 0.55rem 0.75rem;
-          border-radius: 12px;
+          padding: 0.4rem 0.65rem;
+          border-radius: 10px;
           border: 1px solid rgba(13, 148, 136, 0.12);
         }
 
@@ -522,15 +530,15 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .chip-label {
-          font-size: 0.68rem;
+          font-size: 0.64rem;
           font-weight: 700;
           color: var(--text-tertiary);
           text-transform: uppercase;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.03em;
         }
 
         .chip-val {
-          font-size: 0.78rem;
+          font-size: 0.74rem;
           font-weight: 700;
           color: var(--text-primary);
           white-space: nowrap;
@@ -542,7 +550,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 0.75rem;
+          padding-top: 0.55rem;
           border-top: 1px solid var(--border-color);
         }
 
@@ -553,29 +561,29 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .meta-price-val {
           font-family: var(--font-heading);
-          font-size: 1.4rem;
+          font-size: 1.25rem;
           font-weight: 800;
           color: var(--text-primary);
         }
 
         .meta-tax-info {
-          font-size: 0.7rem;
+          font-size: 0.68rem;
           color: var(--text-tertiary);
         }
 
         .meta-buttons-group {
           display: flex;
-          gap: 0.5rem;
+          gap: 0.4rem;
         }
 
         .btn-meta-inspect {
           display: inline-flex;
           align-items: center;
-          gap: 0.35rem;
-          font-size: 0.85rem;
+          gap: 0.3rem;
+          font-size: 0.8rem;
           font-weight: 700;
-          padding: 0.6rem 0.9rem;
-          border-radius: 10px;
+          padding: 0.5rem 0.8rem;
+          border-radius: 8px;
           background: var(--bg-secondary);
           border: 1px solid var(--border-color);
           color: var(--text-primary);
@@ -592,15 +600,15 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .btn-meta-buy {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
-          font-size: 0.85rem;
+          gap: 0.4rem;
+          font-size: 0.8rem;
           font-weight: 700;
-          padding: 0.6rem 1.15rem;
-          border-radius: 10px;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
           background: var(--accent-color);
           color: var(--white);
           border: none;
-          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
+          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.22);
           cursor: pointer;
           transition: all 0.2s ease;
         }
@@ -614,18 +622,18 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           background: #10b981;
         }
 
-        /* Scroll Controls & Bullets */
+        /* Scroll Controls & Bullets Compact */
         .scroll-controls-bar {
           display: flex;
           align-items: center;
-          gap: 1.25rem;
-          padding-top: 0.25rem;
+          gap: 1rem;
+          padding-top: 0.15rem;
         }
 
         .vertical-track {
           position: relative;
           width: 4px;
-          height: 120px;
+          height: 90px;
           background: rgba(15, 23, 42, 0.1);
           border-radius: 10px;
           overflow: hidden;
@@ -640,14 +648,14 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .rotary-bullets-list {
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          gap: 0.2rem;
         }
 
         .scroll-bullet-btn {
           display: flex;
           align-items: center;
-          gap: 0.6rem;
-          padding: 0.25rem 0.5rem;
+          gap: 0.5rem;
+          padding: 0.15rem 0.4rem;
           background: transparent;
           border: none;
           cursor: pointer;
@@ -673,21 +681,21 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .bullet-num {
           font-family: var(--font-heading);
-          font-size: 0.78rem;
+          font-size: 0.75rem;
           font-weight: 600;
           color: var(--text-tertiary);
         }
 
         .bullet-title {
-          font-size: 0.82rem;
+          font-size: 0.78rem;
           color: var(--text-secondary);
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 220px;
+          max-width: 210px;
         }
 
-        /* Right Panel Carousel Viewport */
+        /* Right Panel Carousel Viewport Compact */
         .rotary-carousel-panel {
           display: flex;
           justify-content: center;
@@ -697,7 +705,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         .rotary-carousel-viewport {
           position: relative;
           width: 100%;
-          height: 480px;
+          height: 400px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -706,8 +714,8 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .rotary-wheel-graphic {
           position: absolute;
-          width: 420px;
-          height: 420px;
+          width: 360px;
+          height: 360px;
           pointer-events: none;
         }
 
@@ -718,13 +726,13 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .rotary-card {
           position: absolute;
-          width: 260px;
-          border-radius: 24px;
+          width: 240px;
+          border-radius: 20px;
           overflow: hidden;
           background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(16px);
           border: 1px solid var(--border-color);
-          box-shadow: var(--shadow-lg);
+          box-shadow: var(--shadow-md);
           cursor: pointer;
           transform-style: preserve-3d;
           transition: border-color 0.3s ease;
@@ -732,34 +740,34 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .rotary-card.active-spotlight {
           border-color: rgba(13, 148, 136, 0.4);
-          box-shadow: 0 20px 40px rgba(13, 148, 136, 0.2);
+          box-shadow: 0 16px 36px rgba(13, 148, 136, 0.18);
         }
 
         .card-img-wrapper {
-          height: 170px;
+          height: 145px;
           position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 1.25rem;
+          padding: 1rem;
         }
 
         .card-brand-badge {
           position: absolute;
-          top: 0.75rem;
-          left: 0.75rem;
-          font-size: 0.68rem;
+          top: 0.6rem;
+          left: 0.6rem;
+          font-size: 0.65rem;
           font-weight: 800;
           letter-spacing: 0.05em;
           text-transform: uppercase;
           background: rgba(255, 255, 255, 0.9);
-          padding: 0.2rem 0.55rem;
+          padding: 0.18rem 0.5rem;
           border-radius: 50px;
           color: var(--text-primary);
         }
 
         .product-rotary-img {
-          max-height: 130px;
+          max-height: 115px;
           object-fit: contain;
           transition: transform 0.3s ease;
         }
@@ -769,22 +777,22 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .svg-box {
-          width: 110px;
-          height: 110px;
+          width: 100px;
+          height: 100px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
         .card-info-body {
-          padding: 1.1rem 1.25rem;
+          padding: 0.95rem 1.1rem;
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          gap: 0.35rem;
         }
 
         .cat-tag {
-          font-size: 0.72rem;
+          font-size: 0.68rem;
           font-weight: 700;
           color: var(--accent-color);
           text-transform: uppercase;
@@ -792,10 +800,10 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
 
         .prod-name {
           font-family: var(--font-heading);
-          font-size: 1.05rem;
+          font-size: 0.98rem;
           font-weight: 800;
           color: var(--text-primary);
-          line-height: 1.3;
+          line-height: 1.25;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -805,19 +813,19 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 0.4rem;
+          padding-top: 0.3rem;
         }
 
         .price-tag {
           font-family: var(--font-heading);
-          font-size: 1.15rem;
+          font-size: 1.05rem;
           font-weight: 800;
           color: var(--text-primary);
         }
 
         .rotary-buy-btn {
-          width: 32px;
-          height: 32px;
+          width: 30px;
+          height: 30px;
           border-radius: 8px;
           background: var(--accent-color);
           color: var(--white);
@@ -849,7 +857,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           }
           .rotary-layout-grid {
             grid-template-columns: 1fr;
-            gap: 3rem;
+            gap: 2.5rem;
           }
           .highlights-grid {
             grid-template-columns: 1fr;
