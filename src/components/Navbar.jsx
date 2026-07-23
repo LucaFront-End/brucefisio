@@ -151,15 +151,15 @@ export default function Navbar({
                       <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
                         <div className="specialty-card-icon cureo">C</div>
                         <div>
-                          <h4>Cureo</h4>
-                          <p>Terapia avanzada de regeneración de tejidos</p>
+                          <h4>CUREO® 5.0</h4>
+                          <p>Rehabilitación con Realidad Virtual Inmersiva</p>
                         </div>
                       </div>
                       <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
                         <div className="specialty-card-icon chelt">Ch</div>
                         <div>
-                          <h4>Chelt</h4>
-                          <p>Láser de alta intensidad de tres longitudes de onda</p>
+                          <h4>CHELT Therapy</h4>
+                          <p>5 Terapias Integradas — Láser THEAL 92W + Crio -40°C</p>
                         </div>
                       </div>
                     </div>

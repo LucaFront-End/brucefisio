@@ -209,7 +209,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           </div>
         </motion.div>
 
-        {/* LEFT PANEL: CUREO SYSTEM */}
+        {/* LEFT PANEL: CUREO® 5.0 (REALIDAD VIRTUAL) */}
         <motion.div 
           style={{ x: leftX, opacity: panelOpacity }}
           className="curtain-panel panel-left"
@@ -219,27 +219,27 @@ export default function SpecialtyCurtain({ onExploreClick }) {
             className="panel-inner-content"
           >
             <div className="panel-header-badge teal-badge">
-              <Activity size={14} /> CUREO SYSTEM
+              <Activity size={14} /> CUREO® 5.0 VR REHABILITATION
             </div>
             
-            <h3 className="panel-title">Radiofrecuencia Celular Activa</h3>
+            <h3 className="panel-title">Rehabilitación con Realidad Virtual</h3>
             <p className="panel-desc">
-              Estimulación bioeléctrica que penetra en los tejidos más profundos. 
-              Estimula el intercambio iónico a nivel celular, acelerando el alivio de contracturas y edemas de forma inmediata.
+              Terapias inmersivas y gamificadas para recuperación motora y cognitiva. 
+              Módulos Active, Moto, Cogni, Daily, Finger, Relax y Activities con reporte CUREO HUB en la nube.
             </p>
 
             <div className="panel-benefits-list">
               <div className="benefit-pill">
                 <ShieldCheck size={16} className="text-accent" />
-                <span>+40% de velocidad en regeneración tisular</span>
+                <span>+40% de Adherencia Terapéutica con gamificación</span>
               </div>
               <div className="benefit-pill">
                 <ShieldCheck size={16} className="text-accent" />
-                <span>Terapia celular no invasiva y atérmica</span>
+                <span>7 Módulos de Entrenamiento Moto-Cognitivo</span>
               </div>
               <div className="benefit-pill">
                 <ShieldCheck size={16} className="text-accent" />
-                <span>Monitoreo inteligente de impedancia térmica</span>
+                <span>CUREO Group: Atención de hasta 6 pacientes</span>
               </div>
             </div>
 
@@ -251,16 +251,16 @@ export default function SpecialtyCurtain({ onExploreClick }) {
                 <motion.span style={{ scaleY: waveScaleY }} className="wave-line wl-2"></motion.span>
                 <motion.span style={{ scaleY: waveScaleY }} className="wave-line wl-3"></motion.span>
               </div>
-              <span className="wave-indicator-text">Frecuencia Celular: 4.4 MHz</span>
+              <span className="wave-indicator-text">Entorno Inmersivo: VR 5.0 CUREOSITY</span>
             </div>
 
             <button className="btn btn-secondary explore-btn" onClick={onExploreClick}>
-              Ver Ficha de Cureo
+              Ver Ficha de CUREO® 5.0
             </button>
           </motion.div>
         </motion.div>
 
-        {/* RIGHT PANEL: CHELT THERAPY */}
+        {/* RIGHT PANEL: CHELT THERAPY (5 TERAPIAS) */}
         <motion.div 
           style={{ x: rightX, opacity: panelOpacity }}
           className="curtain-panel panel-right"
@@ -270,27 +270,26 @@ export default function SpecialtyCurtain({ onExploreClick }) {
             className="panel-inner-content"
           >
             <div className="panel-header-badge copper-badge">
-              <Zap size={14} /> CHELT THERAPY
+              <Zap size={14} /> CHELT THERAPY (5 TERAPIAS EN 1)
             </div>
             
-            <h3 className="panel-title">Láser de Alta Intensidad y Crio</h3>
+            <h3 className="panel-title">5 Terapias. Un Solo Equipo.</h3>
             <p className="panel-desc">
-              La sinergia perfecta de fototerapia láser y crioterapia a -30°C. 
-              El choque térmico inicial bloquea los receptores del dolor, permitiendo una aplicación de energía láser 10 veces mayor.
+              Sinergia exclusiva de Laserterapia THEAL (92W), Crioterapia a -40°C, Termoterapia, Choque Térmico (95°C Δ en &lt;1s) y Sinergia THEAL-CRIO para mayor penetración del haz láser.
             </p>
 
             <div className="panel-benefits-list">
               <div className="benefit-pill">
                 <Thermometer size={16} className="text-copper" />
-                <span>Efecto analgésico y desinflamatorio inmediato</span>
+                <span>Sinergia THEAL-CRIO: Aire -40°C como vector láser</span>
               </div>
               <div className="benefit-pill">
                 <Thermometer size={16} className="text-copper" />
-                <span>Crio-protección tisular para potencias elevadas</span>
+                <span>92W Potencia Media & 8 Longitudes de Onda</span>
               </div>
               <div className="benefit-pill">
                 <Thermometer size={16} className="text-copper" />
-                <span>Tratamiento de tendinopatías y dolor crónico</span>
+                <span>90,000+ Investigaciones & 7 Patentes</span>
               </div>
             </div>
 
@@ -306,11 +305,11 @@ export default function SpecialtyCurtain({ onExploreClick }) {
                   className="laser-dot-glowing"
                 ></motion.div>
               </motion.div>
-              <span className="wave-indicator-text">Emisión: Crioláser Combinado</span>
+              <span className="wave-indicator-text">Emisión: Láser THEAL 92W + Crio -40°C</span>
             </div>
 
             <button className="btn btn-secondary explore-btn" onClick={onExploreClick}>
-              Ver Ficha de Chelt
+              Ver Ficha de CHELT Therapy
             </button>
           </motion.div>
         </motion.div>
