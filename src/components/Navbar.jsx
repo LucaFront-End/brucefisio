@@ -428,13 +428,13 @@ export default function Navbar({
           border-radius: 20px;
           box-shadow: var(--shadow-lg);
           padding: 1.25rem;
-          min-width: 250px;
+          min-width: 480px; /* Wider for multi-column */
           z-index: 101;
         }
         .dropdown-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.5rem 1rem;
         }
         .dropdown-item {
           font-family: var(--font-body);
