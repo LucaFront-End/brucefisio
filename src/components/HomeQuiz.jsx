@@ -192,7 +192,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         {/* Section Editorial Header */}
         <div className="scanner-header text-center">
           <span className="section-label">Diagnóstico Clínico Inteligente</span>
-          <h2 className="display-large">Escáner Anatómico 3D & Prescripción</h2>
+          <h2 className="display-large">Escáner Anatómico 3D <br/><span style={{ color: 'var(--accent-color)' }}>& Prescripción</span></h2>
           <p className="scanner-sub">
             Selecciona la zona muscular o articular afectada en nuestro modelo holográfico de alta precisión para calcular tu tratamiento ideal.
           </p>
@@ -455,6 +455,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           display: flex;
           flex-direction: column;
           align-items: center;
+          text-align: center;
           gap: 0.85rem;
         }
 
