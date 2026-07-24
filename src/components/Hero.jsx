@@ -453,31 +453,31 @@ export default function Hero({
           width: 100%;
           max-width: 1100px;
           height: 100%;
-          padding-top: 4rem;
+          padding-top: 4.5rem; /* Space for navbar */
         }
 
         .slide-2-header-adjusted {
-          margin-bottom: 3.5rem;
+          margin-bottom: 2rem;
         }
 
         .chip-pill-pain {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
-          padding: 0.4rem 1.2rem;
+          gap: 0.5rem;
+          padding: 0.35rem 1rem;
           border-radius: 50px;
           background: rgba(239, 68, 68, 0.1);
           border: 1px solid rgba(239, 68, 68, 0.3);
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 800;
           color: #ef4444;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
           letter-spacing: 0.05em;
         }
 
         .live-warning-dot {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           background: #ef4444;
           border-radius: 50%;
           box-shadow: 0 0 10px #ef4444;
@@ -488,10 +488,10 @@ export default function Hero({
 
         .loss-title {
           font-family: var(--font-heading);
-          font-size: 2.8rem;
+          font-size: 2.2rem;
           font-weight: 900;
           color: #ffffff;
-          margin: 0.5rem 0;
+          margin: 0.3rem 0;
           letter-spacing: -0.02em;
         }
 
@@ -507,34 +507,36 @@ export default function Hero({
           bottom: 2px;
           left: 0;
           width: 100%;
-          height: 4px;
+          height: 3px;
           background: #ef4444;
           opacity: 0.5;
         }
 
         .subtext-loss {
-          font-size: 1.1rem;
+          font-size: 0.95rem;
           color: #94a3b8;
           max-width: 650px;
-          margin: 0.5rem auto 0;
-          line-height: 1.6;
+          margin: 0.3rem auto 0;
+          line-height: 1.5;
         }
 
         .pain-concise-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1.5rem;
+          gap: 1rem;
           width: 100%;
+          align-items: stretch;
         }
 
         .dark-glass-card {
-          padding: 1.8rem 1.5rem;
+          padding: 1.25rem 1rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 24px;
-          height: 350px;
+          border-radius: 20px;
+          height: 100%;
+          min-height: 320px;
           cursor: crosshair;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           background: rgba(15, 23, 42, 0.6);
@@ -543,9 +545,9 @@ export default function Hero({
         }
 
         .dark-glass-card:hover {
-          transform: translateY(-8px);
+          transform: translateY(-5px);
           background: rgba(30, 41, 59, 0.8);
-          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
           border-color: rgba(255, 255, 255, 0.2);
         }
 
@@ -553,20 +555,20 @@ export default function Hero({
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
 
         .pain-tag {
-          font-size: 0.65rem;
+          font-size: 0.6rem;
           font-weight: 900;
           text-transform: uppercase;
           letter-spacing: 0.1em;
         }
 
         .pain-icon-box {
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -575,37 +577,37 @@ export default function Hero({
         .pain-bento-metric-box {
           display: flex;
           flex-direction: column;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
 
         .p-huge-metric {
           font-family: var(--font-heading);
-          font-size: 3.5rem;
+          font-size: 2.5rem;
           font-weight: 900;
           line-height: 1;
           letter-spacing: -0.05em;
         }
 
         .p-metric-lbl {
-          font-size: 0.85rem;
+          font-size: 0.75rem;
           font-weight: 700;
           color: #94a3b8;
-          margin-top: 0.4rem;
+          margin-top: 0.3rem;
         }
 
         .dark-glass-card h3 {
-          font-size: 1rem;
+          font-size: 0.95rem;
           font-weight: 600;
           color: #f8fafc;
-          line-height: 1.4;
-          margin-bottom: 1.5rem;
+          line-height: 1.35;
+          margin-bottom: 1rem;
         }
 
         .pain-bento-footer {
           margin-top: auto;
-          padding-top: 1rem;
+          padding-top: 0.75rem;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 700;
           color: #64748b;
           text-transform: uppercase;
@@ -628,34 +630,34 @@ export default function Hero({
           flex-direction: column;
           align-items: center;
           width: 100%;
-          max-width: 1240px;
+          max-width: 1200px;
           height: 100%;
           justify-content: center;
-          padding-top: 5rem;
+          padding-top: 4.5rem;
         }
 
         .slide-3-header-adjusted {
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
         }
 
         .chip-pill-relief {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
-          padding: 0.4rem 1.2rem;
+          gap: 0.5rem;
+          padding: 0.35rem 1rem;
           border-radius: 50px;
           background: rgba(13, 148, 136, 0.08);
           border: 1px solid rgba(13, 148, 136, 0.2);
-          font-size: 0.75rem;
+          font-size: 0.7rem;
           font-weight: 800;
           color: #0d9488;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
           letter-spacing: 0.05em;
         }
 
         .live-success-dot {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           background: #10b981;
           border-radius: 50%;
           box-shadow: 0 0 10px #10b981;
@@ -666,10 +668,10 @@ export default function Hero({
 
         .relief-title {
           font-family: var(--font-heading);
-          font-size: 2.8rem;
+          font-size: 2.2rem;
           font-weight: 900;
           color: #0f172a;
-          margin: 0.5rem 0;
+          margin: 0.3rem 0;
           letter-spacing: -0.02em;
         }
 
@@ -681,50 +683,50 @@ export default function Hero({
         .highlight-relief::after {
           content: "";
           position: absolute;
-          bottom: 4px;
+          bottom: 2px;
           left: 0;
           width: 100%;
-          height: 10px;
+          height: 8px;
           background: #0d9488;
           opacity: 0.15;
           z-index: -1;
         }
 
         .subtext-relief {
-          font-size: 1.1rem;
+          font-size: 0.95rem;
           color: #475569;
           max-width: 680px;
-          margin: 0.5rem auto 0;
-          line-height: 1.6;
+          margin: 0.3rem auto 0;
+          line-height: 1.5;
         }
 
         .solutions-matrix-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1.5rem;
+          gap: 1rem;
           width: 100%;
-          margin: 2rem 0;
+          margin: 1.5rem 0;
           align-items: stretch;
         }
 
         .solution-card-relief {
-          padding: 1.8rem 1.5rem;
+          padding: 1.25rem 1rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           height: 100%;
-          min-height: 450px;
+          min-height: 380px;
           cursor: pointer;
           background: #ffffff;
           border: 1px solid #e2e8f0;
-          border-radius: 24px;
+          border-radius: 20px;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .solution-card-relief:hover, .solution-card-relief.highlighted-relief {
-          transform: translateY(-8px);
+          transform: translateY(-5px);
           border-color: #0d9488;
-          box-shadow: 0 20px 40px -10px rgba(13, 148, 136, 0.15);
+          box-shadow: 0 15px 30px -10px rgba(13, 148, 136, 0.15);
         }
 
         .solution-card-relief:hover .pulse-icon-hover {
@@ -740,29 +742,29 @@ export default function Hero({
         }
 
         .sol-icon-box {
-          width: 42px;
-          height: 42px;
-          border-radius: 12px;
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
         .sol-tagline {
-          font-size: 0.72rem;
+          font-size: 0.65rem;
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
 
         .sol-img-stage-relief {
-          height: 100px;
+          height: 80px;
           display: flex;
           align-items: center;
           justify-content: center;
           position: relative;
-          border-radius: 16px;
-          margin: 1.5rem 0;
+          border-radius: 12px;
+          margin: 1rem 0;
         }
 
         .glow-backdrop {
@@ -772,51 +774,51 @@ export default function Hero({
         }
 
         .sol-img-stage-relief img, .svg-w-relief {
-          max-height: 90px;
+          max-height: 70px;
           object-fit: contain;
           z-index: 1;
           filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
         }
 
-        .svg-w-relief { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+        .svg-w-relief { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
 
         .sol-title-relief {
           font-family: var(--font-heading);
-          font-size: 1.15rem;
+          font-size: 1rem;
           font-weight: 800;
           color: #0f172a;
           line-height: 1.25;
-          margin-bottom: 0.6rem;
+          margin-bottom: 0.4rem;
         }
 
         .sol-desc-relief {
-          font-size: 0.85rem;
+          font-size: 0.75rem;
           color: #64748b;
-          line-height: 1.5;
-          margin-bottom: 1rem;
+          line-height: 1.4;
+          margin-bottom: 0.75rem;
         }
 
         .sol-metric-pill-relief {
           display: flex;
           align-items: center;
-          gap: 0.8rem;
+          gap: 0.6rem;
           background: #f0fdf4;
-          padding: 0.75rem 1rem;
-          border-radius: 12px;
-          margin-bottom: 1.25rem;
+          padding: 0.5rem 0.75rem;
+          border-radius: 10px;
+          margin-bottom: 1rem;
           margin-top: auto;
         }
 
         .sol-metric-pill-relief strong {
           display: block;
-          font-size: 0.82rem;
+          font-size: 0.75rem;
           font-weight: 800;
           color: #0d9488;
           line-height: 1.1;
         }
 
         .sol-metric-pill-relief span {
-          font-size: 0.7rem;
+          font-size: 0.65rem;
           color: #166534;
         }
 
@@ -825,14 +827,14 @@ export default function Hero({
           background: #0f172a;
           color: #ffffff;
           border: none;
-          padding: 0.85rem;
-          border-radius: 12px;
+          padding: 0.75rem;
+          border-radius: 10px;
           font-weight: 700;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.5rem;
+          gap: 0.4rem;
           cursor: pointer;
           transition: all 0.25s ease;
         }
@@ -846,11 +848,11 @@ export default function Hero({
           background: #0d9488;
           color: #ffffff;
           border: none;
-          padding: 1rem 2.5rem;
+          padding: 0.85rem 2rem;
           border-radius: 50px;
           font-family: var(--font-heading);
           font-weight: 700;
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
