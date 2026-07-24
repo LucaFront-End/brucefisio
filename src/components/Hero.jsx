@@ -631,10 +631,11 @@ export default function Hero({
           max-width: 1240px;
           height: 100%;
           justify-content: center;
+          padding-top: 5rem;
         }
 
         .slide-3-header-adjusted {
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
         }
 
         .chip-pill-relief {
@@ -703,14 +704,16 @@ export default function Hero({
           gap: 1.5rem;
           width: 100%;
           margin: 2rem 0;
+          align-items: stretch;
         }
 
         .solution-card-relief {
-          padding: 1.5rem;
+          padding: 1.8rem 1.5rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          height: 420px;
+          height: 100%;
+          min-height: 450px;
           cursor: pointer;
           background: #ffffff;
           border: 1px solid #e2e8f0;
@@ -753,13 +756,13 @@ export default function Hero({
         }
 
         .sol-img-stage-relief {
-          height: 120px;
+          height: 100px;
           display: flex;
           align-items: center;
           justify-content: center;
           position: relative;
           border-radius: 16px;
-          margin: 1rem 0;
+          margin: 1.5rem 0;
         }
 
         .glow-backdrop {
@@ -769,7 +772,7 @@ export default function Hero({
         }
 
         .sol-img-stage-relief img, .svg-w-relief {
-          max-height: 100px;
+          max-height: 90px;
           object-fit: contain;
           z-index: 1;
           filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
@@ -783,25 +786,25 @@ export default function Hero({
           font-weight: 800;
           color: #0f172a;
           line-height: 1.25;
-          margin-bottom: 0.4rem;
+          margin-bottom: 0.6rem;
         }
 
         .sol-desc-relief {
-          font-size: 0.8rem;
+          font-size: 0.85rem;
           color: #64748b;
-          line-height: 1.45;
-          height: 3.5em;
-          overflow: hidden;
+          line-height: 1.5;
+          margin-bottom: 1rem;
         }
 
         .sol-metric-pill-relief {
           display: flex;
           align-items: center;
-          gap: 0.6rem;
+          gap: 0.8rem;
           background: #f0fdf4;
-          padding: 0.5rem 0.8rem;
+          padding: 0.75rem 1rem;
           border-radius: 12px;
-          margin: 0.75rem 0;
+          margin-bottom: 1.25rem;
+          margin-top: auto;
         }
 
         .sol-metric-pill-relief strong {
