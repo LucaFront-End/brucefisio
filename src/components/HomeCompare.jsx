@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ShoppingCart, Check, Activity, Battery, Award, Star, Settings, ShieldCheck, Zap, Cpu } from "lucide-react";
+import { ShoppingCart, Check, Activity, Battery, Award, Star, Settings, Sparkles } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
 export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
@@ -10,14 +10,37 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
 
   const sectionRef = useRef(null);
 
-  // Scroll Progress binding for the Laser Scan Matrix Sweep
+  // Track scroll progress of the compare section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start 65%", "end 80%"]
+    offset: ["start end", "end start"]
   });
 
-  const laserTop = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  const laserOpacity = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
+  // 3D Spotlight Animations for Featured Column (Middle product)
+  const featuredScale = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0.98, 1.05, 0.98]);
+  const featuredY = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0, -18, 0]);
+  const featuredShadow = useTransform(
+    scrollYProgress,
+    [0.2, 0.5, 0.8],
+    [
+      "0px 4px 14px rgba(15, 23, 42, 0.05)",
+      "0px 24px 60px rgba(13, 148, 136, 0.22)",
+      "0px 4px 14px rgba(15, 23, 42, 0.05)"
+    ]
+  );
+  const featuredBorder = useTransform(
+    scrollYProgress,
+    [0.2, 0.5, 0.8],
+    [
+      "rgba(226, 232, 240, 1)",
+      "rgba(13, 148, 136, 0.85)",
+      "rgba(226, 232, 240, 1)"
+    ]
+  );
+
+  // Side Columns Animations (dim and scale down subtly when featured column peaks)
+  const sideOpacity = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [1, 0.75, 1]);
+  const sideScale = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [1, 0.97, 1]);
 
   // Dynamic products list for the comparison table
   const COMPARE_PRODUCTS = products.slice(0, 3);
@@ -25,7 +48,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
   const COMPARE_ROWS = [
     {
       key: "therapy",
-      label: "Categoría Clínica",
+      label: "Categoría",
       icon: <Activity size={14} />,
       values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, p.category || "Alta Especialidad"]))
     },
@@ -33,18 +56,12 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
       key: "dose",
       label: "Tecnología Principal",
       icon: <Settings size={14} />,
-      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, p.specs?.power || "4.4 MHz / Laser 92W"]))
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "Alta Eficiencia Clínica"]))
     },
     {
-      key: "freq",
-      label: "Potencia / Frecuencia",
-      icon: <Zap size={14} />,
-      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, p.specs?.frequency || "Ajuste Digital Pro"]))
-    },
-    {
-      key: "app",
-      label: "Aplicación Terapéutica",
-      icon: <Cpu size={14} />,
+      key: "battery",
+      label: "Aplicación",
+      icon: <Battery size={14} />,
       values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "Profesional / Clínico"]))
     },
     {
@@ -57,13 +74,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
       key: "cert",
       label: "Certificación Médica",
       icon: <Award size={14} />,
-      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "FDA / CE Médica"]))
-    },
-    {
-      key: "guarantee",
-      label: "Garantía Oficial",
-      icon: <ShieldCheck size={14} />,
-      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "2 Años Oficial Bruce"]))
+      values: Object.fromEntries(COMPARE_PRODUCTS.map(p => [p.id, "FDA / CE Profesional"]))
     }
   ];
 
@@ -76,39 +87,42 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
 
   return (
     <section ref={sectionRef} className="compare-section container">
-      {/* Section Editorial Header */}
       <div className="text-center compare-header">
-        <span className="section-label">Matriz Comparativa de Gama</span>
-        <h2>Encuentra la Tecnología Adecuada</h2>
-        <p className="compare-subtitle">
-          Compara las especificaciones técnicas y alcances clínicos de nuestros equipos insignia.
-        </p>
+        <span className="section-label">Comparativa de Gama</span>
+        <h2 className="display-large" style={{ fontSize: "2.5rem" }}>Encuentra la Tecnología Adecuada</h2>
+        <p className="compare-subtitle">Compara las especificaciones técnicas y alcances de nuestros equipos insignia.</p>
       </div>
 
-      {/* Comparative Table Wrapper with Laser Matrix */}
-      <div className="compare-table-wrapper glass">
-        
-        {/* Laser Scan Sweep Bar (Synced with Scroll) */}
-        <motion.div 
-          style={{ top: laserTop, opacity: laserOpacity }} 
-          className="laser-scan-matrix-bar"
-        />
-
+      <div className="compare-table-wrapper">
         <div className="compare-grid-layout">
           
-          {/* Sticky Product Header Row */}
+          {/* Header Row */}
           <div className="compare-row row-header">
             <div className="cell cell-label font-bold">Especificaciones</div>
-            {COMPARE_PRODUCTS.map((prod) => {
+            {COMPARE_PRODUCTS.map((prod, colIdx) => {
+              const isFeatured = colIdx === 1; // Middle product is featured
               const isColHovered = hoveredCol === prod.id;
+              const ColumnWrapper = motion.div;
+
               return (
-                <div 
+                <ColumnWrapper
                   key={prod.id} 
-                  className={`cell cell-product text-center ${isColHovered ? "col-hovered" : ""}`}
+                  style={
+                    isFeatured 
+                      ? { scale: featuredScale, y: featuredY, boxShadow: featuredShadow, borderColor: featuredBorder, zIndex: 10 }
+                      : { opacity: sideOpacity, scale: sideScale }
+                  }
+                  className={`cell cell-product text-center ${isFeatured ? "featured-column-head" : ""} ${isColHovered ? "col-hovered" : ""}`}
                   onMouseEnter={() => setHoveredCol(prod.id)}
                   onMouseLeave={() => setHoveredCol(null)}
                 >
-                  <div className="table-product-image-box" style={{ background: prod.imageBg || "var(--bg-secondary)" }}>
+                  {isFeatured && (
+                    <div className="featured-spotlight-badge">
+                      <Sparkles size={12} /> RECOMENDADO CLÍNICO
+                    </div>
+                  )}
+
+                  <div className="table-product-image-box" style={{ background: prod.imageBg }}>
                     {prod.imageSvg ? (
                       <div 
                         className="table-product-svg"
@@ -119,10 +133,10 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
                     )}
                   </div>
                   <div className="table-product-meta">
-                    <span className="table-brand">{prod.brand || "Bruce Médica"}</span>
+                    <span className="table-brand">{prod.brand}</span>
                     <span className="table-name">{prod.name}</span>
                   </div>
-                </div>
+                </ColumnWrapper>
               );
             })}
           </div>
@@ -142,23 +156,30 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
                   <span className="row-spec-text">{row.label}</span>
                 </div>
 
-                {COMPARE_PRODUCTS.map((prod) => {
+                {COMPARE_PRODUCTS.map((prod, colIdx) => {
+                  const isFeatured = colIdx === 1;
                   const isColHovered = hoveredCol === prod.id;
                   const val = row.values[prod.id] || Object.values(row.values)[COMPARE_PRODUCTS.indexOf(prod)] || "";
-                  
+                  const ColumnCell = motion.div;
+
                   return (
-                    <div 
+                    <ColumnCell 
                       key={prod.id} 
-                      className={`cell cell-value ${isColHovered ? "col-hovered" : ""}`}
+                      style={
+                        isFeatured 
+                          ? { scale: featuredScale, y: featuredY, zIndex: 10 }
+                          : { opacity: sideOpacity, scale: sideScale }
+                      }
+                      className={`cell cell-value ${isFeatured ? "featured-column-body" : ""} ${isColHovered ? "col-hovered" : ""}`}
                       onMouseEnter={() => setHoveredCol(prod.id)}
                       onMouseLeave={() => setHoveredCol(null)}
                     >
-                      {row.key === "cert" || row.key === "guarantee" ? (
+                      {row.key === "cert" ? (
                         <span className="table-cert-badge">
                           <Check size={12} className="text-teal" />
                           {val}
                         </span>
-                      ) : row.key === "app" ? (
+                      ) : row.key === "battery" ? (
                         <span className="table-battery-value">
                           <Battery size={14} className="text-teal" />
                           {val}
@@ -166,7 +187,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
                       ) : (
                         <span className="table-cell-text">{val}</span>
                       )}
-                    </div>
+                    </ColumnCell>
                   );
                 })}
               </div>
@@ -176,24 +197,32 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           {/* Footer Action Row */}
           <div className="compare-row row-footer">
             <div className="cell cell-label font-bold">Inversión</div>
-            {COMPARE_PRODUCTS.map((prod) => {
+            {COMPARE_PRODUCTS.map((prod, colIdx) => {
+              const isFeatured = colIdx === 1;
               const isColHovered = hoveredCol === prod.id;
+              const ColumnFooter = motion.div;
+
               return (
-                <div 
+                <ColumnFooter 
                   key={prod.id} 
-                  className={`cell cell-product-footer text-center ${isColHovered ? "col-hovered" : ""}`}
+                  style={
+                    isFeatured 
+                      ? { scale: featuredScale, y: featuredY, boxShadow: featuredShadow, borderColor: featuredBorder, zIndex: 10 }
+                      : { opacity: sideOpacity, scale: sideScale }
+                  }
+                  className={`cell cell-product-footer text-center ${isFeatured ? "featured-column-foot" : ""} ${isColHovered ? "col-hovered" : ""}`}
                   onMouseEnter={() => setHoveredCol(prod.id)}
                   onMouseLeave={() => setHoveredCol(null)}
                 >
                   <div className="table-price">${prod.price?.toLocaleString()} MXN</div>
                   <button 
                     onClick={() => handleBuyClick(prod)}
-                    className={`btn btn-accent btn-table-buy ${addedItem === prod.id ? "success" : ""}`}
+                    className={`btn ${isFeatured ? "btn-primary" : "btn-accent"} btn-table-buy ${addedItem === prod.id ? "success" : ""}`}
                     disabled={addedItem === prod.id}
                   >
                     {addedItem === prod.id ? <Check size={14} /> : <ShoppingCart size={14} />}
                   </button>
-                </div>
+                </ColumnFooter>
               );
             })}
           </div>
@@ -203,9 +232,8 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
 
       <style>{`
         .compare-section {
-          padding: 5rem 2rem 6rem 2rem;
+          padding: 5.5rem 2rem;
           background: var(--bg-primary);
-          position: relative;
         }
 
         .compare-header {
@@ -213,42 +241,22 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          text-align: center;
-          gap: 0.85rem;
+          gap: 0.75rem;
         }
 
         .compare-subtitle {
           color: var(--text-secondary);
-          max-width: 620px;
-          line-height: 1.6;
+          max-width: 600px;
         }
 
         /* Glassmorphic Table panel */
         .compare-table-wrapper {
-          position: relative;
-          background: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(20px);
-          border: 1px solid var(--border-color);
-          border-radius: 24px;
-          padding: 0;
-          box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
-          overflow: hidden;
-        }
-
-        /* Laser Scan Bar Sweeping Effect */
-        .laser-scan-matrix-bar {
-          position: absolute;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, transparent 0%, var(--accent-color) 30%, #06b6d4 70%, transparent 100%);
-          box-shadow: 0 0 12px var(--accent-color), 0 0 24px #06b6d4;
-          z-index: 25;
-          pointer-events: none;
+          padding: 1rem 0;
+          overflow-x: auto;
         }
 
         .compare-grid-layout {
-          min-width: 800px;
+          min-width: 820px;
           display: flex;
           flex-direction: column;
         }
@@ -257,9 +265,8 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
         .compare-row {
           display: grid;
           grid-template-columns: 1fr repeat(3, 1.1fr);
-          border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+          border-bottom: 1px solid var(--border-color);
           transition: background var(--transition-fast);
-          position: relative;
         }
 
         .compare-row:last-child {
@@ -267,34 +274,25 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
         }
 
         .compare-row.row-hovered {
-          background: rgba(13, 148, 136, 0.025);
-        }
-
-        /* Sticky Header Row */
-        .compare-row.row-header {
-          position: sticky;
-          top: var(--navbar-height);
-          z-index: 20;
-          background: rgba(255, 255, 255, 0.96);
-          backdrop-filter: blur(16px);
-          border-bottom: 2px solid var(--border-color);
-          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+          background: rgba(244, 245, 247, 0.5);
         }
 
         /* Cell Framework */
         .cell {
-          padding: 1.25rem 1.25rem;
+          padding: 1.35rem 1.25rem;
           display: flex;
           align-items: center;
-          transition: all var(--transition-fast);
+          transition: background var(--transition-fast);
+          background: var(--white);
         }
 
         .cell-label {
           font-family: var(--font-heading);
-          font-size: 0.88rem;
+          font-size: 0.85rem;
           font-weight: 700;
           color: var(--text-primary);
           gap: 0.65rem;
+          background: transparent;
         }
 
         .row-spec-icon {
@@ -304,36 +302,82 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
         }
 
         .cell-product {
+          position: relative;
           flex-direction: column;
           justify-content: center;
-          gap: 0.75rem;
-          padding: 1.5rem 1rem;
+          gap: 0.85rem;
+          padding: 2.2rem 1rem 1.5rem 1rem;
+          border-top: 1px solid var(--border-color);
+          border-left: 1px solid var(--border-color);
+          border-right: 1px solid var(--border-color);
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+        }
+
+        .featured-column-head {
+          background: #ffffff !important;
+          border-color: rgba(13, 148, 136, 0.4) !important;
+        }
+
+        .featured-spotlight-badge {
+          position: absolute;
+          top: -12px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: var(--accent-color);
+          color: var(--white);
+          font-size: 0.68rem;
+          font-weight: 800;
+          font-family: var(--font-heading);
+          letter-spacing: 0.05em;
+          padding: 0.25rem 0.75rem;
+          border-radius: 50px;
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+          white-space: nowrap;
+          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.35);
+        }
+
+        .featured-column-body {
+          background: #ffffff !important;
+          border-left: 1px solid rgba(13, 148, 136, 0.25) !important;
+          border-right: 1px solid rgba(13, 148, 136, 0.25) !important;
+        }
+
+        .featured-column-foot {
+          background: #ffffff !important;
+          border-bottom: 1px solid rgba(13, 148, 136, 0.4) !important;
+          border-left: 1px solid rgba(13, 148, 136, 0.25) !important;
+          border-right: 1px solid rgba(13, 148, 136, 0.25) !important;
+          border-bottom-left-radius: 20px;
+          border-bottom-right-radius: 20px;
         }
 
         .cell-value {
-          font-size: 0.84rem;
+          font-size: 0.82rem;
           color: var(--text-secondary);
           justify-content: center;
           text-align: center;
+          border-left: 1px solid var(--border-color);
+          border-right: 1px solid var(--border-color);
         }
 
         /* Column hover highlights */
         .cell.col-hovered {
-          background: rgba(13, 148, 136, 0.04);
-          box-shadow: inset 1px 0 0 rgba(13, 148, 136, 0.12), inset -1px 0 0 rgba(13, 148, 136, 0.12);
+          background: rgba(13, 148, 136, 0.03) !important;
         }
 
         /* Header elements */
         .table-product-image-box {
-          width: 70px;
-          height: 70px;
-          border-radius: 14px;
+          width: 75px;
+          height: 75px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 0.6rem;
+          padding: 0.75rem;
           box-shadow: var(--shadow-sm);
-          border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
         .table-product-svg {
@@ -356,7 +400,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           font-family: var(--font-heading);
           font-size: 0.65rem;
           font-weight: 700;
-          color: var(--accent-color);
+          color: var(--text-tertiary);
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
@@ -372,14 +416,13 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           display: inline-flex;
           align-items: center;
           gap: 0.45rem;
-          background: rgba(13, 148, 136, 0.1);
-          color: var(--accent-dark);
+          background: #ccfbf1;
+          color: #0f766e;
           font-weight: 700;
           font-family: var(--font-heading);
           padding: 0.35rem 0.65rem;
           border-radius: 6px;
-          font-size: 0.76rem;
-          border: 1px solid rgba(13, 148, 136, 0.2);
+          font-size: 0.75rem;
         }
 
         .table-battery-value {
@@ -392,18 +435,17 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
 
         /* Footer purchase cell */
         .cell-product-footer {
-          padding: 1.25rem 1rem;
+          padding: 1.5rem 1rem;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 0.65rem;
-          background: rgba(248, 250, 252, 0.6);
-        }
-
-        .cell-product-footer.col-hovered {
-          background: rgba(13, 148, 136, 0.04);
-          box-shadow: inset 1px 0 0 rgba(13, 148, 136, 0.12), inset -1px 0 0 rgba(13, 148, 136, 0.12);
+          gap: 0.75rem;
+          border-bottom: 1px solid var(--border-color);
+          border-left: 1px solid var(--border-color);
+          border-right: 1px solid var(--border-color);
+          border-bottom-left-radius: 20px;
+          border-bottom-right-radius: 20px;
         }
 
         .table-price {
@@ -417,7 +459,6 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           padding: 0.5rem 1.25rem;
           border-radius: 8px;
           font-size: 0.8rem;
-          transition: all 0.2s ease;
         }
 
         .btn-table-buy.success {
