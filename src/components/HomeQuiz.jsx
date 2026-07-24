@@ -24,7 +24,7 @@ const ANATOMICAL_ZONES = [
     id: "cervical", 
     name: "Cervical & Cuello", 
     cx: 100, 
-    cy: 65, 
+    cy: 70, 
     icon: Target,
     muscles: "Trapecio, Esternocleidomastoideo & C7-T1",
     conditions: "Cervicalgia, cefaleas tensionales y contracturas por postura",
@@ -33,8 +33,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "hombro", 
     name: "Hombro & Brazo", 
-    cx: 52, 
-    cy: 92, 
+    cx: 48, 
+    cy: 85, 
     icon: Flame,
     muscles: "Manguito Rotador, Deltoides & Biceps",
     conditions: "Tendinitis supraespinoso, bursitis subacromial y pinzamiento",
@@ -44,7 +44,7 @@ const ANATOMICAL_ZONES = [
     id: "lumbar", 
     name: "Lumbar & Espalda", 
     cx: 100, 
-    cy: 162, 
+    cy: 155, 
     icon: Zap,
     muscles: "Paravertebrales, Lumbales L1-L5 & Cuadrado Lumbar",
     conditions: "Lumbalgia aguda/crónica, ciática y espasmos musculares",
@@ -54,7 +54,7 @@ const ANATOMICAL_ZONES = [
     id: "rodilla", 
     name: "Rodilla & Articulación", 
     cx: 78, 
-    cy: 272, 
+    cy: 285, 
     icon: Activity,
     muscles: "Cuádriceps, Tendón Rotuliano & Meniscos",
     conditions: "Desgaste articular, sobrecarga ligamentosa y condromalacia",
@@ -63,8 +63,8 @@ const ANATOMICAL_ZONES = [
   { 
     id: "tobillo", 
     name: "Tobillo & Pie", 
-    cx: 74, 
-    cy: 350, 
+    cx: 78, 
+    cy: 360, 
     icon: Shield,
     muscles: "Ligamento Peroneoastrogalino & Tendón de Aquiles",
     conditions: "Esguinces, fascitis plantar y espolón calcáneo",
@@ -191,9 +191,9 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         {/* Section Editorial Header */}
         <div className="scanner-header text-center">
           <span className="section-label">Diagnóstico Clínico Inteligente</span>
-          <h2 className="display-large">Escáner Anatómico Vectorial 3D</h2>
+          <h2 className="display-large">Escáner Anatómico 3D & Prescripción</h2>
           <p className="scanner-sub">
-            Selecciona la zona muscular o articular afectada en nuestro modelo vectorial de alta precisión para calcular tu tratamiento ideal.
+            Selecciona la zona muscular o articular afectada en nuestro modelo holográfico de alta precisión para calcular tu tratamiento ideal.
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           /* Interactive Scanner Setup Grid */
           <div className="grid-2 scanner-interactive-stage">
             
-            {/* Left Stage: Pure Vector SVG Anatomical Human Body Stage */}
+            {/* Left Stage: Anatomically Accurate Human Body SVG Blueprint Stage */}
             <div className="hologram-body-card glass">
               <div className="hologram-bg-grid"></div>
               
@@ -215,75 +215,98 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                 />
               )}
 
-              {/* HIGH-PRECISION PURE VECTOR SVG ANATOMICAL HUMAN BODY */}
+              {/* ANATOMICALLY ACCURATE HUMAN BODY VECTOR BLUEPRINT */}
               <div className="body-silhouette-wrapper">
                 <svg viewBox="0 0 200 400" className="anatomical-svg-full">
                   <defs>
-                    <linearGradient id="vectorGlow" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(13, 148, 136, 0.45)" />
-                      <stop offset="50%" stopColor="rgba(6, 182, 212, 0.25)" />
-                      <stop offset="100%" stopColor="rgba(13, 148, 136, 0.1)" />
+                    <linearGradient id="bodyBlueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(13, 148, 136, 0.4)" />
+                      <stop offset="50%" stopColor="rgba(6, 182, 212, 0.2)" />
+                      <stop offset="100%" stopColor="rgba(13, 148, 136, 0.08)" />
                     </linearGradient>
-                    <filter id="neonGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
-                      <feGaussianBlur stdDeviation="1.5" result="blur" />
+                    <filter id="neonGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
+                      <feGaussianBlur stdDeviation="2" result="blur" />
                       <feComposite in="SourceGraphic" in2="blur" operator="over" />
                     </filter>
                   </defs>
 
-                  {/* Telemetry Radar Rings */}
+                  {/* Telemetry Radar & Axis Grid */}
                   <circle cx="100" cy="200" r="180" stroke="rgba(13, 148, 136, 0.12)" strokeWidth="0.5" strokeDasharray="3 3" fill="none" />
-                  <circle cx="100" cy="200" r="130" stroke="rgba(6, 182, 212, 0.08)" strokeWidth="0.5" fill="none" />
-                  <line x1="100" y1="10" x2="100" y2="390" stroke="rgba(13, 148, 136, 0.2)" strokeWidth="0.5" strokeDasharray="2 2" />
+                  <circle cx="100" cy="200" r="125" stroke="rgba(6, 182, 212, 0.08)" strokeWidth="0.5" fill="none" />
+                  <line x1="100" y1="15" x2="100" y2="385" stroke="rgba(13, 148, 136, 0.18)" strokeWidth="0.5" strokeDasharray="2 2" />
 
-                  {/* ANATOMICAL VECTOR HUMAN BODY SHAPES */}
+                  {/* ANATOMICALLY PROPORTIONED REALISTIC HUMAN SILHOUETTE */}
                   <g className="anatomical-vector-body">
-                    {/* Head & Cranium Contour */}
-                    <path d="M 88 38 C 88 22, 112 22, 112 38 C 112 52, 107 58, 100 58 C 93 58, 88 52, 88 38 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1.2" />
+                    {/* Cranium / Head */}
+                    <ellipse cx="100" cy="42" rx="14" ry="18" fill="url(#bodyBlueGradient)" stroke="var(--accent-color)" strokeWidth="1" />
 
-                    {/* Neck & Trapezius */}
-                    <path d="M 93 58 C 88 64, 70 75, 52 82 L 48 95 C 65 88, 85 82, 93 72 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
-                    <path d="M 107 58 C 112 64, 130 75, 148 82 L 152 95 C 135 88, 115 82, 107 72 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
+                    {/* Full Body Outline Path (Anatomically Proportioned) */}
+                    <path 
+                      d="
+                        M 100,60 
+                        C 94,60 88,64 84,68 
+                        C 72,74 54,80 44,86 
+                        C 40,88 38,94 40,102 
+                        L 46,155 
+                        C 47,161 44,168 40,178 
+                        C 37,188 34,200 36,208 
+                        C 38,214 43,217 47,214 
+                        C 50,210 51,198 51,185 
+                        L 53,160 
+                        C 55,150 58,140 62,132 
+                        C 63,142 63,154 62,168 
+                        C 60,192 57,220 59,245 
+                        C 61,255 64,265 67,272 
+                        C 69,280 67,298 67,315 
+                        C 67,330 70,345 70,358 
+                        C 70,364 66,368 62,370 
+                        L 62,375 L 84,375 L 84,370 
+                        C 80,366 81,358 80,348 
+                        C 79,333 82,312 83,292 
+                        C 84,278 86,268 87,253 
+                        L 88,198 
+                        C 92,192 96,188 100,188 
+                        C 104,188 108,192 112,198 
+                        L 113,253 
+                        C 114,268 116,278 117,292 
+                        C 118,312 121,333 120,348 
+                        C 119,358 120,366 116,370 
+                        L 116,375 L 138,375 L 138,370 
+                        C 134,368 130,364 130,358 
+                        C 130,345 133,330 133,315 
+                        C 133,298 131,280 133,272 
+                        C 136,265 139,255 141,245 
+                        C 143,220 140,192 138,168 
+                        C 137,154 137,142 138,132 
+                        C 142,140 145,150 147,160 
+                        L 149,185 
+                        C 149,198 150,210 153,214 
+                        C 157,217 162,214 164,208 
+                        C 166,200 163,188 160,178 
+                        C 156,168 153,161 154,155 
+                        L 160,102 
+                        C 162,94 160,88 156,86 
+                        C 146,80 128,74 116,68 
+                        C 112,64 106,60 100,60 Z
+                      " 
+                      fill="url(#bodyBlueGradient)" 
+                      stroke="var(--accent-color)" 
+                      strokeWidth="1.2" 
+                    />
 
-                    {/* Deltoids (Shoulder Muscular Contours) */}
-                    <path d="M 52 82 C 40 86, 32 98, 36 116 C 42 116, 48 106, 52 95 Z" fill="rgba(13, 148, 136, 0.25)" stroke="#06b6d4" strokeWidth="1" />
-                    <path d="M 148 82 C 160 86, 168 98, 164 116 C 158 116, 152 106, 148 95 Z" fill="rgba(13, 148, 136, 0.25)" stroke="#06b6d4" strokeWidth="1" />
+                    {/* Internal Anatomical Clavicles & Pectoral Lines */}
+                    <path d="M 72,78 C 84,82 100,82 100,82 M 128,78 C 116,82 100,82 100,82" stroke="rgba(13, 148, 136, 0.6)" strokeWidth="0.8" fill="none" />
+                    <path d="M 65,96 C 80,94 98,96 100,104 M 135,96 C 120,94 102,96 100,104" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" fill="none" />
 
-                    {/* Pectorals & Upper Chest */}
-                    <path d="M 52 95 C 68 90, 95 88, 100 96 C 100 112, 72 118, 52 110 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
-                    <path d="M 148 95 C 132 90, 105 88, 100 96 C 100 112, 128 118, 148 110 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
+                    {/* Spine Line Axis */}
+                    <line x1="100" y1="65" x2="100" y2="188" stroke="rgba(6, 182, 212, 0.4)" strokeWidth="0.8" strokeDasharray="4 2" />
 
-                    {/* Ribcage & Core Axis */}
-                    <path d="M 52 110 C 60 118, 62 145, 56 160 C 72 165, 88 165, 100 162 C 112 165, 128 165, 144 160 C 138 145, 140 118, 148 110 Z" fill="rgba(13, 148, 136, 0.12)" stroke="rgba(13, 148, 136, 0.5)" strokeWidth="0.8" />
-                    
-                    {/* Abdominal Muscle Grid Lines (Rectus Abdominis) */}
-                    <path d="M 85 120 L 115 120 M 83 136 L 117 136 M 85 152 L 115 152" stroke="rgba(6, 182, 212, 0.4)" strokeWidth="0.8" />
+                    {/* Abdominal Muscle Separator Lines */}
+                    <path d="M 85,124 L 115,124 M 86,140 L 114,140 M 88,156 L 112,156" stroke="rgba(13, 148, 136, 0.35)" strokeWidth="0.6" />
 
-                    {/* Biceps & Forearms */}
-                    <path d="M 36 116 C 32 128, 30 148, 34 168 C 40 168, 44 150, 42 130 Z" fill="rgba(13, 148, 136, 0.18)" stroke="var(--accent-color)" strokeWidth="1" />
-                    <path d="M 164 116 C 168 128, 170 148, 166 168 C 160 168, 156 150, 158 130 Z" fill="rgba(13, 148, 136, 0.18)" stroke="var(--accent-color)" strokeWidth="1" />
-
-                    {/* Hands */}
-                    <path d="M 34 168 C 30 180, 26 195, 30 205 C 34 205, 38 190, 40 178 Z" fill="rgba(13, 148, 136, 0.15)" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" />
-                    <path d="M 166 168 C 170 180, 174 195, 170 205 C 166 205, 162 190, 160 178 Z" fill="rgba(13, 148, 136, 0.15)" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" />
-
-                    {/* Pelvis & Hips */}
-                    <path d="M 56 160 C 48 172, 44 195, 54 205 C 72 208, 88 202, 100 198 C 112 202, 128 208, 146 205 C 156 195, 152 172, 144 160 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="1" />
-
-                    {/* Quadriceps (Thigh Muscles) */}
-                    <path d="M 54 205 C 50 230, 56 258, 68 270 C 78 258, 82 230, 80 205 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
-                    <path d="M 146 205 C 150 230, 144 258, 132 270 C 122 258, 118 230, 120 205 Z" fill="url(#vectorGlow)" stroke="var(--accent-color)" strokeWidth="1" />
-
-                    {/* Patella (Knee Joints) */}
-                    <ellipse cx="78" cy="272" rx="8" ry="10" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1.2" />
-                    <ellipse cx="122" cy="272" rx="8" ry="10" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1.2" />
-
-                    {/* Calves & Lower Legs */}
-                    <path d="M 68 278 C 64 300, 64 330, 72 350 C 78 350, 82 325, 80 282 Z" fill="rgba(13, 148, 136, 0.22)" stroke="var(--accent-color)" strokeWidth="1" />
-                    <path d="M 132 278 C 136 300, 136 330, 128 350 C 122 350, 118 325, 120 282 Z" fill="rgba(13, 148, 136, 0.22)" stroke="var(--accent-color)" strokeWidth="1" />
-
-                    {/* Feet & Ankles */}
-                    <path d="M 72 350 C 68 360, 60 372, 70 375 C 80 375, 80 360, 78 350 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.8" />
-                    <path d="M 128 350 C 132 360, 140 372, 130 375 C 120 375, 120 360, 122 350 Z" fill="rgba(13, 148, 136, 0.2)" stroke="var(--accent-color)" strokeWidth="0.8" />
+                    {/* Knees (Patella Joints) */}
+                    <ellipse cx="78" cy="285" rx="5" ry="6" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1" />
+                    <ellipse cx="122" cy="285" rx="5" ry="6" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1" />
                   </g>
 
                   {/* Interactive Hotspot Nodes with Concentric Pulse Radar Rings */}
@@ -299,7 +322,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                         <circle 
                           cx={zone.cx} 
                           cy={zone.cy} 
-                          r={isSelected ? "9" : "6"} 
+                          r={isSelected ? "8" : "5"} 
                           fill={isSelected ? "var(--secondary-accent)" : "var(--accent-color)"}
                           stroke="var(--white)"
                           strokeWidth="1.5"
@@ -307,8 +330,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                         />
                         {isSelected && (
                           <>
-                            <circle cx={zone.cx} cy={zone.cy} r="16" stroke="var(--secondary-accent)" strokeWidth="1.2" fill="none" className="pulse-node" />
-                            <circle cx={zone.cx} cy={zone.cy} r="26" stroke="rgba(249, 115, 22, 0.5)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
+                            <circle cx={zone.cx} cy={zone.cy} r="15" stroke="var(--secondary-accent)" strokeWidth="1.2" fill="none" className="pulse-node" />
+                            <circle cx={zone.cx} cy={zone.cy} r="25" stroke="rgba(249, 115, 22, 0.5)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
                           </>
                         )}
                       </g>
@@ -557,7 +580,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           align-items: stretch;
         }
 
-        /* Left Stage Hologram Body Card with Pure Vector SVG */
+        /* Left Stage Hologram Body Card with Anatomically Accurate Vector SVG */
         .hologram-body-card {
           position: relative;
           border-radius: 28px;
@@ -613,8 +636,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         }
 
         @keyframes pulseRing {
-          0% { r: 10px; opacity: 1; }
-          100% { r: 24px; opacity: 0; }
+          0% { r: 8px; opacity: 1; }
+          100% { r: 22px; opacity: 0; }
         }
 
         .zone-overlay-badge {
