@@ -10,7 +10,7 @@ const BRAND_DETAILS = [
     tagline: "Equipamiento de Percusión & Electroterapia de Alta Gama",
     desc: "Nuestra línea insignia desarrollada para terapeutas de élite. Dispositivos con calibración milimétrica que ofrecen percusión profunda constante y electroestimulación robusta para clínicas.",
     focus: "Recuperación profunda y estimulación muscular",
-    color: "#0d9488",
+    color: "#007EE5",
     bg: "#f0fdfa"
   },
   {

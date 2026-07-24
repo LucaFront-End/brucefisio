@@ -666,8 +666,8 @@ export default function App() {
         
         .text-white-tag {
           color: var(--accent-color) !important;
-          background: rgba(13, 148, 136, 0.15) !important;
-          border: 1px solid rgba(13, 148, 136, 0.3);
+          background: rgba(0, 126, 229, 0.15) !important;
+          border: 1px solid rgba(0, 126, 229, 0.3);
         }
         
         .specialty-callout-banner h3 {
@@ -698,7 +698,7 @@ export default function App() {
           width: 220px;
           height: 220px;
           border-radius: 50%;
-          border: 1px dashed rgba(13, 148, 136, 0.3);
+          border: 1px dashed rgba(0, 126, 229, 0.3);
           animation: spin 30s linear infinite;
         }
         
@@ -707,12 +707,12 @@ export default function App() {
           width: 150px;
           height: 150px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(0, 126, 229, 0.15) 0%, transparent 70%);
         }
         
         .banner-big-icon {
           z-index: 2;
-          filter: drop-shadow(0 8px 16px rgba(13, 148, 136, 0.2));
+          filter: drop-shadow(0 8px 16px rgba(0, 126, 229, 0.2));
           animation: bounce 4s ease-in-out infinite;
         }
         
@@ -745,7 +745,7 @@ export default function App() {
           width: 32px;
           height: 32px;
           border-radius: 8px;
-          background: linear-gradient(135deg, var(--accent-color) 0%, #115e59 100%);
+          background: linear-gradient(135deg, var(--accent-color) 0%, #003057 100%);
           color: var(--white);
           display: flex;
           align-items: center;
@@ -753,7 +753,7 @@ export default function App() {
           font-family: var(--font-heading);
           font-weight: 800;
           font-size: 1.1rem;
-          box-shadow: 0 4px 10px rgba(13, 148, 136, 0.1);
+          box-shadow: 0 4px 10px rgba(0, 126, 229, 0.1);
         }
         
         .footer-brand-col h4 {
@@ -887,7 +887,7 @@ export default function App() {
           font-family: var(--font-heading);
           font-size: 0.72rem;
           font-weight: 700;
-          color: #0f766e;
+          color: #003057;
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;

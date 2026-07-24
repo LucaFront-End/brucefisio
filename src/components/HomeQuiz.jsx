@@ -223,7 +223,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                 <Model 
                   data={[{ name: 'Scanner', muscles: activeZone.muscleIds }]} 
                   type={activeZone.modelType}
-                  highlightedColors={["#0d9488", "#0d9488"]} 
+                  highlightedColors={["#007EE5", "#007EE5"]} 
                   style={{ width: '100%', height: '100%' }}
                   onClick={(exercise) => {
                     // Optional interactive support
@@ -393,7 +393,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
                       <span className="tier-match-pill">{sol.match}</span>
                     </div>
 
-                    <div className="tier-img-box" style={{ background: p.imageBg || "linear-gradient(135deg, #ccfbf1 0%, #0d9488 100%)" }}>
+                    <div className="tier-img-box" style={{ background: p.imageBg || "linear-gradient(135deg, #e0f2fe 0%, #007EE5 100%)" }}>
                       <span className="tier-brand">{p.brand || "Bruce Médica"}</span>
                       {p.imageSvg ? (
                         <div dangerouslySetInnerHTML={{ __html: p.imageSvg }} className="svg-box" />
@@ -486,13 +486,13 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           min-height: 520px;
           overflow: hidden;
           box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
-          border: 1px solid rgba(13, 148, 136, 0.35);
+          border: 1px solid rgba(0, 126, 229, 0.35);
         }
 
         .hologram-bg-grid {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(13, 148, 136, 0.18) 1px, transparent 1px);
+          background-image: radial-gradient(rgba(0, 126, 229, 0.18) 1px, transparent 1px);
           background-size: 24px 24px;
           pointer-events: none;
         }
@@ -563,7 +563,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           padding: 0.75rem 1rem;
           border-radius: 14px;
           background: rgba(0, 0, 0, 0.65) !important;
-          border: 1px solid rgba(13, 148, 136, 0.4);
+          border: 1px solid rgba(0, 126, 229, 0.4);
           display: flex;
           flex-direction: column;
           gap: 0.3rem;
@@ -647,7 +647,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border-color: var(--accent-color);
-          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+          box-shadow: 0 4px 14px rgba(0, 126, 229, 0.3);
         }
 
         .pill-icon {
@@ -659,7 +659,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           padding: 1rem 1.25rem;
           border-radius: 16px;
           background: rgba(255, 255, 255, 0.9);
-          border: 1px solid rgba(13, 148, 136, 0.25);
+          border: 1px solid rgba(0, 126, 229, 0.25);
           box-shadow: var(--shadow-sm);
           display: flex;
           flex-direction: column;
@@ -723,8 +723,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
 
         .objective-card-x1000.active {
           border-color: var(--accent-color);
-          background: rgba(13, 148, 136, 0.05);
-          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.12);
+          background: rgba(0, 126, 229, 0.05);
+          box-shadow: 0 6px 18px rgba(0, 126, 229, 0.12);
         }
 
         .objective-card-x1000.active::before {
@@ -808,8 +808,8 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: #10b981;
-          box-shadow: 0 0 8px #10b981;
+          background: #007EE5;
+          box-shadow: 0 0 8px #007EE5;
         }
 
         .btn-scan-trigger-x1000 {
@@ -826,14 +826,14 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
           background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
           color: var(--white);
           border: none;
-          box-shadow: 0 8px 24px rgba(13, 148, 136, 0.32);
+          box-shadow: 0 8px 24px rgba(0, 126, 229, 0.32);
           cursor: pointer;
           transition: all 0.25s ease;
         }
 
         .btn-scan-trigger-x1000:hover {
           transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(13, 148, 136, 0.45);
+          box-shadow: 0 12px 30px rgba(0, 126, 229, 0.45);
         }
 
         .btn-scan-trigger-x1000.scanning {
@@ -932,7 +932,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
 
         .solution-tier-card.featured-tier {
           border-color: var(--accent-color);
-          box-shadow: 0 12px 30px rgba(13, 148, 136, 0.2);
+          box-shadow: 0 12px 30px rgba(0, 126, 229, 0.2);
         }
 
         .tier-badge-row {
@@ -1093,7 +1093,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
         }
 
         .btn-tier-buy.added {
-          background: #10b981;
+          background: #007EE5;
         }
 
         @media (max-width: 1024px) {

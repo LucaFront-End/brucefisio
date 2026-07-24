@@ -11,7 +11,7 @@ const CLINICAL_REVIEWS = [
     rating: 5,
     text: "Excelente calidad en los materiales. Lo incorporamos de inmediato en nuestros protocolos de rehabilitación post-operatoria y ha resistido el uso rudo diario sin problemas.",
     date: "Hace 2 semanas",
-    color: "#0d9488"
+    color: "#007EE5"
   },
   {
     initials: "DR",
@@ -680,7 +680,7 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
           font-size: 0.72rem;
           font-weight: 800;
           color: var(--accent-color);
-          background: rgba(13, 148, 136, 0.08);
+          background: rgba(0, 126, 229, 0.08);
           padding: 0.35rem 0.85rem;
           border-radius: 9999px;
           text-transform: uppercase;
@@ -1329,7 +1329,7 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
           position: absolute;
           right: 2.5rem;
           top: 2.5rem;
-          color: rgba(13, 148, 136, 0.07);
+          color: rgba(0, 126, 229, 0.07);
           pointer-events: none;
           transform: scaleX(-1); /* mirror quote design */
         }
@@ -1368,7 +1368,7 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
           gap: 0.25rem;
           font-size: 0.75rem;
           font-weight: 600;
-          color: #10b981;
+          color: #007EE5;
           background: rgba(16, 185, 129, 0.08);
           padding: 0.15rem 0.5rem;
           border-radius: 6px;

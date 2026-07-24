@@ -228,7 +228,7 @@ export default function Community() {
         
         .type-tag.article { background: #e0f2fe; color: #0369a1; }
         .type-tag.webinar { background: #fee2e2; color: #b91c1c; }
-        .type-tag.workshop { background: #ccfbf1; color: #0f766e; }
+        .type-tag.workshop { background: #e0f2fe; color: #003057; }
         
         .card-date {
           font-size: 0.8rem;

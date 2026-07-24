@@ -333,7 +333,7 @@ export default function HighSpecialty() {
         .tech-toggle-btn.active {
           background: var(--accent-color);
           color: var(--white);
-          box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
+          box-shadow: 0 4px 14px rgba(0, 126, 229, 0.3);
         }
 
         .tech-display-container {
@@ -360,7 +360,7 @@ export default function HighSpecialty() {
         }
 
         .tech-hero-card.cureo-theme {
-          background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+          background: linear-gradient(135deg, #003057 0%, #003057 100%);
           color: var(--white);
         }
 
@@ -427,7 +427,7 @@ export default function HighSpecialty() {
         .mod-pill:hover,
         .mod-pill.active {
           background: var(--white);
-          color: #0f766e;
+          color: #003057;
         }
 
         .mod-pill.chelt-pill:hover,

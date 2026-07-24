@@ -350,7 +350,7 @@ export default function HomeReviews({ onOpenProductModal, products = PRODUCTS })
           width: 42px;
           height: 42px;
           border-radius: 50%;
-          background: linear-gradient(135deg, var(--accent-color) 0%, #115e59 100%);
+          background: linear-gradient(135deg, var(--accent-color) 0%, #003057 100%);
           color: var(--white);
           display: flex;
           align-items: center;
@@ -377,7 +377,7 @@ export default function HomeReviews({ onOpenProductModal, products = PRODUCTS })
         }
 
         .verified-badge-icon {
-          color: #10b981;
+          color: #007EE5;
         }
 
         .doc-title {

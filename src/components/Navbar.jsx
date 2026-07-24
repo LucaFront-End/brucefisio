@@ -334,9 +334,9 @@ export default function Navbar({
           align-items: center;
           background: rgba(255, 255, 255, 0.82);
           backdrop-filter: blur(20px) saturate(180%);
-          border: 1px solid rgba(13, 148, 136, 0.15);
+          border: 1px solid rgba(0, 126, 229, 0.15);
           border-radius: 99px;
-          box-shadow: 0 8px 32px rgba(13, 148, 136, 0.04);
+          box-shadow: 0 8px 32px rgba(0, 126, 229, 0.04);
           padding: 0 1.75rem;
           transition: all 0.3s ease;
         }
@@ -357,7 +357,7 @@ export default function Navbar({
           width: 36px;
           height: 36px;
           border-radius: 10px;
-          background: linear-gradient(135deg, var(--accent-color) 0%, #115e59 100%);
+          background: linear-gradient(135deg, var(--accent-color) 0%, #003057 100%);
           color: var(--white);
           display: flex;
           align-items: center;
@@ -365,7 +365,7 @@ export default function Navbar({
           font-family: var(--font-heading);
           font-weight: 800;
           font-size: 1.25rem;
-          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+          box-shadow: 0 4px 12px rgba(0, 126, 229, 0.15);
         }
         .logo-text {
           font-family: var(--font-heading);
@@ -409,7 +409,7 @@ export default function Navbar({
         }
         .nav-btn.active, .nav-btn:hover {
           color: var(--accent-color);
-          background: rgba(13, 148, 136, 0.05);
+          background: rgba(0, 126, 229, 0.05);
         }
         .dropdown-trigger .chevron {
           transition: transform var(--transition-fast);
@@ -424,7 +424,7 @@ export default function Navbar({
           transform: translateX(-50%);
           background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(12px);
-          border: 1px solid rgba(13, 148, 136, 0.15);
+          border: 1px solid rgba(0, 126, 229, 0.15);
           border-radius: 20px;
           box-shadow: var(--shadow-lg);
           padding: 1.25rem;
@@ -446,7 +446,7 @@ export default function Navbar({
           transition: all var(--transition-fast);
         }
         .dropdown-item:hover {
-          background: rgba(13, 148, 136, 0.05);
+          background: rgba(0, 126, 229, 0.05);
           color: var(--accent-color);
           padding-left: 1.25rem;
         }
@@ -468,7 +468,7 @@ export default function Navbar({
           transition: background var(--transition-fast);
         }
         .specialty-card:hover {
-          background: rgba(13, 148, 136, 0.05);
+          background: rgba(0, 126, 229, 0.05);
         }
         .specialty-card-icon {
           width: 36px;
@@ -482,7 +482,7 @@ export default function Navbar({
           font-family: var(--font-heading);
         }
         .specialty-card-icon.cureo {
-          background: linear-gradient(135deg, #0d9488, #0f766e);
+          background: linear-gradient(135deg, #007EE5, #003057);
         }
         .specialty-card-icon.chelt {
           background: linear-gradient(135deg, #f97316, #ea580c);
@@ -527,7 +527,7 @@ export default function Navbar({
           transition: all var(--transition-fast);
         }
         .action-btn:hover {
-          background: rgba(13, 148, 136, 0.05);
+          background: rgba(0, 126, 229, 0.05);
           color: var(--accent-color);
         }
         .cart-btn {
@@ -559,7 +559,7 @@ export default function Navbar({
           right: 5%;
           background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(16px);
-          border: 1px solid rgba(13, 148, 136, 0.15);
+          border: 1px solid rgba(0, 126, 229, 0.15);
           border-radius: 24px;
           max-height: 75vh;
           overflow-y: auto;

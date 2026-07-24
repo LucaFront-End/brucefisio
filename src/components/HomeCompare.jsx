@@ -21,7 +21,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
     [0.2, 0.5, 0.8],
     [
       "0px 4px 20px rgba(15, 23, 42, 0.05)",
-      "0px 24px 60px rgba(13, 148, 136, 0.22)",
+      "0px 24px 60px rgba(0, 126, 229, 0.22)",
       "0px 4px 20px rgba(15, 23, 42, 0.05)"
     ]
   );
@@ -30,7 +30,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
     [0.2, 0.5, 0.8],
     [
       "rgba(226, 232, 240, 1)",
-      "rgba(13, 148, 136, 0.85)",
+      "rgba(0, 126, 229, 0.85)",
       "rgba(226, 232, 240, 1)"
     ]
   );
@@ -285,7 +285,7 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           align-items: center;
           gap: 0.4rem;
           white-space: nowrap;
-          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+          box-shadow: 0 6px 18px rgba(0, 126, 229, 0.35);
           z-index: 20;
         }
 
@@ -406,8 +406,8 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           display: inline-flex;
           align-items: center;
           gap: 0.3rem;
-          background: #ccfbf1;
-          color: #0f766e;
+          background: #e0f2fe;
+          color: #003057;
           font-weight: 800;
           font-size: 0.72rem;
           padding: 0.2rem 0.55rem;

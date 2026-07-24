@@ -343,7 +343,7 @@ export default function Contact() {
         .input-group input:focus, .input-group textarea:focus {
           border-color: var(--accent-color);
           background: var(--white);
-          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.05);
+          box-shadow: 0 4px 12px rgba(0, 126, 229, 0.05);
         }
         
         .btn-submit-form {

@@ -9,9 +9,9 @@
   --text-secondary: #475569;
   --text-tertiary: #94a3b8;
   
-  --accent-color: #0d9488; /* Deep Teal representing physiotherapy/health */
-  --accent-light: #ccfbf1;
-  --accent-dark: #115e59;
+  --accent-color: #007EE5; /* Deep Teal representing physiotherapy/health */
+  --accent-light: #e0f2fe;
+  --accent-dark: #003057;
   
   --secondary-accent: #f97316; /* Warm Copper for secondary CTA/indicators */
   --secondary-light: #ffedd5;
@@ -135,7 +135,7 @@ img {
   display: block;
   width: 48px;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-color) 0%, rgba(13, 148, 136, 0.08) 100%);
+  background: linear-gradient(90deg, var(--accent-color) 0%, rgba(0, 126, 229, 0.08) 100%);
   margin-top: 12px;
   border-radius: 99px;
   transition: width var(--transition-medium);
@@ -161,8 +161,8 @@ img {
   border-radius: 9999px;
   width: fit-content;
   margin-bottom: 0.85rem;
-  border: 1px solid rgba(13, 148, 136, 0.18);
-  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.03);
+  border: 1px solid rgba(0, 126, 229, 0.18);
+  box-shadow: 0 2px 6px rgba(0, 126, 229, 0.03);
 }
 
 .section-label.text-white-tag {
@@ -238,7 +238,7 @@ img {
 .btn-primary:hover {
   background: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 126, 229, 0.25);
 }
 
 .btn-secondary {
@@ -260,7 +260,7 @@ img {
 .btn-accent:hover {
   background: var(--accent-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 126, 229, 0.3);
 }
 
 .btn-whatsapp {

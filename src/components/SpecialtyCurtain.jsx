@@ -44,12 +44,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step1Border = useTransform(
     scrollYProgress,
     [0.45, 0.53, 0.61],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 0.4)", "rgba(226, 232, 240, 1)"]
+    ["rgba(226, 232, 240, 1)", "rgba(0, 126, 229, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step1Shadow = useTransform(
     scrollYProgress,
     [0.45, 0.53, 0.61],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(13, 148, 136, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(0, 126, 229, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   // Step 2: Estimulación Celular
@@ -59,12 +59,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step2Border = useTransform(
     scrollYProgress,
     [0.54, 0.62, 0.70],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 0.4)", "rgba(226, 232, 240, 1)"]
+    ["rgba(226, 232, 240, 1)", "rgba(0, 126, 229, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step2Shadow = useTransform(
     scrollYProgress,
     [0.54, 0.62, 0.70],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(13, 148, 136, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(0, 126, 229, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   // Step 3: Bloqueo & Crioláser
@@ -495,14 +495,14 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           top: 5%;
           bottom: 5%;
           width: 4px;
-          background: rgba(13, 148, 136, 0.12);
+          background: rgba(0, 126, 229, 0.12);
           border-radius: 99px;
         }
 
         .timeline-vertical-line-fill {
           width: 100%;
           background: linear-gradient(180deg, var(--accent-color) 0%, var(--secondary-accent) 100%);
-          box-shadow: 0 0 12px rgba(13, 148, 136, 0.5);
+          box-shadow: 0 0 12px rgba(0, 126, 229, 0.5);
           border-radius: 99px;
           transform-origin: top;
         }
@@ -547,7 +547,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
         .timeline-step-card:hover {
           border-color: var(--accent-color);
           transform: translateX(4px);
-          box-shadow: 0 8px 24px rgba(13, 148, 136, 0.16);
+          box-shadow: 0 8px 24px rgba(0, 126, 229, 0.16);
         }
 
         /* Left Connector Node Badge */
@@ -593,7 +593,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           margin-top: 0.1rem;
         }
 
-        .bg-teal-soft { background: rgba(13, 148, 136, 0.1); }
+        .bg-teal-soft { background: rgba(0, 126, 229, 0.1); }
         .bg-copper-soft { background: rgba(249, 115, 22, 0.1); }
 
         .text-copper { color: #c2410c; }
@@ -677,7 +677,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           backdrop-filter: blur(20px);
           color: var(--text-primary);
           justify-content: flex-end;
-          border-right: 1px solid rgba(13, 148, 136, 0.1);
+          border-right: 1px solid rgba(0, 126, 229, 0.1);
         }
 
         /* Right Panel - Light Glass */
@@ -711,9 +711,9 @@ export default function SpecialtyCurtain({ onExploreClick }) {
         }
 
         .teal-badge {
-          background: rgba(13, 148, 136, 0.12);
+          background: rgba(0, 126, 229, 0.12);
           color: var(--accent-dark);
-          border: 1px solid rgba(13, 148, 136, 0.28);
+          border: 1px solid rgba(0, 126, 229, 0.28);
         }
 
         .copper-badge {
@@ -769,7 +769,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
 
         .cureo-waves-visual {
           background: rgba(255, 255, 255, 0.85);
-          border: 1px solid rgba(13, 148, 136, 0.25);
+          border: 1px solid rgba(0, 126, 229, 0.25);
         }
 
         .chelt-laser-visual {

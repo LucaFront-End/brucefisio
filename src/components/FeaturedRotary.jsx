@@ -247,11 +247,11 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                   className="wheel-svg"
                   style={{ rotate: wheelRotation }}
                 >
-                  <circle cx="50" cy="50" r="44" stroke="rgba(13, 148, 136, 0.16)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
-                  <circle cx="50" cy="50" r="41" stroke="rgba(13, 148, 136, 0.06)" strokeWidth="0.5" fill="none" />
-                  <circle cx="50" cy="50" r="32" stroke="rgba(13, 148, 136, 0.05)" strokeWidth="0.5" fill="none" />
+                  <circle cx="50" cy="50" r="44" stroke="rgba(0, 126, 229, 0.16)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
+                  <circle cx="50" cy="50" r="41" stroke="rgba(0, 126, 229, 0.06)" strokeWidth="0.5" fill="none" />
+                  <circle cx="50" cy="50" r="32" stroke="rgba(0, 126, 229, 0.05)" strokeWidth="0.5" fill="none" />
                   
-                  <circle cx="50" cy="50" r="6" stroke="rgba(13, 148, 136, 0.2)" strokeWidth="0.75" fill="rgba(255, 255, 255, 0.85)" />
+                  <circle cx="50" cy="50" r="6" stroke="rgba(0, 126, 229, 0.2)" strokeWidth="0.75" fill="rgba(255, 255, 255, 0.85)" />
                   <circle cx="50" cy="50" r="2" fill="var(--accent-color)" />
                   
                   {[0, 1, 2, 3, 4].map(idx => {
@@ -266,13 +266,13 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                       <g key={idx}>
                         <line 
                           x1={sx} y1={sy} x2={ex} y2={ey} 
-                          stroke={isActiveSpoke ? "rgba(13, 148, 136, 0.4)" : "rgba(13, 148, 136, 0.12)"} 
+                          stroke={isActiveSpoke ? "rgba(0, 126, 229, 0.4)" : "rgba(0, 126, 229, 0.12)"} 
                           strokeWidth={isActiveSpoke ? "0.9" : "0.5"} 
                         />
                         <circle 
                           cx={ex} cy={ey} 
                           r={isActiveSpoke ? "2.2" : "1.2"} 
-                          fill={isActiveSpoke ? "var(--accent-color)" : "rgba(13, 148, 136, 0.3)"} 
+                          fill={isActiveSpoke ? "var(--accent-color)" : "rgba(0, 126, 229, 0.3)"} 
                         />
                       </g>
                     );
@@ -328,7 +328,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
                   >
                     <div 
                       className="card-img-wrapper"
-                      style={{ background: prod.imageBg || "linear-gradient(135deg, #ccfbf1 0%, #0d9488 100%)" }}
+                      style={{ background: prod.imageBg || "linear-gradient(135deg, #e0f2fe 0%, #007EE5 100%)" }}
                     >
                       <span className="card-brand-badge">{prod.brand || "Bruce"}</span>
                       {prod.imageSvg ? (
@@ -400,7 +400,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           height: 440px;
           top: 10%;
           left: -100px;
-          background: rgba(13, 148, 136, 0.08);
+          background: rgba(0, 126, 229, 0.08);
         }
 
         .rotary-glow.glow-2 {
@@ -444,7 +444,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           padding: 0.35rem 0.85rem;
           border-radius: 50px;
           width: fit-content;
-          border: 1px solid rgba(13, 148, 136, 0.25);
+          border: 1px solid rgba(0, 126, 229, 0.25);
         }
 
         .step-counter {
@@ -522,10 +522,10 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           display: flex;
           align-items: center;
           gap: 0.45rem;
-          background: rgba(13, 148, 136, 0.05);
+          background: rgba(0, 126, 229, 0.05);
           padding: 0.4rem 0.65rem;
           border-radius: 10px;
-          border: 1px solid rgba(13, 148, 136, 0.12);
+          border: 1px solid rgba(0, 126, 229, 0.12);
         }
 
         .chip-icon {
@@ -616,7 +616,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
           background: var(--accent-color);
           color: var(--white);
           border: none;
-          box-shadow: 0 4px 12px rgba(13, 148, 136, 0.22);
+          box-shadow: 0 4px 12px rgba(0, 126, 229, 0.22);
           cursor: pointer;
           transition: all 0.2s ease;
         }
@@ -627,7 +627,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .btn-meta-buy.added {
-          background: #10b981;
+          background: #007EE5;
         }
 
         /* Scroll Controls & Bullets Compact */
@@ -747,8 +747,8 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .rotary-card.active-spotlight {
-          border-color: rgba(13, 148, 136, 0.4);
-          box-shadow: 0 16px 36px rgba(13, 148, 136, 0.18);
+          border-color: rgba(0, 126, 229, 0.4);
+          box-shadow: 0 16px 36px rgba(0, 126, 229, 0.18);
         }
 
         .card-img-wrapper {
@@ -851,7 +851,7 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
         }
 
         .rotary-buy-btn.added {
-          background: #10b981;
+          background: #007EE5;
         }
 
         @media (max-width: 1024px) {

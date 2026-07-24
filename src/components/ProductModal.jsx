@@ -362,7 +362,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
           
           .variant-row.active-row {
             border-color: var(--accent-color);
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 126, 229, 0.05);
             background: var(--accent-light);
           }
           

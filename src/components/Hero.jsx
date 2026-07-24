@@ -59,7 +59,7 @@ const SOLUTIONS_MATRIX = [
     metricDesc: "Regeneración Tisular",
     productId: "chattanooga-intelect",
     icon: Zap,
-    accentColor: "#0d9488"
+    accentColor: "#007EE5"
   },
   {
     id: "fallas-equipo",
@@ -81,7 +81,7 @@ const SOLUTIONS_MATRIX = [
     metricDesc: "Reducción de Edema",
     productId: "tens-ems-profesional",
     icon: Activity,
-    accentColor: "#0d9488"
+    accentColor: "#007EE5"
   },
   {
     id: "competencia",
@@ -415,9 +415,9 @@ export default function Hero({
         }
 
         .btn-primary-dark:hover {
-          background: #0d9488;
+          background: #007EE5;
           transform: scale(1.04);
-          box-shadow: 0 10px 30px rgba(13, 148, 136, 0.3);
+          box-shadow: 0 10px 30px rgba(0, 126, 229, 0.3);
         }
 
         .scroll-indicator-clean {
@@ -436,7 +436,7 @@ export default function Hero({
         }
 
         .mouse-clean { width: 20px; height: 32px; border: 2px solid #cbd5e1; border-radius: 12px; display: flex; justify-content: center; padding-top: 5px; }
-        .wheel-clean { width: 4px; height: 6px; background: #0d9488; border-radius: 2px; animation: scrollWheel 2s infinite; }
+        .wheel-clean { width: 4px; height: 6px; background: #007EE5; border-radius: 2px; animation: scrollWheel 2s infinite; }
         @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
 
         /* SLIDE 2: CONCISE PAIN POINTS (DARK LOSS THEME) */
@@ -622,7 +622,7 @@ export default function Hero({
         /* SLIDE 3: SOLUTIONS (RELIEF THEME) */
         .theme-light-relief {
           background: #ffffff;
-          background-image: radial-gradient(circle at center, rgba(13, 148, 136, 0.05) 0%, transparent 70%);
+          background-image: radial-gradient(circle at center, rgba(0, 126, 229, 0.05) 0%, transparent 70%);
         }
 
         .slide-3-container-relief {
@@ -646,11 +646,11 @@ export default function Hero({
           gap: 0.5rem;
           padding: 0.35rem 1rem;
           border-radius: 50px;
-          background: rgba(13, 148, 136, 0.08);
-          border: 1px solid rgba(13, 148, 136, 0.2);
+          background: rgba(0, 126, 229, 0.08);
+          border: 1px solid rgba(0, 126, 229, 0.2);
           font-size: 0.7rem;
           font-weight: 800;
-          color: #0d9488;
+          color: #007EE5;
           margin-bottom: 0.5rem;
           letter-spacing: 0.05em;
         }
@@ -658,9 +658,9 @@ export default function Hero({
         .live-success-dot {
           width: 6px;
           height: 6px;
-          background: #10b981;
+          background: #007EE5;
           border-radius: 50%;
-          box-shadow: 0 0 10px #10b981;
+          box-shadow: 0 0 10px #007EE5;
           animation: reliefPulse 2s infinite;
         }
 
@@ -676,7 +676,7 @@ export default function Hero({
         }
 
         .highlight-relief {
-          color: #0d9488;
+          color: #007EE5;
           position: relative;
         }
 
@@ -687,7 +687,7 @@ export default function Hero({
           left: 0;
           width: 100%;
           height: 8px;
-          background: #0d9488;
+          background: #007EE5;
           opacity: 0.15;
           z-index: -1;
         }
@@ -725,8 +725,8 @@ export default function Hero({
 
         .solution-card-relief:hover, .solution-card-relief.highlighted-relief {
           transform: translateY(-5px);
-          border-color: #0d9488;
-          box-shadow: 0 15px 30px -10px rgba(13, 148, 136, 0.15);
+          border-color: #007EE5;
+          box-shadow: 0 15px 30px -10px rgba(0, 126, 229, 0.15);
         }
 
         .solution-card-relief:hover .pulse-icon-hover {
@@ -813,7 +813,7 @@ export default function Hero({
           display: block;
           font-size: 0.75rem;
           font-weight: 800;
-          color: #0d9488;
+          color: #007EE5;
           line-height: 1.1;
         }
 
@@ -840,12 +840,12 @@ export default function Hero({
         }
 
         .btn-sol-quote-relief:hover {
-          background: #0d9488;
-          box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+          background: #007EE5;
+          box-shadow: 0 8px 20px rgba(0, 126, 229, 0.25);
         }
 
         .btn-primary-teal {
-          background: #0d9488;
+          background: #007EE5;
           color: #ffffff;
           border: none;
           padding: 0.85rem 2rem;
@@ -867,7 +867,7 @@ export default function Hero({
         }
 
         .text-red { color: #ef4444; }
-        .text-teal { color: #0d9488; }
+        .text-teal { color: #007EE5; }
 
         @media (max-width: 1024px) {
           .pain-points-grid { grid-template-columns: 1fr; }
