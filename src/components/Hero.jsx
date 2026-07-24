@@ -4,54 +4,47 @@ import {
   ArrowRight, ShieldCheck, Zap, Activity, ShoppingCart, 
   Check, Award, Truck, Eye, Sparkles, MessageCircle, 
   Plus, Minus, Sliders, Info, Flame, UserCheck, Star,
-  Crosshair, ActivitySquare
+  Crosshair, ActivitySquare, ChevronRight, HeartPulse, Target
 } from "lucide-react";
 import { PRODUCTS } from "../data/products";
 
-const SMART_CATEGORIES = [
+// Therapeutic Objectives for Panel 3
+const THERAPEUTIC_GOALS = [
   {
-    id: "electroterapia",
-    label: "Electroterapia & Bio-Estímulo",
+    id: "regeneracion",
+    title: "Regeneración Tisular",
+    subtitle: "Acelera la cicatrización celular y reparación muscular",
     icon: Zap,
-    categoryMatch: ["electroterapia", "ultrasonido", "chattanooga"],
-    tagline: "Estímulo bio-eléctrico de alta precisión para acelerar la cicatrización y regeneración celular.",
-    specs: [
-      { x: 30, y: 35, title: "Frecuencia Bio-Modulada", desc: "Ondas interferenciales de 4000Hz" },
-      { x: 70, y: 65, title: "Electrodos Grado Médico", desc: "Gel conductivo biocompatible" }
-    ]
+    badge: "Electroterapia & Láser",
+    color: "#0d9488",
+    productIds: ["chattanooga-intelect", "combo-electro-ultrasonido", "ultrasonido-portatil"]
   },
   {
-    id: "fuerza",
-    label: "Fuerza & Rehabilitación",
+    id: "dolor",
+    title: "Control del Dolor",
+    subtitle: "Modulación bio-eléctrica y analgesia de alta frecuencia",
+    icon: HeartPulse,
+    badge: "Analgesia Clínica",
+    color: "#0284c7",
+    productIds: ["tens-ems-profesional", "laser-terapeutico-alta-potencia", "compresor-frio-calor"]
+  },
+  {
+    id: "rendimiento",
+    title: "Alto Rendimiento",
+    subtitle: "Fortalecimiento progresivo y propiocepción",
     icon: Activity,
-    categoryMatch: ["fuerza", "equilibrio", "ejercicio", "pesas", "pelota", "bandas"],
-    tagline: "Sistemas de resistencia progresiva y fortalecimiento muscular de grado clínico.",
-    specs: [
-      { x: 45, y: 40, title: "Núcleo Antiexplosión", desc: "Resistencia hasta 500 kg estáticos" },
-      { x: 60, y: 70, title: "Textura Antideslizante", desc: "Agarre ergonómico micro-texturizado" }
-    ]
+    badge: "Rehabilitación Motora",
+    color: "#f97316",
+    productIds: ["kit-bandas-resistencia-medica", "pelota-bobath-antiexplosion", "sistema-presoterapia-deportiva"]
   },
   {
-    id: "muebles",
-    label: "Mobiliario & Mesas",
+    id: "mobiliario",
+    title: "Confort & Mobiliario",
+    subtitle: "Ergonomía de alta carga para la práctica clínica diaria",
     icon: ShieldCheck,
-    categoryMatch: ["mesa", "camilla", "baño", "ducha", "mobiliario"],
-    tagline: "Mobiliario ergonómico de alta carga y elevación motorizada para confort profesional.",
-    specs: [
-      { x: 35, y: 50, title: "Motor Silencioso Dual", desc: "Ajuste milimétrico de altura" },
-      { x: 75, y: 45, title: "Tapizado Antibacteriano", desc: "Resistente a fluidos y uso rudo" }
-    ]
-  },
-  {
-    id: "compresion",
-    label: "Compresión & Soportes",
-    icon: Award,
-    categoryMatch: ["plantilla", "talonera", "soporte", "compresión", "manga", "rodillera"],
-    tagline: "Órtesis ergonómicas y prendas compresivas clínicas para estabilización articular.",
-    specs: [
-      { x: 40, y: 35, title: "Compresión Graduada", desc: "20-30 mmHg para retorno venoso" },
-      { x: 65, y: 60, title: "Tejido Respirable", desc: "Estructura 3D termorreguladora" }
-    ]
+    badge: "Grado Médico",
+    color: "#0d9488",
+    productIds: ["camilla-electrica-3-secciones", "mesa-traccion-espinal", "silla-rehabilitacion-ergonomica"]
   }
 ];
 
@@ -62,16 +55,8 @@ export default function Hero({
   onOpenProductModal, 
   products = PRODUCTS 
 }) {
-  const [activeTabIdx, setActiveTabIdx] = useState(0);
-  const [viewMode, setViewMode] = useState("commercial");
-  const [quantity, setQuantity] = useState(1);
-  const [addedItem, setAddedItem] = useState(null);
-  const [activeHotspot, setActiveHotspot] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  // 3D Tilt Card Mouse Parallax state
-  const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 });
-  const cardRef = useRef(null);
+  const [activeGoalIdx, setActiveGoalIdx] = useState(0);
+  const [activeTechNode, setActiveTechNode] = useState(0);
 
   // Scroll Jacking Refs
   const containerRef = useRef(null);
@@ -84,457 +69,270 @@ export default function Hero({
   const xTrack = useTransform(scrollYProgress, [0, 1], ["0%", "-66.6666%"]);
   
   // Parallax elements inside panels
-  const panel1Parallax = useTransform(scrollYProgress, [0, 0.33], ["0%", "40%"]);
-  const panel2Parallax = useTransform(scrollYProgress, [0, 0.33, 0.66], ["-20%", "0%", "20%"]);
-  const panel3Parallax = useTransform(scrollYProgress, [0.33, 1], ["20%", "0%"]);
+  const panel1Parallax = useTransform(scrollYProgress, [0, 0.33], ["0%", "30%"]);
+  const panel2Scale = useTransform(scrollYProgress, [0.15, 0.33, 0.5], [0.9, 1, 0.9]);
+  const panel3Parallax = useTransform(scrollYProgress, [0.33, 1], ["15%", "0%"]);
 
   const panel1Opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
-  const panel2Scale = useTransform(scrollYProgress, [0.15, 0.33, 0.5], [0.8, 1, 0.8]);
 
-  const activeCategory = SMART_CATEGORIES[activeTabIdx];
+  const activeGoal = THERAPEUTIC_GOALS[activeGoalIdx];
 
-  const categoryProducts = products.filter(p => {
-    const pCat = (p.category || "").toLowerCase();
-    const pName = (p.name || "").toLowerCase();
-    return activeCategory.categoryMatch.some(term => pCat.includes(term) || pName.includes(term));
-  });
+  // Selected products for Panel 3
+  const curatedProducts = activeGoal.productIds.map(id => {
+    return products.find(p => p.id === id || (p.name || "").toLowerCase().includes(id.replace(/-/g, ' '))) || products[Math.floor(Math.random() * products.length)];
+  }).filter(Boolean).slice(0, 3);
 
-  const activeProduct = categoryProducts[0] || products[0] || {
-    id: "demo-1",
-    name: "Equipamiento Bruce Médica",
-    price: 3899,
-    category: activeCategory.label,
-    brand: "Bruce Pro",
-    imageBg: "linear-gradient(135deg, #020617 0%, #0d9488 100%)"
-  };
-
-  const [selectedVariant, setSelectedVariant] = useState("");
-
-  useEffect(() => {
-    if (activeProduct?.variables?.options?.length > 0) {
-      const firstOpt = activeProduct.variables.options[0];
-      setSelectedVariant(typeof firstOpt === "object" ? firstOpt.value : firstOpt);
-    } else {
-      setSelectedVariant("");
-    }
-    setQuantity(1);
-    setActiveHotspot(null);
-  }, [activeProduct, activeTabIdx]);
-
-  useEffect(() => {
-    if (isHovered) return;
-    const interval = setInterval(() => {
-      setActiveTabIdx(prev => (prev + 1) % SMART_CATEGORIES.length);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, [isHovered]);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -12; 
-    const rotateY = ((x - centerX) / centerX) * 12;
-
-    const glareX = (x / rect.width) * 100;
-    const glareY = (y / rect.height) * 100;
-
-    setTilt({ x: rotateX, y: rotateY, glareX, glareY });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0, glareX: 50, glareY: 50 });
-  };
-
-  const handleBuyClick = (e) => {
-    e.stopPropagation();
-    if (!onQuickAdd) return;
-    
-    const quickProduct = {
-      ...activeProduct,
-      selectedVariant: selectedVariant || null,
-      quantity: quantity
-    };
-
-    onQuickAdd(quickProduct);
-    setAddedItem(activeProduct.id);
-    setTimeout(() => {
-      setAddedItem(null);
-    }, 2000);
-  };
-
-  const handleWhatsAppQuote = (e) => {
-    e.stopPropagation();
-    const text = `Hola Bruce Médica, me interesa cotizar ${quantity} unidad(es) del equipo: ${activeProduct.name} (Variante: ${selectedVariant || 'Estándar'}, Precio Unitario: $${activeProduct.price?.toLocaleString()} MXN). ¿Tienen disponibilidad inmediata?`;
+  const handleWhatsAppQuote = (productName) => {
+    const text = `Hola Bruce Médica, me interesa cotizar información y disponibilidad del equipo: ${productName || 'Equipamiento Bruce Médica'}. ¿Me comparten ficha técnica y precio especial para clínica?`;
     window.open(`https://wa.me/5215555750108?text=${encodeURIComponent(text)}`, "_blank");
   };
 
-  const subtotalPrice = (activeProduct.price || 0) * quantity;
-
   return (
-    <section ref={containerRef} className="hero-cinematic-container">
-      {/* Sticky Frame locks the view while scrolling */}
-      <div className="hero-sticky-frame">
+    <section ref={containerRef} className="hero-cinematic-container-light">
+      <div className="hero-sticky-frame-light">
         
-        {/* Ambient Dark Mode Glows */}
-        <div className="cinematic-glow glow-teal"></div>
-        <div className="cinematic-glow glow-blue"></div>
-        <div className="cinematic-grid"></div>
+        {/* Ambient Light Orbs & Grid */}
+        <div className="light-glow glow-teal-light"></div>
+        <div className="light-glow glow-cyan-light"></div>
+        <div className="light-dot-grid"></div>
 
         {/* Horizontal Track (300vw) */}
         <motion.div 
           className="hero-horizontal-track"
           style={{ x: xTrack }}
         >
-          {/* ================= PANEL 1: EL ORIGEN ================= */}
-          <div className="hero-panel panel-1">
+          {/* ================= PANEL 1: EL MANIFIESTO (LIGHT MODE) ================= */}
+          <div className="hero-panel panel-1-light">
             <motion.div 
-              className="panel-1-inner"
+              className="panel-1-content-light"
               style={{ x: panel1Parallax, opacity: panel1Opacity }}
             >
-              <h1 className="x-ray-title">
-                FUTURO<br/>CLÍNICO
+              <div className="manifesto-chip">
+                <Sparkles size={14} className="text-teal" />
+                <span>Bruce Médica & Fisioterapia Avanzada</span>
+              </div>
+
+              <h1 className="manifesto-title">
+                INGENIERÍA CLÍNICA <br />
+                <span className="gradient-teal-text">& REHABILITACIÓN DE PRECISIÓN</span>
               </h1>
-              <div className="panel-1-desc">
-                <p>El cuerpo humano es la máquina perfecta.</p>
-                <p className="text-teal">Exige tecnología a su altura.</p>
-              </div>
 
-              <div className="scroll-prompt">
-                <div className="mouse">
-                  <div className="wheel"></div>
+              <p className="manifesto-desc">
+                Desarrollamos y distribuimos equipamiento bio-médico calibrado para especialistas que exigen el máximo rendimiento y recuperación en sus pacientes.
+              </p>
+
+              {/* Floating Badges */}
+              <div className="manifesto-badges-row">
+                <div className="m-badge">
+                  <ShieldCheck size={16} className="text-teal" />
+                  <span>2 Años Garantía Oficial</span>
                 </div>
-                <span>Inicia el Diagnóstico</span>
+                <div className="m-badge">
+                  <Award size={16} className="text-teal" />
+                  <span>Certificación CE / FDA</span>
+                </div>
+                <div className="m-badge">
+                  <Truck size={16} className="text-teal" />
+                  <span>Envío Express a Todo México</span>
+                </div>
+              </div>
+
+              {/* Scroll prompt */}
+              <div className="scroll-prompt-light">
+                <div className="mouse-light">
+                  <div className="wheel-light"></div>
+                </div>
+                <span>Desliza para explorar el ecosistema</span>
               </div>
             </motion.div>
           </div>
 
-          {/* ================= PANEL 2: LA TECNOLOGÍA ================= */}
-          <div className="hero-panel panel-2">
+          {/* ================= PANEL 2: MOTOR DE DIAGNÓSTICO (LIGHT LAB) ================= */}
+          <div className="hero-panel panel-2-light">
             <motion.div 
-              className="panel-2-inner"
-              style={{ scale: panel2Scale, x: panel2Parallax }}
+              className="panel-2-content-light"
+              style={{ scale: panel2Scale }}
             >
-              <div className="scanner-ui">
-                <div className="scanner-ring outer-ring"></div>
-                <div className="scanner-ring inner-ring"></div>
-                <Crosshair className="scanner-crosshair" size={180} />
-                <ActivitySquare className="scanner-pulse" size={60} />
+              <div className="lab-header">
+                <span className="lab-tag">TECNOLOGÍA BIO-MODULADA</span>
+                <h2>Mapa Tecnológico de Grado Médico</h2>
               </div>
-              <h2 className="scanner-title">
-                Precisión de Grado Médico
-              </h2>
-              <p className="scanner-subtitle">Analizando catálogo de alta tecnología...</p>
+
+              <div className="lab-scanner-stage">
+                {/* Central Interactive Wave Monitor */}
+                <div className="wave-monitor-card glass-white-card">
+                  <div className="wave-card-top">
+                    <span className="live-dot"></span>
+                    <span>Monitor Frecuencial Bio-Estímulo</span>
+                  </div>
+
+                  <div className="waveform-display">
+                    <svg className="wave-svg" viewBox="0 0 500 100">
+                      <path 
+                        d="M0 50 Q 50 20, 100 50 T 200 50 T 300 10 T 400 90 T 500 50" 
+                        fill="none" 
+                        stroke="#0d9488" 
+                        strokeWidth="3"
+                        className="pulse-wave-path"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="wave-metrics-grid">
+                    <div className="metric-box">
+                      <span className="m-label">Frecuencia Base</span>
+                      <span className="m-val text-teal">4,000 Hz</span>
+                    </div>
+                    <div className="metric-box">
+                      <span className="m-label">Profundidad Tisular</span>
+                      <span className="m-val text-slate">4.5 cm</span>
+                    </div>
+                    <div className="metric-box">
+                      <span className="m-label">Modulación</span>
+                      <span className="m-val text-copper">Bio-Sync 3D</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tech Nodes Selector */}
+                <div className="tech-nodes-column">
+                  {[
+                    { title: "Electro-Estímulo Interferencial", desc: "Ondas bio-eléctricas de penetración profunda" },
+                    { title: "Láser Terapéutico Frío", desc: "Fotonización para bio-estimulación celular" },
+                    { title: "Ondas de Choque Radiales", desc: "Disolución de calcificaciones y dolor crónico" },
+                    { title: "Presoterapia Neumática", desc: "Drenaje linfático y recuperación acelerada" }
+                  ].map((node, idx) => (
+                    <div 
+                      key={idx}
+                      className={`tech-node-item glass-white-card ${activeTechNode === idx ? "active" : ""}`}
+                      onClick={() => setActiveTechNode(idx)}
+                    >
+                      <div className="node-icon-box">
+                        <Zap size={18} />
+                      </div>
+                      <div className="node-info">
+                        <h4>{node.title}</h4>
+                        <p>{node.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
 
-          {/* ================= PANEL 3: LA SOLUCIÓN CLÍNICA (TIENDA) ================= */}
-          <div className="hero-panel panel-3">
+          {/* ================= PANEL 3: SELECCIÓN POR OBJETIVO TERAPÉUTICO (NUEVO ENFOQUE) ================= */}
+          <div className="hero-panel panel-3-light">
             <motion.div 
-              className="panel-3-inner container hero-x1000-grid"
+              className="panel-3-content-light"
               style={{ x: panel3Parallax }}
             >
-              {/* Left Column: Cyber-Clinical Selector Deck */}
-              <div className="hero-left-deck">
-                
-                <div className="hero-top-meta">
-                  <div className="hero-live-chip">
-                    <span className="live-pulse"></span>
-                    Sistema en Vivo & Control
-                  </div>
-                  
-                  <div className="hero-rating-badge">
-                    <div className="stars-row">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={13} fill="var(--secondary-accent)" color="var(--secondary-accent)" />
-                      ))}
-                    </div>
-                    <span>4.9/5 por +120 Clínicas</span>
-                  </div>
+              <div className="panel3-header">
+                <div className="section-pill-light">
+                  <Target size={14} className="text-teal" />
+                  <span>Selección por Resultado Clínico</span>
                 </div>
-
-                <h2 className="hero-x1000-title">
-                  Equipamiento <br />
-                  <span className="gradient-text">Fisioterapéutico Avanzado</span>
-                </h2>
-
-                <p className="hero-x1000-desc text-gray-400">
-                  Selecciona la especialidad para explorar equipos calibrados y cotizar en tiempo real.
-                </p>
-
-                {/* Cyber-Clinical Category Tabs */}
-                <div 
-                  className="smart-category-matrix"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  {SMART_CATEGORIES.map((cat, idx) => {
-                    const TabIcon = cat.icon;
-                    const isActive = idx === activeTabIdx;
-                    return (
-                      <button
-                        key={cat.id}
-                        className={`matrix-tab-btn ${isActive ? "active" : ""}`}
-                        onClick={() => setActiveTabIdx(idx)}
-                      >
-                        <TabIcon size={18} className="tab-icon" />
-                        <span>{cat.label}</span>
-                        {isActive && (
-                          <motion.div 
-                            layoutId="activeTabUnderline2" 
-                            className="tab-active-glow-bar" 
-                          />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Active Category Clinical Tagline */}
-                <AnimatePresence mode="wait">
-                  <motion.div 
-                    key={activeCategory.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="category-clinical-banner glass-dark"
-                  >
-                    <div className="banner-accent-line"></div>
-                    <Sparkles size={18} className="text-copper" />
-                    <p>{activeCategory.tagline}</p>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Action Buttons */}
-                <div className="hero-main-actions">
-                  <button className="btn btn-accent-hero" onClick={onShopClick}>
-                    Ver Catálogo Completo <ArrowRight size={18} />
-                  </button>
-                  <button className="btn btn-whatsapp-quote" onClick={handleWhatsAppQuote}>
-                    <MessageCircle size={18} /> Cotización Rápida
-                  </button>
-                </div>
-
+                <h2>¿Qué objetivo terapéutico buscas en tu clínica?</h2>
               </div>
 
-              {/* Right Column: 3D Tilt Parallax Showcase Card */}
-              <div className="hero-right-showcase">
-                
-                <div className="view-mode-switcher-bar glass-dark">
-                  <button 
-                    className={`mode-btn ${viewMode === "commercial" ? "active" : ""}`}
-                    onClick={() => setViewMode("commercial")}
-                  >
-                    <ShoppingCart size={14} /> Vista Comercial
-                  </button>
-                  <button 
-                    className={`mode-btn ${viewMode === "diagnostic" ? "active" : ""}`}
-                    onClick={() => setViewMode("diagnostic")}
-                  >
-                    <Sliders size={14} /> Modo Diagnóstico
-                  </button>
-                </div>
-
-                <div 
-                  className="perspective-container"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => {
-                    setIsHovered(false);
-                    handleMouseLeave();
-                  }}
-                  onMouseMove={handleMouseMove}
-                >
-                  <motion.div
-                    ref={cardRef}
-                    animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="showcase-3d-card glass-dark-border"
-                    onClick={() => onOpenProductModal && onOpenProductModal(activeProduct)}
-                  >
-                    <div 
-                      className="card-specular-glare"
-                      style={{ background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255,255,255,0.15) 0%, transparent 60%)` }}
-                    />
-
-                    <div 
-                      className="card-image-stage"
-                      style={{ background: activeProduct.imageBg || "linear-gradient(135deg, #020617 0%, #0d9488 100%)" }}
+              {/* Goal Selector Tabs */}
+              <div className="goal-selector-pills">
+                {THERAPEUTIC_GOALS.map((goal, idx) => {
+                  const GoalIcon = goal.icon;
+                  const isActive = idx === activeGoalIdx;
+                  return (
+                    <button
+                      key={goal.id}
+                      className={`goal-pill-btn ${isActive ? "active" : ""}`}
+                      onClick={() => setActiveGoalIdx(idx)}
                     >
-                      <div className="card-top-badges">
-                        <span className="brand-tag dark-mode-tag">{activeProduct.brand || "Bruce Médica"}</span>
-                        <span className="urgency-tag dark-mode-tag">
-                          <Flame size={12} className="text-orange" /> En Stock
-                        </span>
+                      <GoalIcon size={16} />
+                      <span>{goal.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Curated 3-Card Deck */}
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeGoal.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="goal-curated-deck"
+                >
+                  {curatedProducts.map((product, pIdx) => (
+                    <div key={pIdx} className="curated-device-card glass-white-card">
+                      <div className="card-top-tag">
+                        <span className="badge-teal">{activeGoal.badge}</span>
+                        <span className="stock-pill"><Flame size={12} className="text-copper" /> En Stock</span>
                       </div>
 
-                      {activeProduct.imageSvg ? (
-                        <div 
-                          className="card-svg-wrapper"
-                          dangerouslySetInnerHTML={{ __html: activeProduct.imageSvg }}
-                        />
-                      ) : (
-                        <img 
-                          src={activeProduct.image} 
-                          alt={activeProduct.name} 
-                          className="card-hero-img drop-shadow-2xl" 
-                        />
-                      )}
-
-                      {activeCategory.specs.map((spec, i) => (
-                        <div 
-                          key={i}
-                          className="hotspot-pin"
-                          style={{ left: `${spec.x}%`, top: `${spec.y}%` }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setActiveHotspot(activeHotspot === i ? null : i);
-                          }}
-                          onMouseEnter={() => setActiveHotspot(i)}
-                        >
-                          <span className="hotspot-ring"></span>
-                          <span className="hotspot-core">+</span>
-
-                          <AnimatePresence>
-                            {activeHotspot === i && (
-                              <motion.div 
-                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 5, scale: 0.9 }}
-                                className="hotspot-popover glass-dark"
-                              >
-                                <div className="popover-title"><Zap size={12} /> {spec.title}</div>
-                                <div className="popover-desc">{spec.desc}</div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="card-content-stage dark-bg">
-                      <div className="card-header-info">
-                        <span className="card-cat-badge">{activeProduct.category || activeCategory.label}</span>
-                        <h3 className="card-title text-white">{activeProduct.name}</h3>
-                      </div>
-
-                      <AnimatePresence mode="wait">
-                        {viewMode === "commercial" ? (
-                          <motion.div 
-                            key="commercial-view"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="view-mode-panel"
-                          >
-                            {activeProduct.variables?.options?.length > 0 && (
-                              <div className="variants-selector-box" onClick={(e) => e.stopPropagation()}>
-                                <span className="selector-label text-gray-400">{activeProduct.variables.name}:</span>
-                                <div className="variant-pills-row">
-                                  {activeProduct.variables.options.slice(0, 3).map((opt, idx) => {
-                                    const val = typeof opt === "object" ? opt.value : opt;
-                                    const isSelected = selectedVariant === val;
-                                    return (
-                                      <button
-                                        key={idx}
-                                        className={`variant-pill dark-pill ${isSelected ? "selected" : ""}`}
-                                        onClick={() => setSelectedVariant(val)}
-                                      >
-                                        {val}
-                                      </button>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            )}
-
-                            <div className="quantity-urgency-row dark-row" onClick={(e) => e.stopPropagation()}>
-                              <div className="quantity-counter">
-                                <button className="qty-btn dark-qty" onClick={() => setQuantity(q => q > 1 ? q - 1 : 1)}><Minus size={14} /></button>
-                                <span className="qty-val text-white">{quantity}</span>
-                                <button className="qty-btn dark-qty" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
-                              </div>
-                              <div className="live-viewers-badge">
-                                <UserCheck size={13} className="text-teal" />
-                                <span className="text-gray-300">14 en línea consultando</span>
-                              </div>
-                            </div>
-
-                            <div className="card-footer-checkout border-gray-700">
-                              <div className="price-stack">
-                                <span className="subtotal-price text-white">${subtotalPrice.toLocaleString()} MXN</span>
-                                <span className="tax-notice">IVA Incluido ({quantity} ud)</span>
-                              </div>
-
-                              <div className="actions-cluster">
-                                <button className="inspect-btn dark-inspect" onClick={(e) => { e.stopPropagation(); if (onOpenProductModal) onOpenProductModal(activeProduct); }}>
-                                  <Eye size={16} /> Ficha
-                                </button>
-                                <button className={`buy-now-btn ${addedItem === activeProduct.id ? "added" : ""}`} onClick={handleBuyClick}>
-                                  {addedItem === activeProduct.id ? <><Check size={16} /> ¡Añadido!</> : <><ShoppingCart size={16} /> Comprar</>}
-                                </button>
-                              </div>
-                            </div>
-                          </motion.div>
+                      <div className="card-image-box">
+                        {product.imageSvg ? (
+                          <div className="svg-container" dangerouslySetInnerHTML={{ __html: product.imageSvg }} />
                         ) : (
-                          <motion.div 
-                            key="diagnostic-view"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="view-mode-panel diagnostic-panel"
-                          >
-                            <div className="diagnostic-spec-card dark-spec">
-                              <h5><Info size={14} /> Aplicación Clínica</h5>
-                              <p className="text-gray-300">{activeCategory.tagline}</p>
-                            </div>
-
-                            <div className="diagnostic-specs-list">
-                              <div className="spec-row border-gray-700">
-                                <span className="text-gray-400">Certificación:</span>
-                                <strong className="text-white">Grado Médico CE / FDA</strong>
-                              </div>
-                              <div className="spec-row border-gray-700">
-                                <span className="text-gray-400">Mantenimiento:</span>
-                                <strong className="text-white">Soporte Oficial Bruce 24/7</strong>
-                              </div>
-                              <div className="spec-row border-gray-700">
-                                <span className="text-gray-400">Disponibilidad:</span>
-                                <strong className="text-green">Despacho Inmediato</strong>
-                              </div>
-                            </div>
-
-                            <button className="btn-full-spec dark-full-spec" onClick={(e) => { e.stopPropagation(); if (onOpenProductModal) onOpenProductModal(activeProduct); }}>
-                              Abrir Ficha Técnica Completa <ArrowRight size={16} />
-                            </button>
-                          </motion.div>
+                          <img src={product.image} alt={product.name} className="product-img" />
                         )}
-                      </AnimatePresence>
+                      </div>
 
+                      <div className="card-body-box">
+                        <h3>{product.name}</h3>
+                        <p className="product-desc">{product.description || activeGoal.subtitle}</p>
+                        
+                        <div className="price-cta-row">
+                          <div className="price-box">
+                            <span className="p-amount">${(product.price || 3499).toLocaleString()} MXN</span>
+                            <span className="p-tax">IVA Incluido</span>
+                          </div>
+
+                          <div className="btn-group">
+                            <button 
+                              className="btn-icon-inspect"
+                              onClick={() => onOpenProductModal && onOpenProductModal(product)}
+                              title="Ver ficha técnica completa"
+                            >
+                              <Eye size={16} />
+                            </button>
+                            <button 
+                              className="btn-quote-whatsapp"
+                              onClick={() => handleWhatsAppQuote(product.name)}
+                            >
+                              <MessageCircle size={16} /> Cotizar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
-                </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Bottom Action Footer */}
+              <div className="panel3-footer">
+                <button className="btn-full-shop-light" onClick={onShopClick}>
+                  Explorar Todo el Catálogo Bruce Médica <ArrowRight size={18} />
+                </button>
               </div>
 
             </motion.div>
           </div>
+
         </motion.div>
       </div>
 
-      {/* CSS Rules for Cinematic Scroll */}
+      {/* Styled JSX CSS Rules (LIGHT THEME X1000) */}
       <style>{`
-        .hero-cinematic-container {
+        .hero-cinematic-container-light {
           height: 400vh;
-          background: #020617; /* Very dark slate, almost black */
+          background: #ffffff;
           position: relative;
+          color: #0f172a;
         }
 
-        .hero-sticky-frame {
+        .hero-sticky-frame-light {
           position: sticky;
           top: 0;
           height: 100vh;
@@ -542,36 +340,34 @@ export default function Hero({
           overflow: hidden;
           display: flex;
           align-items: center;
+          background: #ffffff;
         }
 
-        /* Ambient Dark Glows */
-        .cinematic-glow {
+        /* Ambient Light Glow Orbs */
+        .light-glow {
           position: absolute;
           border-radius: 50%;
           filter: blur(140px);
           pointer-events: none;
           z-index: 0;
-          opacity: 0.5;
+          opacity: 0.6;
         }
-        .glow-teal { width: 600px; height: 600px; top: -200px; right: -100px; background: rgba(13, 148, 136, 0.4); animation: float 10s infinite alternate; }
-        .glow-blue { width: 500px; height: 500px; bottom: -200px; left: -100px; background: rgba(37, 99, 235, 0.3); animation: float 12s infinite alternate-reverse; }
-        
-        .cinematic-grid {
+        .glow-teal-light { width: 650px; height: 650px; top: -150px; right: -100px; background: rgba(13, 148, 136, 0.08); }
+        .glow-cyan-light { width: 550px; height: 550px; bottom: -150px; left: -100px; background: rgba(6, 182, 212, 0.06); }
+
+        .light-dot-grid {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-          background-size: 40px 40px;
+          background-image: radial-gradient(rgba(15, 23, 42, 0.04) 1.5px, transparent 1.5px);
+          background-size: 32px 32px;
           z-index: 0;
           pointer-events: none;
         }
 
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(40px, -40px); } }
-
-        /* The moving track */
         .hero-horizontal-track {
           display: flex;
           height: 100vh;
-          width: 300vw; /* 3 panels of 100vw */
+          width: 300vw;
           will-change: transform;
           z-index: 10;
         }
@@ -584,192 +380,294 @@ export default function Hero({
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
+          padding: 0 4rem;
         }
 
-        /* PANEL 1: Typography */
-        .panel-1-inner {
+        /* Common Glass Card for Light Theme */
+        .glass-white-card {
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(226, 232, 240, 0.9);
+          box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+          border-radius: 24px;
+        }
+
+        /* PANEL 1: MANIFIESTO */
+        .panel-1-content-light {
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
+          max-width: 900px;
           z-index: 2;
         }
 
-        .x-ray-title {
-          font-family: var(--font-heading);
-          font-size: 14vw;
-          font-weight: 900;
-          line-height: 0.85;
-          letter-spacing: -0.05em;
-          color: transparent;
-          background: url('https://images.unsplash.com/photo-1551076805-e1869033e561?q=80&w=2000&auto=format&fit=crop') center/cover;
-          -webkit-background-clip: text;
-          background-clip: text;
-          filter: drop-shadow(0 0 40px rgba(13, 148, 136, 0.3));
-          margin-bottom: 2rem;
-        }
-
-        .panel-1-desc {
-          font-size: 1.5rem;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.4;
-        }
-        
-        .scroll-prompt {
-          position: absolute;
-          bottom: 10vh;
-          display: flex;
-          flex-direction: column;
+        .manifesto-chip {
+          display: inline-flex;
           align-items: center;
-          gap: 1rem;
-          color: rgba(255, 255, 255, 0.5);
+          gap: 0.5rem;
+          padding: 0.45rem 1.1rem;
+          border-radius: 50px;
+          background: rgba(13, 148, 136, 0.08);
+          border: 1px solid rgba(13, 148, 136, 0.2);
+          color: #0d9488;
           font-size: 0.85rem;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
+          font-weight: 700;
+          margin-bottom: 1.5rem;
         }
 
-        .mouse { width: 24px; height: 36px; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; display: flex; justify-content: center; padding-top: 6px; }
-        .wheel { width: 4px; height: 8px; background: var(--accent-color); border-radius: 2px; animation: scrollWheel 2s infinite; }
-        @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(12px); opacity: 0; } }
+        .manifesto-title {
+          font-family: var(--font-heading);
+          font-size: 3.8rem;
+          font-weight: 900;
+          line-height: 1.08;
+          letter-spacing: -0.04em;
+          color: #0f172a;
+          margin-bottom: 1.5rem;
+        }
 
-        /* PANEL 2: Scanner UI */
-        .panel-2-inner {
+        .gradient-teal-text {
+          background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .manifesto-desc {
+          font-size: 1.2rem;
+          line-height: 1.6;
+          color: #475569;
+          max-width: 720px;
+          margin-bottom: 2.5rem;
+        }
+
+        .manifesto-badges-row {
+          display: flex;
+          gap: 1.25rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .m-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          padding: 0.6rem 1.1rem;
+          border-radius: 50px;
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: #334155;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .scroll-prompt-light {
+          position: absolute;
+          bottom: -15vh;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
+          gap: 0.75rem;
+          color: #94a3b8;
+          font-size: 0.82rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
         }
 
-        .scanner-ui {
-          position: relative;
-          width: 400px;
-          height: 400px;
+        .mouse-light { width: 22px; height: 34px; border: 2px solid #cbd5e1; border-radius: 12px; display: flex; justify-content: center; padding-top: 5px; }
+        .wheel-light { width: 4px; height: 7px; background: #0d9488; border-radius: 2px; animation: scrollWheel 2s infinite; }
+        @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+
+        /* PANEL 2: LAB HUD */
+        .panel-2-content-light {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          max-width: 1100px;
+        }
+
+        .lab-header { text-align: center; margin-bottom: 2.5rem; }
+        .lab-tag { font-size: 0.82rem; font-weight: 800; color: #0d9488; letter-spacing: 0.1em; text-transform: uppercase; }
+        .lab-header h2 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 800; color: #0f172a; }
+
+        .lab-scanner-stage {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2.5rem;
+          width: 100%;
+          align-items: center;
+        }
+
+        .wave-monitor-card { padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .wave-card-top { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 700; color: #475569; }
+        .live-dot { width: 8px; height: 8px; background: #0d9488; border-radius: 50%; box-shadow: 0 0 10px #0d9488; }
+
+        .waveform-display { background: #f8fafc; border-radius: 16px; padding: 1.5rem 1rem; border: 1px solid #e2e8f0; }
+        .pulse-wave-path { animation: waveDash 3s linear infinite; }
+
+        .wave-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; }
+        .metric-box { display: flex; flex-direction: column; gap: 0.2rem; background: #ffffff; padding: 0.75rem; border-radius: 12px; border: 1px solid #f1f5f9; }
+        .m-label { font-size: 0.72rem; font-weight: 600; color: #94a3b8; }
+        .m-val { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; }
+
+        .tech-nodes-column { display: flex; flex-direction: column; gap: 0.9rem; }
+        .tech-node-item {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+          padding: 1.1rem 1.35rem;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          border: 1px solid #e2e8f0;
+        }
+        .tech-node-item:hover, .tech-node-item.active {
+          border-color: #0d9488;
+          box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.15);
+          transform: translateX(6px);
+        }
+        .node-icon-box {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          background: rgba(13, 148, 136, 0.1);
+          color: #0d9488;
           display: flex;
           align-items: center;
           justify-content: center;
+          flex-shrink: 0;
+        }
+        .node-info h4 { font-size: 0.98rem; font-weight: 700; color: #0f172a; margin-bottom: 0.15rem; }
+        .node-info p { font-size: 0.8rem; color: #64748b; }
+
+        /* PANEL 3: NEW APPROACH - THERAPEUTIC OBJECTIVES */
+        .panel-3-content-light {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          max-width: 1200px;
+        }
+
+        .panel3-header { text-align: center; margin-bottom: 1.75rem; }
+        .section-pill-light { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.4rem 1rem; border-radius: 50px; background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.2); font-size: 0.82rem; font-weight: 700; color: #0d9488; margin-bottom: 0.5rem; }
+        .panel3-header h2 { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: #0f172a; }
+
+        .goal-selector-pills { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+        .goal-pill-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+          padding: 0.65rem 1.35rem;
+          border-radius: 50px;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          color: #475569;
+          font-family: var(--font-heading);
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .goal-pill-btn:hover { border-color: #0d9488; color: #0d9488; }
+        .goal-pill-btn.active { background: #0d9488; color: #ffffff; border-color: #0d9488; box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3); }
+
+        .goal-curated-deck {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.75rem;
+          width: 100%;
           margin-bottom: 2rem;
         }
 
-        .scanner-ring {
-          position: absolute;
-          border-radius: 50%;
-          border: 1px solid rgba(13, 148, 136, 0.3);
-          box-shadow: 0 0 30px rgba(13, 148, 136, 0.1) inset;
+        .curated-device-card {
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transition: all 0.3s ease;
         }
-        
-        .outer-ring { width: 400px; height: 400px; border-style: dashed; animation: spin 20s linear infinite; }
-        .inner-ring { width: 280px; height: 280px; border: 2px solid rgba(13, 148, 136, 0.6); animation: spinReverse 15s linear infinite; }
-
-        .scanner-crosshair { color: var(--accent-color); filter: drop-shadow(0 0 10px var(--accent-color)); opacity: 0.8; }
-        .scanner-pulse { position: absolute; color: var(--accent-color); animation: pulseScale 2s infinite; }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
-        @keyframes pulseScale { 0% { transform: scale(0.8); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 20px var(--accent-color)); } 100% { transform: scale(0.8); opacity: 0.8; } }
-
-        .scanner-title { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; text-shadow: 0 0 20px rgba(13, 148, 136, 0.5); }
-        .scanner-subtitle { font-size: 1.1rem; color: var(--accent-color); font-family: monospace; letter-spacing: 0.1em; }
-
-        /* PANEL 3: Catalog/Store */
-        .panel-3-inner {
-          width: 100%;
-          max-width: 1280px;
-          padding: 0 2rem;
+        .curated-device-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 20px 40px -10px rgba(13, 148, 136, 0.15);
+          border-color: #0d9488;
         }
 
-        /* Adjustments for Panel 3 existing classes into dark mode */
-        .hero-x1000-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
-        .hero-left-deck { display: flex; flex-direction: column; gap: 1.5rem; }
-        .hero-top-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-        .hero-live-chip { background: rgba(13, 148, 136, 0.2); color: var(--accent-color); border: 1px solid rgba(13, 148, 136, 0.4); padding: 0.45rem 1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .live-pulse { width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); animation: blink 1.5s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
-        
-        .hero-rating-badge { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 0.45rem 0.9rem; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .stars-row { display: flex; gap: 0.15rem; }
+        .card-top-tag { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem; }
+        .badge-teal { background: rgba(13, 148, 136, 0.1); color: #0d9488; padding: 0.25rem 0.65rem; border-radius: 50px; }
+        .stock-pill { display: flex; align-items: center; gap: 0.3rem; color: #64748b; }
 
-        .hero-x1000-title { font-family: var(--font-heading); font-size: 3.2rem; font-weight: 800; line-height: 1.1; color: #fff; }
-        .gradient-text { background: linear-gradient(135deg, #2dd4bf, #0284c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card-image-box {
+          height: 160px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1.25rem;
+          background: #f8fafc;
+          border-radius: 16px;
+          padding: 1rem;
+        }
+        .product-img { max-height: 130px; object-fit: contain; }
+        .svg-container { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; }
 
-        .smart-category-matrix { display: flex; flex-wrap: wrap; gap: 0.65rem; }
-        .matrix-tab-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; padding: 0.65rem 1.25rem; border-radius: 50px; font-weight: 600; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; transition: all 0.25s; position: relative; }
-        .matrix-tab-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
-        .matrix-tab-btn.active { background: var(--accent-color); color: #fff; border-color: var(--accent-color); box-shadow: 0 0 20px rgba(13, 148, 136, 0.4); }
-        .tab-active-glow-bar { position: absolute; bottom: -4px; left: 20%; right: 20%; height: 3px; background: #fff; border-radius: 10px; box-shadow: 0 0 8px #fff; }
+        .card-body-box h3 { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 0.4rem; line-height: 1.3; }
+        .product-desc { font-size: 0.8rem; color: #64748b; line-height: 1.4; margin-bottom: 1.25rem; height: 2.4em; overflow: hidden; }
 
-        .glass-dark { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1; }
-        .glass-dark-border { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(13, 148, 136, 0.3); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        .glass-dark-border:hover { border-color: var(--accent-color); box-shadow: 0 0 40px rgba(13, 148, 136, 0.2); }
-        
-        .category-clinical-banner { position: relative; padding: 0.95rem 1.35rem; border-radius: 16px; display: flex; align-items: center; gap: 0.85rem; font-size: 0.93rem; overflow: hidden; }
-        .banner-accent-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-color); }
+        .price-cta-row { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+        .p-amount { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 800; color: #0f172a; display: block; }
+        .p-tax { font-size: 0.68rem; color: #94a3b8; }
 
-        .hero-main-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
-        .btn-accent-hero { background: var(--accent-color); color: #fff; border: none; padding: 0.9rem 1.75rem; border-radius: 14px; font-weight: 700; font-size: 0.98rem; display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; box-shadow: 0 0 20px rgba(13, 148, 136, 0.4); transition: transform 0.2s; }
-        .btn-accent-hero:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(13, 148, 136, 0.6); }
-        .btn-whatsapp-quote { background: #25d366; color: #fff; border: none; padding: 0.9rem 1.6rem; border-radius: 14px; font-weight: 700; font-size: 0.98rem; display: inline-flex; align-items: center; gap: 0.55rem; cursor: pointer; transition: transform 0.2s; }
-        .btn-whatsapp-quote:hover { transform: translateY(-2px); background: #20ba5a; }
+        .btn-group { display: flex; gap: 0.4rem; }
+        .btn-icon-inspect { width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #334155; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .btn-icon-inspect:hover { background: #ffffff; border-color: #0d9488; color: #0d9488; }
 
-        /* Panel 3 3D Card Dark mode overrides */
-        .hero-right-showcase { display: flex; flex-direction: column; gap: 1.1rem; align-items: center; }
-        .view-mode-switcher-bar { display: flex; padding: 0.35rem; border-radius: 50px; gap: 0.25rem; }
-        .mode-btn { background: transparent; color: #94a3b8; border: none; padding: 0.5rem 1.1rem; border-radius: 50px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; transition: 0.2s; }
-        .mode-btn.active { background: rgba(255, 255, 255, 0.1); color: #fff; }
-        
-        .perspective-container { perspective: 1200px; width: 100%; max-width: 440px; }
-        .showcase-3d-card { position: relative; border-radius: 32px; overflow: hidden; transform-style: preserve-3d; cursor: pointer; transition: 0.3s; }
-        .card-specular-glare { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
-        .card-image-stage { height: 260px; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; padding: 2.25rem; overflow: hidden; }
-        .card-top-badges { position: absolute; top: 1.1rem; left: 1.1rem; right: 1.1rem; display: flex; justify-content: space-between; z-index: 5; }
-        .dark-mode-tag { background: rgba(15, 23, 42, 0.8) !important; color: #fff !important; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .brand-tag { font-size: 0.72rem; font-weight: 800; padding: 0.28rem 0.75rem; border-radius: 50px; text-transform: uppercase; }
-        .urgency-tag { font-size: 0.72rem; font-weight: 700; padding: 0.28rem 0.75rem; border-radius: 50px; display: inline-flex; align-items: center; gap: 0.3rem; }
-        
-        .card-hero-img { max-height: 190px; object-fit: contain; transition: 0.4s; }
-        .showcase-3d-card:hover .card-hero-img { transform: scale(1.08); }
-        
-        .hotspot-pin { position: absolute; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 8; }
-        .hotspot-ring { position: absolute; inset: 0; border-radius: 50%; background: var(--accent-color); opacity: 0.5; animation: pulseRing 1.8s infinite; }
-        .hotspot-core { position: relative; z-index: 2; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-color); color: #fff; font-size: 0.8rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px var(--accent-color); }
-        .hotspot-popover { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 200px; padding: 0.75rem; border-radius: 14px; color: #fff; pointer-events: none; z-index: 20; }
-        
-        .dark-bg { background: #0f172a; border-top: 1px solid rgba(255, 255, 255, 0.05); }
-        .card-content-stage { padding: 1.6rem 1.85rem; display: flex; flex-direction: column; gap: 1.15rem; }
-        .card-cat-badge { font-size: 0.75rem; font-weight: 800; color: var(--accent-color); text-transform: uppercase; }
-        .card-title { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; line-height: 1.3; }
-        
-        .view-mode-panel { display: flex; flex-direction: column; gap: 1.05rem; }
-        .variants-selector-box { display: flex; flex-direction: column; gap: 0.45rem; }
-        .variant-pills-row { display: flex; gap: 0.45rem; flex-wrap: wrap; }
-        .dark-pill { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; padding: 0.32rem 0.75rem; border-radius: 10px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .dark-pill:hover { border-color: var(--accent-color); color: var(--accent-color); }
-        .dark-pill.selected { background: rgba(13, 148, 136, 0.2); border-color: var(--accent-color); color: var(--accent-light); }
-        
-        .dark-row { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.55rem 0.95rem; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
-        .quantity-counter { display: flex; align-items: center; gap: 0.65rem; }
-        .dark-qty { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .dark-qty:hover { background: var(--accent-color); border-color: var(--accent-color); }
-        .qty-val { font-weight: 800; min-width: 16px; text-align: center; }
-        
-        .card-footer-checkout { display: flex; justify-content: space-between; align-items: center; padding-top: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-        .subtotal-price { font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; }
-        .tax-notice { font-size: 0.7rem; color: #64748b; font-weight: 500; display: block; }
-        
-        .actions-cluster { display: flex; gap: 0.5rem; }
-        .dark-inspect { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 0.65rem 0.95rem; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; transition: 0.2s; }
-        .dark-inspect:hover { background: var(--accent-color); border-color: var(--accent-color); }
-        .buy-now-btn { background: var(--accent-color); color: #fff; border: none; padding: 0.65rem 1.25rem; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; transition: 0.2s; box-shadow: 0 0 15px rgba(13, 148, 136, 0.3); }
-        .buy-now-btn:hover { transform: translateY(-1px); box-shadow: 0 0 20px rgba(13, 148, 136, 0.5); }
-        .buy-now-btn.added { background: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .btn-quote-whatsapp {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.5rem 0.9rem;
+          border-radius: 10px;
+          background: #25d366;
+          color: #ffffff;
+          border: none;
+          font-weight: 700;
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: 0.2s;
+        }
+        .btn-quote-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
 
-        .diagnostic-panel { gap: 0.85rem; }
-        .dark-spec { background: rgba(13, 148, 136, 0.1); padding: 0.9rem 1.1rem; border-radius: 14px; border-left: 4px solid var(--accent-color); }
-        .dark-spec h5 { font-size: 0.84rem; font-weight: 800; color: var(--accent-color); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem; }
-        .diagnostic-specs-list { display: flex; flex-direction: column; gap: 0.45rem; }
-        .spec-row { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.35rem 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
-        .dark-full-spec { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; padding: 0.7rem; border-radius: 12px; font-weight: 700; font-size: 0.88rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: 0.2s; margin-top: 0.25rem; }
-        .dark-full-spec:hover { background: var(--accent-color); border-color: var(--accent-color); }
+        .panel3-footer { margin-top: 0.5rem; }
+        .btn-full-shop-light {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.65rem;
+          padding: 0.9rem 2rem;
+          border-radius: 14px;
+          background: #0f172a;
+          color: #ffffff;
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 0.95rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+        }
+        .btn-full-shop-light:hover { background: #0d9488; transform: translateY(-2px); box-shadow: 0 12px 28px rgba(13, 148, 136, 0.3); }
+
+        .text-teal { color: #0d9488; }
+        .text-copper { color: #f97316; }
+        .text-slate { color: #334155; }
+
+        @media (max-width: 1024px) {
+          .manifesto-title { font-size: 2.5rem; }
+          .lab-scanner-stage { grid-template-columns: 1fr; }
+          .goal-curated-deck { grid-template-columns: 1fr; }
+        }
       `}</style>
     </section>
   );
