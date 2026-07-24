@@ -18,6 +18,7 @@ import SpecialtyCurtain from "./components/SpecialtyCurtain";
 import HomeQuiz from "./components/HomeQuiz";
 import HomeCompare from "./components/HomeCompare";
 import HomeReviews from "./components/HomeReviews";
+import HomeCTA from "./components/HomeCTA";
 
 // Mock Data
 import { PRODUCTS } from "./data/products";
@@ -99,16 +100,12 @@ export default function App() {
   useEffect(() => {
     async function loadDynamicCatalog() {
       try {
-        console.log("Cargando catálogo dinámico desde Wix Headless...");
-        const wixProducts = await fetchProductsFromWix();
-        if (wixProducts && wixProducts.length > 0) {
-          console.log(`Catálogo Wix cargado con éxito. ${wixProducts.length} productos obtenidos.`);
-          setProducts(wixProducts);
-        } else {
-          console.log("Colección Wix vacía. Usando catálogo estático de respaldo.");
+        const remoteProducts = await fetchProductsFromWix();
+        if (remoteProducts && remoteProducts.length > 0) {
+          setProducts(remoteProducts);
         }
       } catch (err) {
-        console.warn("Fallo al conectar con Wix Headless. Usando catálogo estático de respaldo.", err);
+        console.error("Error cargando el catálogo dinámico, usando local fallback", err);
       } finally {
         setLoadingWix(false);
       }
@@ -116,21 +113,20 @@ export default function App() {
     loadDynamicCatalog();
   }, []);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-  
-  const [categoryFilter, setCategoryFilter] = useState(null);
-  const [brandFilter, setBrandFilter] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  
-  // Cart state: [ { product, variantName, variantValue, quantity } ]
+  const [activeTab, setActiveTab] = useState("home");
   const [cartItems, setCartItems] = useState([]);
-  
-  // Modal states
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
   
+  // States for Shop filtering
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [brandFilter, setBrandFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Newsletter subscription states
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
@@ -145,24 +141,24 @@ export default function App() {
     }, 4000);
   };
 
-  // Manage transitions and page scroll reset
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Sync activeTab with route to handle direct navigation
+    const path = location.pathname.split("/")[1] || "home";
+    setActiveTab(path);
   }, [location.pathname]);
 
-  // Handlers
-  const handleAddToCart = (itemsToAdd) => {
+  const handleAddToCart = (newItems) => {
     setCartItems(prevItems => {
       const updatedItems = [...prevItems];
-      
-      itemsToAdd.forEach(newItem => {
-        const existingIndex = updatedItems.findIndex(
-          item => item.product.id === newItem.product.id && 
-                  item.variantValue === newItem.variantValue
+
+      newItems.forEach(newItem => {
+        const existingItemIndex = updatedItems.findIndex(item => 
+          item.product.id === newItem.product.id && item.variantValue === newItem.variantValue
         );
 
-        if (existingIndex > -1) {
-          updatedItems[existingIndex].quantity += newItem.quantity;
+        if (existingItemIndex > -1) {
+          updatedItems[existingItemIndex].quantity += newItem.quantity;
         } else {
           updatedItems.push(newItem);
         }
@@ -232,9 +228,6 @@ export default function App() {
 
   const categoriesList = Array.from(new Set(products.map(p => p.category))).filter(Boolean).sort();
   const brandsList = Array.from(new Set(products.map(p => p.brand))).filter(Boolean).sort();
-
-  // Filtered products for home screen featured list (e.g. first 3 products)
-  const featuredProducts = products.slice(0, 3);
 
   // Subpage wrapper transition variants
   const pageVariants = {
@@ -361,6 +354,7 @@ export default function App() {
                 <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
                 <HomeCompare onQuickAdd={handleQuickAdd} products={products} />
                 <HomeReviews onOpenProductModal={handleOpenProductModal} products={products} />
+                <HomeCTA />
               </motion.div>
             } />
             
