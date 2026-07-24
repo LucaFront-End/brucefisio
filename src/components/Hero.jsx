@@ -209,16 +209,16 @@ export default function Hero({
             </div>
           </div>
 
-          {/* ================= SLIDE 3: LA RESPUESTA BIO-MÉDICA (SOLUTIONS) ================= */}
-          <div className="hero-panel slide-3">
-            <div className="slide-3-container">
-              <div className="slide-header text-center">
-                <div className="chip-pill-solution inline-flex">
-                  <CheckCircle2 size={14} className="text-teal" />
-                  <span>La Solución Bruce Médica</span>
+          {/* ================= SLIDE 3: LA RESPUESTA BIO-MÉDICA (RELIEF / SOLUTION THEME) ================= */}
+          <div className="hero-panel slide-3 theme-light-relief">
+            <div className="slide-3-container-relief">
+              <div className="slide-header text-center slide-3-header-adjusted">
+                <div className="chip-pill-relief inline-flex">
+                  <span className="live-success-dot"></span>
+                  <span>ALIVIO Y CRECIMIENTO CLÍNICO</span>
                 </div>
-                <h2>Ingeniería Diseñada para Eliminar Fricciones</h2>
-                <p className="subtext">Tecnología de grado hospitalario calibrada para potenciar tus resultados.</p>
+                <h2 className="relief-title">Recupera el control. <span className="highlight-relief">Multiplica resultados.</span></h2>
+                <p className="subtext-relief">Despídete de la fricción. Adquiere ingeniería de grado hospitalario diseñada para desinflamar rápido, no fallar nunca y escalar tus ingresos diarios.</p>
               </div>
 
               {/* Solutions Grid */}
@@ -231,30 +231,31 @@ export default function Hero({
                   return (
                     <div 
                       key={sol.id}
-                      className={`solution-card glass-clean-card ${isHighlighted ? "highlighted" : ""}`}
+                      className={`solution-card-relief ${isHighlighted ? "highlighted-relief" : ""}`}
                       onClick={() => {
                         if (onOpenProductModal && matchingProd) onOpenProductModal(matchingProd);
                       }}
                     >
                       <div className="sol-card-header">
                         <div className="sol-icon-box" style={{ background: `${sol.accentColor}15`, color: sol.accentColor }}>
-                          <IconComp size={22} />
+                          <IconComp size={22} className="pulse-icon-hover" />
                         </div>
                         <span className="sol-tagline" style={{ color: sol.accentColor }}>{sol.tagline}</span>
                       </div>
 
-                      <div className="sol-img-stage">
+                      <div className="sol-img-stage-relief">
                         {matchingProd?.imageSvg ? (
-                          <div className="svg-w" dangerouslySetInnerHTML={{ __html: matchingProd.imageSvg }} />
+                          <div className="svg-w-relief" dangerouslySetInnerHTML={{ __html: matchingProd.imageSvg }} />
                         ) : (
                           <img src={matchingProd?.image || "/images/hero_device.png"} alt={sol.solutionTitle} />
                         )}
+                        <div className="glow-backdrop" style={{ background: `radial-gradient(circle, ${sol.accentColor}20 0%, transparent 70%)` }}></div>
                       </div>
 
-                      <h3>{sol.solutionTitle}</h3>
-                      <p>{sol.description}</p>
+                      <h3 className="sol-title-relief">{sol.solutionTitle}</h3>
+                      <p className="sol-desc-relief">{sol.description}</p>
 
-                      <div className="sol-metric-pill">
+                      <div className="sol-metric-pill-relief">
                         <TrendingUp size={16} className="text-teal" />
                         <div>
                           <strong>{sol.metricVal}</strong>
@@ -263,7 +264,7 @@ export default function Hero({
                       </div>
 
                       <button 
-                        className="btn-sol-quote"
+                        className="btn-sol-quote-relief"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleWhatsAppQuote(sol.solutionTitle);
@@ -277,7 +278,7 @@ export default function Hero({
               </div>
 
               <div className="slide-3-footer-action">
-                <button className="btn-primary-dark" onClick={onShopClick}>
+                <button className="btn-primary-teal" onClick={onShopClick}>
                   Ver Todos los Equipos y Soluciones <ArrowRight size={18} />
                 </button>
               </div>
@@ -616,27 +617,84 @@ export default function Hero({
           color: #f8fafc;
         }
 
-        /* SLIDE 3: SOLUTIONS */
-        .slide-3-container {
+        /* SLIDE 3: SOLUTIONS (RELIEF THEME) */
+        .theme-light-relief {
+          background: #ffffff;
+          background-image: radial-gradient(circle at center, rgba(13, 148, 136, 0.05) 0%, transparent 70%);
+        }
+
+        .slide-3-container-relief {
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
           max-width: 1240px;
+          height: 100%;
+          justify-content: center;
         }
 
-        .chip-pill-solution {
+        .slide-3-header-adjusted {
+          margin-bottom: 3rem;
+        }
+
+        .chip-pill-relief {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
-          padding: 0.4rem 1rem;
+          gap: 0.6rem;
+          padding: 0.4rem 1.2rem;
           border-radius: 50px;
           background: rgba(13, 148, 136, 0.08);
           border: 1px solid rgba(13, 148, 136, 0.2);
-          font-size: 0.82rem;
-          font-weight: 700;
+          font-size: 0.75rem;
+          font-weight: 800;
           color: #0d9488;
-          margin-bottom: 0.5rem;
+          margin-bottom: 1rem;
+          letter-spacing: 0.05em;
+        }
+
+        .live-success-dot {
+          width: 8px;
+          height: 8px;
+          background: #10b981;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #10b981;
+          animation: reliefPulse 2s infinite;
+        }
+
+        @keyframes reliefPulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } 100% { opacity: 1; transform: scale(1); } }
+
+        .relief-title {
+          font-family: var(--font-heading);
+          font-size: 2.8rem;
+          font-weight: 900;
+          color: #0f172a;
+          margin: 0.5rem 0;
+          letter-spacing: -0.02em;
+        }
+
+        .highlight-relief {
+          color: #0d9488;
+          position: relative;
+        }
+
+        .highlight-relief::after {
+          content: "";
+          position: absolute;
+          bottom: 4px;
+          left: 0;
+          width: 100%;
+          height: 10px;
+          background: #0d9488;
+          opacity: 0.15;
+          z-index: -1;
+        }
+
+        .subtext-relief {
+          font-size: 1.1rem;
+          color: #475569;
+          max-width: 680px;
+          margin: 0.5rem auto 0;
+          line-height: 1.6;
         }
 
         .solutions-matrix-grid {
@@ -644,24 +702,33 @@ export default function Hero({
           grid-template-columns: repeat(4, 1fr);
           gap: 1.5rem;
           width: 100%;
-          margin: 1.5rem 0;
+          margin: 2rem 0;
         }
 
-        .solution-card {
+        .solution-card-relief {
           padding: 1.5rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           height: 420px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 24px;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .solution-card:hover, .solution-card.highlighted {
-          transform: translateY(-6px);
+        .solution-card-relief:hover, .solution-card-relief.highlighted-relief {
+          transform: translateY(-8px);
           border-color: #0d9488;
-          box-shadow: 0 20px 40px -10px rgba(13, 148, 136, 0.2);
+          box-shadow: 0 20px 40px -10px rgba(13, 148, 136, 0.15);
         }
+
+        .solution-card-relief:hover .pulse-icon-hover {
+          animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-3px); } 100% { transform: translateY(0); } }
 
         .sol-card-header {
           display: flex;
@@ -685,79 +752,113 @@ export default function Hero({
           letter-spacing: 0.05em;
         }
 
-        .sol-img-stage {
+        .sol-img-stage-relief {
           height: 120px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #f8fafc;
+          position: relative;
           border-radius: 16px;
-          padding: 0.75rem;
-          margin: 0.8rem 0;
+          margin: 1rem 0;
         }
 
-        .sol-img-stage img { max-height: 90px; object-fit: contain; }
-        .svg-w { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+        .glow-backdrop {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+        }
 
-        .solution-card h3 {
+        .sol-img-stage-relief img, .svg-w-relief {
+          max-height: 100px;
+          object-fit: contain;
+          z-index: 1;
+          filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
+        }
+
+        .svg-w-relief { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+
+        .sol-title-relief {
           font-family: var(--font-heading);
           font-size: 1.15rem;
           font-weight: 800;
           color: #0f172a;
           line-height: 1.25;
-          margin-bottom: 0.3rem;
+          margin-bottom: 0.4rem;
         }
 
-        .solution-card p {
-          font-size: 0.78rem;
+        .sol-desc-relief {
+          font-size: 0.8rem;
           color: #64748b;
-          line-height: 1.4;
-          height: 3em;
+          line-height: 1.45;
+          height: 3.5em;
           overflow: hidden;
         }
 
-        .sol-metric-pill {
+        .sol-metric-pill-relief {
           display: flex;
           align-items: center;
           gap: 0.6rem;
           background: #f0fdf4;
           padding: 0.5rem 0.8rem;
-          border-radius: 10px;
+          border-radius: 12px;
           margin: 0.75rem 0;
         }
 
-        .sol-metric-pill strong {
+        .sol-metric-pill-relief strong {
           display: block;
-          font-size: 0.8rem;
+          font-size: 0.82rem;
           font-weight: 800;
           color: #0d9488;
-          line-height: 1;
+          line-height: 1.1;
         }
 
-        .sol-metric-pill span {
-          font-size: 0.68rem;
+        .sol-metric-pill-relief span {
+          font-size: 0.7rem;
           color: #166534;
         }
 
-        .btn-sol-quote {
+        .btn-sol-quote-relief {
           width: 100%;
           background: #0f172a;
           color: #ffffff;
           border: none;
-          padding: 0.75rem;
+          padding: 0.85rem;
           border-radius: 12px;
           font-weight: 700;
-          font-size: 0.82rem;
+          font-size: 0.85rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.4rem;
+          gap: 0.5rem;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
         }
 
-        .btn-sol-quote:hover {
+        .btn-sol-quote-relief:hover {
           background: #0d9488;
+          box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+        }
+
+        .btn-primary-teal {
+          background: #0d9488;
+          color: #ffffff;
+          border: none;
+          padding: 1rem 2.5rem;
+          border-radius: 50px;
+          font-family: var(--font-heading);
+          font-weight: 700;
+          font-size: 0.95rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-primary-teal:hover {
+          background: #0f172a;
+          transform: scale(1.04);
+          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
         }
 
         .text-red { color: #ef4444; }
