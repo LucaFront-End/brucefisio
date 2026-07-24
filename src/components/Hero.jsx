@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { 
   ArrowRight, 
   ShieldCheck, 
@@ -83,9 +83,43 @@ export default function Hero({
   const [activeHotspot, setActiveHotspot] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
 
+  const sectionRef = useRef(null);
+  const cardRef = useRef(null);
+
   // 3D Tilt Card Mouse Parallax state
   const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50 });
-  const cardRef = useRef(null);
+
+  // Awwwards Scroll Scrubbing Transforms (220vh track)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Morphing Typography Transforms
+  const titleScale = useTransform(scrollYProgress, [0, 0.45, 0.9], [1.25, 1, 0.92]);
+  const titleY = useTransform(scrollYProgress, [0, 0.45, 0.9], [0, -60, -90]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.5, 0.9], [1, 0.92, 0.88]);
+
+  // 3D Card Scroll Scrubbing Transforms
+  const cardRotateY = useTransform(scrollYProgress, [0.08, 0.82], [0, 360]);
+  const cardScale = useTransform(scrollYProgress, [0, 0.45, 0.9], [0.92, 1.06, 1]);
+  const cardY = useTransform(scrollYProgress, [0, 0.45, 0.9], [30, 0, -15]);
+  const cardShadow = useTransform(
+    scrollYProgress,
+    [0.1, 0.5, 0.9],
+    [
+      "0px 10px 30px rgba(15,23,42,0.08)",
+      "0px 30px 80px rgba(13,148,136,0.32)",
+      "0px 10px 30px rgba(15,23,42,0.08)"
+    ]
+  );
+
+  // Parallax Spec Badges Transforms
+  const badge1Y = useTransform(scrollYProgress, [0.15, 0.45], [45, 0]);
+  const badge1Opacity = useTransform(scrollYProgress, [0.15, 0.40], [0, 1]);
+
+  const badge2Y = useTransform(scrollYProgress, [0.30, 0.60], [45, 0]);
+  const badge2Opacity = useTransform(scrollYProgress, [0.30, 0.55], [0, 1]);
 
   const activeCategory = SMART_CATEGORIES[activeTabIdx];
 
@@ -177,42 +211,67 @@ export default function Hero({
   const subtotalPrice = (activeProduct.price || 0) * quantity;
 
   return (
-    <section className="hero-x1000-section">
-      {/* Background Interactive Ambient Particles & Glows */}
-      <div className="hero-ambient-glow glow-teal"></div>
-      <div className="hero-ambient-glow glow-copper"></div>
-      <div className="hero-ambient-glow glow-cyan"></div>
-      <div className="hero-grid-pattern"></div>
+    <section ref={sectionRef} className="hero-scroll-wrapper">
+      <div className="hero-sticky-viewport">
 
-      <div className="container hero-x1000-grid">
-        
-        {/* Left Column: Cyber-Clinical Selector Deck & Copy */}
-        <div className="hero-left-deck">
+        {/* Background Interactive Ambient Particles & Glows */}
+        <div className="hero-ambient-glow glow-teal"></div>
+        <div className="hero-ambient-glow glow-copper"></div>
+        <div className="hero-ambient-glow glow-cyan"></div>
+        <div className="hero-grid-pattern"></div>
+
+        {/* Floating Parallax Spec Chips */}
+        <motion.div 
+          style={{ y: badge1Y, opacity: badge1Opacity }}
+          className="hero-floating-chip chip-left glass"
+        >
+          <Zap size={14} className="text-teal" />
+          <span>Frecuencia Bio-Modulada 4.4 MHz</span>
+        </motion.div>
+
+        <motion.div 
+          style={{ y: badge2Y, opacity: badge2Opacity }}
+          className="hero-floating-chip chip-right glass"
+        >
+          <Award size={14} className="text-copper" />
+          <span>Certificación Médica FDA & CE</span>
+        </motion.div>
+
+        <div className="container hero-x1000-grid">
           
-          <div className="hero-top-meta">
-            <div className="hero-live-chip">
-              <span className="live-pulse"></span>
-              Catálogo en Vivo & Control Bio-Médico
-            </div>
+          {/* Left Column: Morphing Typography & Selector Deck */}
+          <div className="hero-left-deck">
             
-            <div className="hero-rating-badge">
-              <div className="stars-row">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={13} fill="var(--secondary-accent)" color="var(--secondary-accent)" />
-                ))}
+            <div className="hero-top-meta">
+              <div className="hero-live-chip">
+                <span className="live-pulse"></span>
+                Catálogo en Vivo & Control Bio-Médico
               </div>
-              <span>4.9/5 por +120 Clínicas</span>
+              
+              <div className="hero-rating-badge">
+                <div className="stars-row">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={13} fill="var(--secondary-accent)" color="var(--secondary-accent)" />
+                  ))}
+                </div>
+                <span>4.9/5 por +120 Clínicas</span>
+              </div>
             </div>
-          </div>
 
-          <h1 className="hero-x1000-title">
-            Equipamiento Médico <br />
-            <span className="gradient-text">& Fisioterapia Avanzada</span>
-          </h1>
+            {/* Awwwards Morphing Typography Title */}
+            <motion.div 
+              style={{ scale: titleScale, y: titleY, opacity: titleOpacity }}
+              className="hero-title-morph-container"
+            >
+              <h1 className="hero-x1000-title">
+                Equipamiento Médico <br />
+                <span className="gradient-text">& Fisioterapia Avanzada</span>
+              </h1>
+            </motion.div>
 
-          <p className="hero-x1000-desc">
-            Interactúa con nuestro escáner interactivo por especialidad para explorar especificaciones técnicas y cotizar en tiempo real.
-          </p>
+            <p className="hero-x1000-desc">
+              Interactúa con nuestro escáner interactivo por especialidad para explorar especificaciones técnicas y cotizar en tiempo real.
+            </p>
 
           {/* Cyber-Clinical Category Tabs */}
           <div 
@@ -305,7 +364,7 @@ export default function Hero({
             </button>
           </div>
 
-          {/* 3D Tilt Card Frame Container */}
+          {/* 3D Tilt & Scroll Scrubbing Card Frame Container */}
           <div 
             className="perspective-container"
             onMouseEnter={() => setIsHovered(true)}
@@ -317,6 +376,12 @@ export default function Hero({
           >
             <motion.div
               ref={cardRef}
+              style={{
+                rotateY: cardRotateY,
+                scale: cardScale,
+                y: cardY,
+                boxShadow: cardShadow
+              }}
               animate={{ 
                 rotateX: tilt.x, 
                 rotateY: tilt.y,
@@ -538,11 +603,54 @@ export default function Hero({
 
       {/* Styled JSX CSS Rules */}
       <style>{`
+        .hero-scroll-wrapper {
+          position: relative;
+          height: 220vh;
+          background: var(--bg-primary);
+        }
+
+        .hero-sticky-viewport {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          width: 100%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+        }
+
+        .hero-title-morph-container {
+          transform-origin: left top;
+        }
+
+        .hero-floating-chip {
+          position: absolute;
+          z-index: 15;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.55rem 1.1rem;
+          border-radius: 50px;
+          font-size: 0.78rem;
+          font-weight: 700;
+          font-family: var(--font-heading);
+          box-shadow: var(--shadow-sm);
+        }
+
+        .hero-floating-chip.chip-left {
+          top: 18%;
+          left: 4%;
+        }
+
+        .hero-floating-chip.chip-right {
+          bottom: 22%;
+          right: 4%;
+        }
+
         .hero-x1000-section {
           position: relative;
-          padding: 3.5rem 0 5.5rem 0;
-          overflow: hidden;
-          background: var(--bg-primary);
+          padding: 2rem 0;
+          width: 100%;
         }
 
         /* Ambient Floating Orbs */
