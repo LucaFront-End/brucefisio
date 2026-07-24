@@ -1,20 +1,20 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Zap, ShieldCheck, Activity, Thermometer, ArrowDown } from "lucide-react";
+import { Zap, ShieldCheck, Activity, Thermometer, ArrowDown, Flame, Sparkles, Target, Check } from "lucide-react";
 
 export default function SpecialtyCurtain({ onExploreClick }) {
   const containerRef = useRef(null);
   
-  // Track scroll progress of this specific section (240vh travel)
+  // Track scroll progress of this specific section (280vh travel for unhurried scroll cushion)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // 1. Curtain panel slide out (fades COMPLETELY to 0 at 0.50 to prevent edge clipping)
-  const leftX = useTransform(scrollYProgress, [0.32, 0.55], ["0%", "-110%"]);
-  const rightX = useTransform(scrollYProgress, [0.32, 0.55], ["0%", "110%"]);
-  const panelOpacity = useTransform(scrollYProgress, [0.32, 0.50], [1, 0]);
+  // 1. Curtain panel slide out (0.12 to 0.38 scroll travel)
+  const leftX = useTransform(scrollYProgress, [0.12, 0.38], ["0%", "-110%"]);
+  const rightX = useTransform(scrollYProgress, [0.12, 0.38], ["0%", "110%"]);
+  const panelOpacity = useTransform(scrollYProgress, [0.12, 0.35], [1, 0]);
 
   // 2. Wave and laser simulation animations (0% to 32% scroll)
   const contentY = useTransform(scrollYProgress, [0, 0.22], [20, 0]);
@@ -27,71 +27,74 @@ export default function SpecialtyCurtain({ onExploreClick }) {
     ["0px 0px 8px rgba(239, 68, 68, 0.5)", "0px 0px 22px rgba(239, 68, 68, 0.9)"]
   );
 
-  // 3. Underneath Revealed Timeline (fades in and remains firmly at 100% opacity)
-  const bgMessageOpacity = useTransform(scrollYProgress, [0.42, 0.56, 1.0], [0, 1, 1]);
-  const bgMessageScale = useTransform(scrollYProgress, [0.42, 0.56], [0.95, 1]);
+  // 3. Underneath Revealed Timeline (fades in and remains firmly at 100% opacity, never disappears)
+  const bgMessageOpacity = useTransform(scrollYProgress, [0.35, 0.45, 1.0], [0, 1, 1]);
+  const bgMessageScale = useTransform(scrollYProgress, [0.35, 0.45], [0.96, 1]);
 
-  // 4. VERTICAL TRACK PROGRESS BEAD (Neon ball slides from top to bottom)
-  const lineProgressHeight = useTransform(scrollYProgress, [0.55, 0.92], ["0%", "100%"]);
-  const beadTop = useTransform(scrollYProgress, [0.55, 0.92], ["6%", "94%"]);
-  const beadOpacity = useTransform(scrollYProgress, [0.53, 0.56, 0.92, 0.95], [0, 1, 1, 0]);
+  // 4. VERTICAL TRACK PROGRESS BEAD (Neon ball slides top to bottom, stays illuminated)
+  const lineProgressHeight = useTransform(scrollYProgress, [0.45, 0.85], ["0%", "100%"]);
+  const beadTop = useTransform(scrollYProgress, [0.45, 0.85], ["5%", "95%"]);
+  const beadOpacity = useTransform(scrollYProgress, [0.40, 0.45, 1.0], [0, 1, 1]);
 
-  // 5. SEQUENTIAL CARD TIMELINE REVEALS (Fades in)
-  const step1Opacity = useTransform(scrollYProgress, [0.55, 0.64], [0, 1]);
-  const step1X = useTransform(scrollYProgress, [0.55, 0.64], [25, 0]);
-
-  const step2Opacity = useTransform(scrollYProgress, [0.64, 0.73], [0, 1]);
-  const step2X = useTransform(scrollYProgress, [0.64, 0.73], [25, 0]);
-
-  const step3Opacity = useTransform(scrollYProgress, [0.73, 0.82], [0, 1]);
-  const step3X = useTransform(scrollYProgress, [0.73, 0.82], [25, 0]);
-
-  const step4Opacity = useTransform(scrollYProgress, [0.82, 0.91], [0, 1]);
-  const step4X = useTransform(scrollYProgress, [0.82, 0.91], [25, 0]);
-
-  // 6. DYNAMIC ACTIVE GLOW FOR CARDS (Borders and shadows light up when scroll is near)
+  // 5. PERSISTENT CARD TIMELINE REVEALS & NEON HIGHLIGHTS
+  // Step 1: Diagnóstico
+  const step1Opacity = useTransform(scrollYProgress, [0.45, 0.53, 1.0], [0, 1, 1]);
+  const step1X = useTransform(scrollYProgress, [0.45, 0.53], [30, 0]);
+  const step1Scale = useTransform(scrollYProgress, [0.45, 0.53, 0.61], [0.96, 1.02, 1]);
   const step1Border = useTransform(
     scrollYProgress,
-    [0.53, 0.62, 0.69],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(226, 232, 240, 1)"]
+    [0.45, 0.53, 0.61],
+    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(13, 148, 136, 0.35)"]
   );
   const step1Shadow = useTransform(
     scrollYProgress,
-    [0.53, 0.62, 0.69],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 8px 24px rgba(13, 148, 136, 0.16)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    [0.45, 0.53, 0.61],
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(13, 148, 136, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
   );
 
+  // Step 2: Estimulación Celular
+  const step2Opacity = useTransform(scrollYProgress, [0.54, 0.62, 1.0], [0, 1, 1]);
+  const step2X = useTransform(scrollYProgress, [0.54, 0.62], [30, 0]);
+  const step2Scale = useTransform(scrollYProgress, [0.54, 0.62, 0.70], [0.96, 1.02, 1]);
   const step2Border = useTransform(
     scrollYProgress,
-    [0.62, 0.71, 0.78],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(226, 232, 240, 1)"]
+    [0.54, 0.62, 0.70],
+    ["rgba(226, 232, 240, 1)", "rgba(3, 105, 161, 1)", "rgba(3, 105, 161, 0.35)"]
   );
   const step2Shadow = useTransform(
     scrollYProgress,
-    [0.62, 0.71, 0.78],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 8px 24px rgba(13, 148, 136, 0.16)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    [0.54, 0.62, 0.70],
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(3, 105, 161, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
   );
 
+  // Step 3: Bloqueo & Crioláser
+  const step3Opacity = useTransform(scrollYProgress, [0.63, 0.71, 1.0], [0, 1, 1]);
+  const step3X = useTransform(scrollYProgress, [0.63, 0.71], [30, 0]);
+  const step3Scale = useTransform(scrollYProgress, [0.63, 0.71, 0.79], [0.96, 1.02, 1]);
   const step3Border = useTransform(
     scrollYProgress,
-    [0.71, 0.80, 0.87],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(226, 232, 240, 1)"]
+    [0.63, 0.71, 0.79],
+    ["rgba(226, 232, 240, 1)", "rgba(194, 65, 12, 1)", "rgba(194, 65, 12, 0.35)"]
   );
   const step3Shadow = useTransform(
     scrollYProgress,
-    [0.71, 0.80, 0.87],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 8px 24px rgba(13, 148, 136, 0.16)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    [0.63, 0.71, 0.79],
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(194, 65, 12, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
   );
 
+  // Step 4: Rehabilitación Activa
+  const step4Opacity = useTransform(scrollYProgress, [0.72, 0.80, 1.0], [0, 1, 1]);
+  const step4X = useTransform(scrollYProgress, [0.72, 0.80], [30, 0]);
+  const step4Scale = useTransform(scrollYProgress, [0.72, 0.80, 0.90], [0.96, 1.02, 1]);
   const step4Border = useTransform(
     scrollYProgress,
-    [0.80, 0.89, 0.96],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(226, 232, 240, 1)"]
+    [0.72, 0.80, 0.90],
+    ["rgba(226, 232, 240, 1)", "rgba(16, 185, 129, 1)", "rgba(16, 185, 129, 0.35)"]
   );
   const step4Shadow = useTransform(
     scrollYProgress,
-    [0.80, 0.89, 0.96],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 8px 24px rgba(13, 148, 136, 0.16)", "0px 2px 8px rgba(0,0,0,0.03)"]
+    [0.72, 0.80, 0.90],
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(16, 185, 129, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
   );
 
   return (
@@ -146,61 +149,141 @@ export default function SpecialtyCurtain({ onExploreClick }) {
                 
                 {/* Step 1 */}
                 <motion.div 
-                  style={{ opacity: step1Opacity, x: step1X, borderColor: step1Border, boxShadow: step1Shadow }}
+                  style={{ 
+                    opacity: step1Opacity, 
+                    x: step1X, 
+                    scale: step1Scale,
+                    borderColor: step1Border, 
+                    boxShadow: step1Shadow 
+                  }}
                   className="timeline-step-card glass"
                 >
-                  <div className="step-badge-num">1</div>
-                  <div className="step-card-content">
-                    <div className="step-card-header">
-                      <h5>Diagnóstico & Escáner</h5>
-                      <span className="card-phase-tag">Fase 1</span>
+                  <div className="step-badge-num badge-teal">
+                    <span>1</span>
+                  </div>
+
+                  <div className="step-card-inner">
+                    <div className="step-icon-box bg-teal-soft">
+                      <Activity className="text-accent" size={20} />
                     </div>
-                    <p>Uso de termografía clínica y escaneo laser bio-térmico para localizar contracturas y focos de dolor activos.</p>
+
+                    <div className="step-card-content">
+                      <div className="step-card-header">
+                        <h5>Diagnóstico & Escáner</h5>
+                        <span className="card-phase-tag tag-teal">Fase 1</span>
+                      </div>
+                      <p>Uso de termografía clínica y escaneo láser bio-térmico para localizar contracturas y focos de dolor activos.</p>
+                      
+                      <div className="step-micro-chips">
+                        <span className="micro-chip"><Sparkles size={11} /> Bio-Termografía</span>
+                        <span className="micro-chip"><Target size={11} /> Focos de Dolor</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
                 {/* Step 2 */}
                 <motion.div 
-                  style={{ opacity: step2Opacity, x: step2X, borderColor: step2Border, boxShadow: step2Shadow }}
+                  style={{ 
+                    opacity: step2Opacity, 
+                    x: step2X, 
+                    scale: step2Scale,
+                    borderColor: step2Border, 
+                    boxShadow: step2Shadow 
+                  }}
                   className="timeline-step-card glass"
                 >
-                  <div className="step-badge-num">2</div>
-                  <div className="step-card-content">
-                    <div className="step-card-header">
-                      <h5>Estimulación Celular</h5>
-                      <span className="card-phase-tag text-teal">Fase 2</span>
+                  <div className="step-badge-num badge-blue">
+                    <span>2</span>
+                  </div>
+
+                  <div className="step-card-inner">
+                    <div className="step-icon-box bg-blue-soft">
+                      <Zap className="text-blue" size={20} />
                     </div>
-                    <p>Aplicación de radiofrecuencia a 4.4 MHz (Cureo) para acelerar el intercambio iónico y desinflamar tejidos agudos.</p>
+
+                    <div className="step-card-content">
+                      <div className="step-card-header">
+                        <h5>Estimulación Celular</h5>
+                        <span className="card-phase-tag tag-blue">Fase 2</span>
+                      </div>
+                      <p>Aplicación de radiofrecuencia a 4.4 MHz (Cureo) para acelerar el intercambio iónico y desinflamar tejidos agudos.</p>
+                      
+                      <div className="step-micro-chips">
+                        <span className="micro-chip"><Zap size={11} /> 4.4 MHz Cureo</span>
+                        <span className="micro-chip"><Activity size={11} /> Intercambio Iónico</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
                 {/* Step 3 */}
                 <motion.div 
-                  style={{ opacity: step3Opacity, x: step3X, borderColor: step3Border, boxShadow: step3Shadow }}
+                  style={{ 
+                    opacity: step3Opacity, 
+                    x: step3X, 
+                    scale: step3Scale,
+                    borderColor: step3Border, 
+                    boxShadow: step3Shadow 
+                  }}
                   className="timeline-step-card glass"
                 >
-                  <div className="step-badge-num">3</div>
-                  <div className="step-card-content">
-                    <div className="step-card-header">
-                      <h5>Bloqueo & Crioláser</h5>
-                      <span className="card-phase-tag text-copper">Fase 3</span>
+                  <div className="step-badge-num badge-copper">
+                    <span>3</span>
+                  </div>
+
+                  <div className="step-card-inner">
+                    <div className="step-icon-box bg-copper-soft">
+                      <Flame className="text-copper" size={20} />
                     </div>
-                    <p>Choque térmico a -30°C combinado con láser de alta intensidad (Chelt) para un efecto analgésico duradero.</p>
+
+                    <div className="step-card-content">
+                      <div className="step-card-header">
+                        <h5>Bloqueo & Crioláser</h5>
+                        <span className="card-phase-tag tag-copper">Fase 3</span>
+                      </div>
+                      <p>Choque térmico a -30°C combinado con láser de alta intensidad (Chelt) para un efecto analgésico duradero.</p>
+                      
+                      <div className="step-micro-chips">
+                        <span className="micro-chip"><Thermometer size={11} /> Crioláser -30°C</span>
+                        <span className="micro-chip"><Flame size={11} /> THEAL 92W</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
                 {/* Step 4 */}
                 <motion.div 
-                  style={{ opacity: step4Opacity, x: step4X, borderColor: step4Border, boxShadow: step4Shadow }}
+                  style={{ 
+                    opacity: step4Opacity, 
+                    x: step4X, 
+                    scale: step4Scale,
+                    borderColor: step4Border, 
+                    boxShadow: step4Shadow 
+                  }}
                   className="timeline-step-card glass"
                 >
-                  <div className="step-badge-num">4</div>
-                  <div className="step-card-content">
-                    <div className="step-card-header">
-                      <h5>Rehabilitación Activa</h5>
-                      <span className="card-phase-tag text-green">Fase 4</span>
+                  <div className="step-badge-num badge-green">
+                    <span>4</span>
+                  </div>
+
+                  <div className="step-card-inner">
+                    <div className="step-icon-box bg-green-soft">
+                      <ShieldCheck className="text-green" size={20} />
                     </div>
-                    <p>Re-educación del movimiento mediante vendaje neuromuscular elástico, loops progresivos y masaje por percusión.</p>
+
+                    <div className="step-card-content">
+                      <div className="step-card-header">
+                        <h5>Rehabilitación Activa</h5>
+                        <span className="card-phase-tag tag-green">Fase 4</span>
+                      </div>
+                      <p>Re-educación del movimiento mediante vendaje neuromuscular elástico, loops progresivos y masaje por percusión.</p>
+                      
+                      <div className="step-micro-chips">
+                        <span className="micro-chip"><ShieldCheck size={11} /> Re-educación Movimiento</span>
+                        <span className="micro-chip"><Activity size={11} /> Vendaje & Percusión</span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -317,10 +400,10 @@ export default function SpecialtyCurtain({ onExploreClick }) {
       </div>
 
       <style>{`
-        /* Curtain Scroll Container - Takes up 240vh height to fit curtain open + timeline draw */
+        /* Curtain Scroll Container - Takes up 280vh height to fit curtain open + timeline draw comfortably */
         .curtain-scroll-container {
           position: relative;
-          height: 240vh;
+          height: 280vh;
           background: var(--bg-secondary);
         }
 
@@ -398,28 +481,28 @@ export default function SpecialtyCurtain({ onExploreClick }) {
         /* Timeline Track (Right Column) */
         .timeline-track-col {
           position: relative;
-          height: 80vh;
-          max-height: 520px;
+          height: 82vh;
+          max-height: 560px;
           display: flex;
           align-items: center;
-          padding-left: 2.5rem;
+          padding-left: 2.75rem;
           width: 100%;
         }
 
         .timeline-vertical-line-track {
           position: absolute;
           left: 0;
-          top: 6%;
-          bottom: 6%;
+          top: 5%;
+          bottom: 5%;
           width: 4px;
-          background: rgba(13, 148, 136, 0.08);
+          background: rgba(13, 148, 136, 0.12);
           border-radius: 99px;
         }
 
         .timeline-vertical-line-fill {
           width: 100%;
-          background: var(--accent-color);
-          box-shadow: 0 0 10px rgba(13, 148, 136, 0.5);
+          background: linear-gradient(180deg, var(--accent-color) 0%, #0369a1 50%, #c2410c 75%, #10b981 100%);
+          box-shadow: 0 0 12px rgba(13, 148, 136, 0.6);
           border-radius: 99px;
           transform-origin: top;
         }
@@ -429,69 +512,109 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           position: absolute;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 12px;
-          height: 12px;
+          width: 14px;
+          height: 14px;
           border-radius: 50%;
           background: var(--accent-color);
-          box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+          box-shadow: 0 0 12px var(--accent-color), 0 0 24px var(--accent-color);
           z-index: 12;
           border: 2px solid var(--white);
         }
 
-        /* Steps List */
+        /* Steps List Stack */
         .timeline-steps-list {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          height: 88%;
+          height: 94%;
           width: 100%;
           position: relative;
+          gap: 0.85rem;
         }
 
+        /* High-Contrast Glass Step Card */
         .timeline-step-card {
-          display: flex;
-          gap: 1.25rem;
-          padding: 0.75rem 1.15rem;
-          border-radius: 16px;
-          border: 1px solid var(--border-color);
-          background: var(--white);
-          box-shadow: var(--shadow-sm);
           position: relative;
-          transition: all var(--transition-fast);
+          border-radius: 18px;
+          border: 1px solid var(--border-color);
+          background: rgba(255, 255, 255, 0.95) !important;
+          backdrop-filter: blur(16px);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+          padding: 0.9rem 1.2rem;
+          transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
-        /* Left Connector Node Num */
-        .step-badge-num {
-          position: absolute;
-          left: -46px; /* centered on vertical line */
-          top: 50%;
-          transform: translateY(-50%);
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: var(--bg-tertiary);
-          color: var(--text-secondary);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.75rem;
-          font-weight: 700;
-          font-family: var(--font-heading);
-          border: 2px solid var(--white);
-          z-index: 10;
-          transition: all var(--transition-fast);
+        .timeline-step-card:hover {
+          border-color: var(--accent-color);
+          transform: translateX(4px);
+          box-shadow: 0 8px 24px rgba(13, 148, 136, 0.16);
         }
 
         .timeline-step-card:hover .step-badge-num {
           background: var(--accent-color);
           color: var(--white);
-          box-shadow: 0 0 8px rgba(13, 148, 136, 0.4);
+          box-shadow: 0 0 10px rgba(13, 148, 136, 0.5);
         }
+
+        /* Left Connector Node Badge */
+        .step-badge-num {
+          position: absolute;
+          left: -50px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: var(--white);
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.8rem;
+          font-weight: 800;
+          font-family: var(--font-heading);
+          border: 2px solid var(--accent-color);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          z-index: 10;
+          transition: all 0.25s ease;
+        }
+
+        .step-badge-num.badge-teal { border-color: var(--accent-color); color: var(--accent-dark); }
+        .step-badge-num.badge-blue { border-color: #0369a1; color: #0369a1; }
+        .step-badge-num.badge-copper { border-color: #c2410c; color: #c2410c; }
+        .step-badge-num.badge-green { border-color: #10b981; color: #047857; }
+
+        .step-card-inner {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.95rem;
+        }
+
+        .step-icon-box {
+          width: 40px;
+          height: 40px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 0.1rem;
+        }
+
+        .bg-teal-soft { background: rgba(13, 148, 136, 0.1); }
+        .bg-blue-soft { background: rgba(3, 105, 161, 0.1); }
+        .bg-copper-soft { background: rgba(194, 65, 12, 0.1); }
+        .bg-green-soft { background: rgba(16, 185, 129, 0.1); }
+
+        .text-blue { color: #0369a1; }
+        .text-copper { color: #c2410c; }
+        .text-green { color: #047857; }
 
         .step-card-content {
           display: flex;
           flex-direction: column;
-          gap: 0.2rem;
+          gap: 0.3rem;
+          flex: 1;
         }
 
         .step-card-header {
@@ -501,219 +624,212 @@ export default function SpecialtyCurtain({ onExploreClick }) {
         }
 
         .step-card-header h5 {
-          font-size: 0.88rem;
-          font-weight: 700;
-          color: var(--text-primary);
+          font-family: var(--font-heading);
+          font-size: 1.02rem;
+          font-weight: 800;
+          color: #0f172a !important; /* Crisp dark primary heading */
+          line-height: 1.25;
+        }
+
+        .step-card-content p {
+          font-size: 0.84rem;
+          color: #334155 !important; /* Crisp slate secondary body text */
+          line-height: 1.45;
         }
 
         .card-phase-tag {
-          font-size: 0.65rem;
-          font-weight: 700;
+          font-size: 0.68rem;
+          font-weight: 800;
           font-family: var(--font-heading);
-          background: var(--bg-secondary);
-          color: var(--text-secondary);
-          padding: 0.1rem 0.45rem;
-          border-radius: 4px;
+          padding: 0.15rem 0.55rem;
+          border-radius: 50px;
+          white-space: nowrap;
         }
 
-        .card-phase-tag.text-teal { background: #e0f2fe; color: #0369a1; }
-        .card-phase-tag.text-copper { background: #ffedd5; color: #c2410c; }
-        .card-phase-tag.text-green { background: #dcfce7; color: #166534; }
+        .card-phase-tag.tag-teal { background: var(--accent-light); color: var(--accent-dark); }
+        .card-phase-tag.tag-blue { background: #e0f2fe; color: #0369a1; }
+        .card-phase-tag.tag-copper { background: #ffedd5; color: #c2410c; }
+        .card-phase-tag.tag-green { background: #d1fae5; color: #047857; }
 
-        .timeline-step-card p {
-          font-size: 0.78rem;
-          color: var(--text-secondary);
-          line-height: 1.4;
+        .step-micro-chips {
+          display: flex;
+          gap: 0.4rem;
+          padding-top: 0.2rem;
+          flex-wrap: wrap;
         }
 
-        /* Split Panels */
+        .micro-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #475569;
+          background: rgba(15, 23, 42, 0.04);
+          padding: 0.15rem 0.5rem;
+          border-radius: 6px;
+          border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+
+        /* Curtain Panel Overlays */
         .curtain-panel {
           position: absolute;
           top: 0;
           width: 50%;
           height: 100%;
+          z-index: 5;
           display: flex;
           align-items: center;
-          z-index: 5;
-          padding: 4rem;
-          box-shadow: 0 0 40px rgba(15, 23, 42, 0.03);
+          padding: var(--navbar-height) 3rem 2rem 3rem;
+          box-shadow: 0 0 50px rgba(0,0,0,0.15);
         }
 
         .panel-left {
           left: 0;
-          background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
-          border-right: 1px solid rgba(13, 148, 136, 0.08);
+          background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+          color: var(--white);
           justify-content: flex-end;
+          border-right: 1px solid rgba(255,255,255,0.15);
         }
 
         .panel-right {
           right: 0;
-          background: linear-gradient(135deg, #fef2f2 0%, #e0f2fe 100%);
-          border-left: 1px solid rgba(249, 115, 22, 0.08);
+          background: linear-gradient(135deg, #7c2d12 0%, #9a3412 100%);
+          color: var(--white);
           justify-content: flex-start;
+          border-left: 1px solid rgba(255,255,255,0.15);
         }
 
         .panel-inner-content {
-          max-width: 480px;
+          max-width: 440px;
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 1.25rem;
         }
 
         .panel-header-badge {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.35rem 0.85rem;
-          border-radius: 9999px;
-          font-size: 0.7rem;
-          font-weight: 700;
+          gap: 0.4rem;
+          font-size: 0.75rem;
+          font-weight: 800;
           font-family: var(--font-heading);
+          letter-spacing: 0.05em;
+          padding: 0.35rem 0.85rem;
+          border-radius: 50px;
           width: fit-content;
         }
 
         .teal-badge {
-          background: #ccfbf1;
-          color: #0f766e;
-          border: 1px solid rgba(13, 148, 136, 0.15);
+          background: rgba(255, 255, 255, 0.18);
+          color: var(--white);
+          border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .copper-badge {
-          background: #ffedd5;
-          color: #c2410c;
-          border: 1px solid rgba(249, 115, 22, 0.15);
+          background: rgba(255, 255, 255, 0.18);
+          color: var(--white);
+          border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .panel-title {
-          font-size: 1.8rem;
+          font-family: var(--font-heading);
+          font-size: 2.2rem;
           font-weight: 800;
-          color: var(--text-primary);
+          line-height: 1.2;
         }
 
         .panel-desc {
-          font-size: 0.92rem;
-          color: var(--text-secondary);
+          font-size: 0.95rem;
           line-height: 1.6;
+          opacity: 0.9;
         }
 
         .panel-benefits-list {
           display: flex;
           flex-direction: column;
-          gap: 0.65rem;
+          gap: 0.6rem;
         }
 
         .benefit-pill {
           display: flex;
           align-items: center;
-          gap: 0.65rem;
+          gap: 0.6rem;
           font-size: 0.85rem;
-          font-weight: 500;
-          color: var(--text-primary);
-        }
-
-        .text-copper {
-          color: #f97316;
-        }
-
-        .explore-btn {
-          width: fit-content;
-          padding: 0.65rem 1.25rem;
-          font-size: 0.85rem;
+          font-weight: 600;
+          background: rgba(0, 0, 0, 0.15);
+          padding: 0.5rem 0.85rem;
           border-radius: 10px;
-          margin-top: 0.5rem;
         }
 
-        /* Visual Simulator Boxes */
         .panel-visual-simulator {
-          position: relative;
           height: 110px;
           border-radius: 16px;
-          border: 1px solid var(--border-color);
-          background: var(--white);
-          overflow: hidden;
+          background: rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          position: relative;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          box-shadow: var(--shadow-sm);
+          overflow: hidden;
         }
 
         .simulator-grid-bg {
           position: absolute;
-          width: 100%;
-          height: 100%;
-          background-size: 15px 15px;
-          background-image: 
-            linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
-          z-index: 0;
+          inset: 0;
+          background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+          background-size: 16px 16px;
         }
 
-        .wave-indicator-text {
-          position: absolute;
-          bottom: 8px;
-          right: 12px;
-          font-size: 0.65rem;
-          font-weight: 700;
-          font-family: var(--font-heading);
-          color: var(--text-tertiary);
-          text-transform: uppercase;
-          letter-spacing: 0.02em;
-          z-index: 2;
-        }
-
-        /* Wave visualizer */
         .wave-lines-container {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          z-index: 1;
+          gap: 8px;
+          height: 40px;
+          z-index: 2;
         }
 
         .wave-line {
-          width: 60px;
-          height: 4px;
-          background: var(--accent-color);
-          border-radius: 99px;
+          width: 4px;
+          height: 20px;
+          background: var(--white);
+          border-radius: 10px;
           transform-origin: center;
         }
 
-        .wl-1 { animation: cellWave 1.4s infinite ease-in-out; }
-        .wl-2 { animation: cellWave 1.4s infinite ease-in-out 0.25s; }
-        .wl-3 { animation: cellWave 1.4s infinite ease-in-out 0.5s; }
-
-        @keyframes cellWave {
-          0% { transform: scaleY(1); opacity: 0.4; }
-          50% { transform: scaleY(8); opacity: 1; background-color: var(--accent-dark); }
-          100% { transform: scaleY(1); opacity: 0.4; }
-        }
-
-        /* Laser visualizer */
         .laser-target-ring {
-          width: 32px;
-          height: 32px;
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
-          border: 1px dashed rgba(249, 115, 22, 0.35);
+          border: 1px stroke rgba(255, 255, 255, 0.4);
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 1;
-          animation: ringSpin 8s linear infinite;
-        }
-
-        @keyframes ringSpin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          z-index: 2;
         }
 
         .laser-dot-glowing {
-          width: 8px;
-          height: 8px;
+          width: 14px;
+          height: 14px;
           border-radius: 50%;
           background: #ef4444;
-          box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444;
         }
 
-        /* Mobile and Tablet Adaptation */
+        .wave-indicator-text {
+          font-size: 0.72rem;
+          font-family: var(--font-heading);
+          font-weight: 700;
+          opacity: 0.8;
+          margin-top: 0.5rem;
+          z-index: 2;
+        }
+
+        .explore-btn {
+          width: fit-content;
+          margin-top: 0.5rem;
+        }
+
         @media (max-width: 1024px) {
           .curtain-scroll-container {
             height: auto;
@@ -722,69 +838,27 @@ export default function SpecialtyCurtain({ onExploreClick }) {
             position: relative;
             height: auto;
             flex-direction: column;
-            overflow: visible;
           }
           .curtain-panel {
             position: relative;
-            width: 100% !important;
+            width: 100%;
             height: auto;
-            padding: 3rem 1.5rem;
-            transform: none !important;
-            opacity: 1 !important;
-            left: auto !important;
-            right: auto !important;
-            filter: none !important;
+            padding: 4rem 1.5rem;
           }
           .curtain-revealed-bg {
             position: relative;
             height: auto;
-            padding: 4rem 1.5rem;
-            opacity: 1 !important;
-            scale: 1 !important;
-            background: var(--bg-primary);
-            order: 3;
+            padding: 4rem 0;
           }
           .timeline-grid {
             grid-template-columns: 1fr;
             gap: 2.5rem;
-            padding: 2rem 0;
-          }
-          .timeline-intro-col {
-            padding-right: 0;
-            text-align: center;
-            align-items: center;
           }
           .timeline-track-col {
-            height: auto;
-            max-height: none;
             padding-left: 2rem;
-            justify-content: flex-start;
-          }
-          .timeline-vertical-line-track {
-            left: 0;
-          }
-          .timeline-vertical-line-fill {
-            height: 100% !important; /* Force fill on mobile */
-          }
-          .timeline-bead-pulse {
-            display: none; /* Hide bead on mobile scroll lists */
-          }
-          .timeline-step-card {
-            opacity: 1 !important;
-            x: 0 !important;
-            transform: none !important;
-            border-color: var(--border-color) !important;
-            box-shadow: var(--shadow-sm) !important;
-          }
-          .timeline-steps-list {
-            height: auto;
-            gap: 1.5rem;
           }
           .step-badge-num {
-            left: -38px;
-          }
-          .scroll-hint-indicator {
-            display: none;
+            left: -40px;
           }
         }
       `}</style>
