@@ -108,11 +108,6 @@ export default function Hero({
           {/* ================= SLIDE 1: COLOSSAL IMAGE MASK TYPOGRAPHY ================= */}
           <div className="hero-panel slide-1">
             <div className="slide-1-content">
-              <div className="hero-top-badge">
-                <Sparkles size={14} className="text-teal" />
-                <span>Experiencia Awwwards • Bruce Médica</span>
-              </div>
-
               {/* Colossal Typography */}
               <div className="colossal-text-wrapper">
                 <h1 className="image-masked-title" data-text="TECNOLOGÍA">
@@ -319,7 +314,6 @@ export default function Hero({
           background: #ffffff;
           position: relative;
           color: #0f172a;
-          overflow: hidden;
         }
 
         .hero-sticky-frame {
