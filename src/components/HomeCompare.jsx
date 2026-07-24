@@ -544,8 +544,8 @@ export default function HomeCompare({ onQuickAdd, products = PRODUCTS }) {
           font-size: 0.88rem;
           font-weight: 700;
           transition: all 0.25s ease;
-        }
       `}</style>
+    </section>
   );
 }
 
