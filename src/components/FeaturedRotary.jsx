@@ -64,8 +64,16 @@ export default function FeaturedRotary({ onOpenProductModal, onQuickAdd, product
     offset: ["start start", "end end"]
   });
 
-  // Top 5 products for the scroll rotary
-  const ROTARY_PRODUCTS = products.slice(0, 5);
+  // Varied 5 products for the scroll rotary (avoids repeating hero products)
+  const getRotaryProducts = () => {
+    if (!products || products.length === 0) return PRODUCTS.slice(2, 7);
+    if (products.length <= 5) return products;
+    // Offset by 3 to ensure unique items on homepage
+    const offset = products.length > 8 ? 3 : 1;
+    return products.slice(offset, offset + 5);
+  };
+
+  const ROTARY_PRODUCTS = getRotaryProducts();
 
   // Bind wheel SVG rotation to scroll progress: 0 to -288 degrees
   const wheelRotation = useTransform(scrollYProgress, [0, 1], [0, -288]);

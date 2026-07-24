@@ -113,7 +113,7 @@ export default function HomeReviews({ onOpenProductModal, products = PRODUCTS })
         <div className="marquee-track-container row-1-track">
           <div className="marquee-row-runner scroll-left-anim">
             {row1Items.map((rev, index) => {
-              const linkedProd = products.find(p => p.id === rev.productId) || products[index % (products.length || 1)] || { name: "Cargando catálogo..." };
+              const linkedProd = products.find(p => p.id === rev.productId) || products[(rev.id * 2 + 1) % (products.length || 1)] || { name: "Cargando catálogo..." };
               return (
                 <div key={`${rev.id}-${index}`} className="marquee-review-card glass">
                   <div className="review-card-header">
@@ -160,7 +160,7 @@ export default function HomeReviews({ onOpenProductModal, products = PRODUCTS })
         <div className="marquee-track-container row-2-track">
           <div className="marquee-row-runner scroll-right-anim">
             {row2Items.map((rev, index) => {
-              const linkedProd = products.find(p => p.id === rev.productId) || products[(index + 3) % (products.length || 1)] || { name: "Cargando catálogo..." };
+              const linkedProd = products.find(p => p.id === rev.productId) || products[(rev.id * 2 + 4) % (products.length || 1)] || { name: "Cargando catálogo..." };
               return (
                 <div key={`${rev.id}-${index}`} className="marquee-review-card glass">
                   <div className="review-card-header">

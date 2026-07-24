@@ -147,7 +147,7 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
     setTimeout(() => setAddedItem(null), 2000);
   };
 
-  // Find 3 solutions matching the scanned zone & objective
+  // Find 3 solutions matching the scanned zone & objective with dynamic catalog offset
   const getSolutionsDeck = () => {
     const zoneKeyword = activeZone.id;
     const matchedProducts = products.filter(p => {
@@ -156,9 +156,11 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
       return pName.includes(zoneKeyword) || pCat.includes(zoneKeyword) || pName.includes(activeObjective.id);
     });
 
-    const pPersonal = matchedProducts[0] || products[1] || products[0];
-    const pPro = matchedProducts[1] || products[0] || products[2];
-    const pClinical = matchedProducts[2] || products[2] || products[0];
+    // Varied catalog offsets per anatomical zone (prevents duplicating products across sections)
+    const baseOffset = (selectedZoneIdx * 3 + 4) % Math.max(1, products.length);
+    const pPersonal = matchedProducts[0] || products[baseOffset] || products[0];
+    const pPro = matchedProducts[1] || products[(baseOffset + 1) % products.length] || products[1];
+    const pClinical = matchedProducts[2] || products[(baseOffset + 2) % products.length] || products[2];
 
     return [
       {
