@@ -601,6 +601,8 @@ export default function Hero({
 
       </div>
 
+    </div>
+
       {/* Styled JSX CSS Rules */}
       <style>{`
         .hero-scroll-wrapper {
