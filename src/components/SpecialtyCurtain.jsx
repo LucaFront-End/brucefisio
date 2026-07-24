@@ -24,7 +24,7 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const laserGlow = useTransform(
     scrollYProgress, 
     [0, 0.32], 
-    ["0px 0px 8px rgba(249, 115, 22, 0.5)", "0px 0px 22px rgba(249, 115, 22, 0.9)"]
+    ["0px 0px 4px rgba(249, 115, 22, 0.2)", "0px 0px 12px rgba(249, 115, 22, 0.4)"]
   );
 
   // 3. Underneath Revealed Timeline (fades in and remains firmly at 100% opacity, never disappears)
@@ -44,12 +44,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step1Border = useTransform(
     scrollYProgress,
     [0.45, 0.53, 0.61],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(13, 148, 136, 0.35)"]
+    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step1Shadow = useTransform(
     scrollYProgress,
     [0.45, 0.53, 0.61],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(13, 148, 136, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(13, 148, 136, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   // Step 2: Estimulación Celular
@@ -59,12 +59,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step2Border = useTransform(
     scrollYProgress,
     [0.54, 0.62, 0.70],
-    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 1)", "rgba(13, 148, 136, 0.35)"]
+    ["rgba(226, 232, 240, 1)", "rgba(13, 148, 136, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step2Shadow = useTransform(
     scrollYProgress,
     [0.54, 0.62, 0.70],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(13, 148, 136, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(13, 148, 136, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   // Step 3: Bloqueo & Crioláser
@@ -74,12 +74,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step3Border = useTransform(
     scrollYProgress,
     [0.63, 0.71, 0.79],
-    ["rgba(226, 232, 240, 1)", "rgba(249, 115, 22, 1)", "rgba(249, 115, 22, 0.35)"]
+    ["rgba(226, 232, 240, 1)", "rgba(249, 115, 22, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step3Shadow = useTransform(
     scrollYProgress,
     [0.63, 0.71, 0.79],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(249, 115, 22, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(249, 115, 22, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   // Step 4: Rehabilitación Activa
@@ -89,12 +89,12 @@ export default function SpecialtyCurtain({ onExploreClick }) {
   const step4Border = useTransform(
     scrollYProgress,
     [0.72, 0.80, 0.90],
-    ["rgba(226, 232, 240, 1)", "rgba(249, 115, 22, 1)", "rgba(249, 115, 22, 0.35)"]
+    ["rgba(226, 232, 240, 1)", "rgba(249, 115, 22, 0.4)", "rgba(226, 232, 240, 1)"]
   );
   const step4Shadow = useTransform(
     scrollYProgress,
     [0.72, 0.80, 0.90],
-    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 10px 30px rgba(249, 115, 22, 0.22)", "0px 4px 14px rgba(0,0,0,0.05)"]
+    ["0px 2px 8px rgba(0,0,0,0.03)", "0px 6px 16px rgba(249, 115, 22, 0.1)", "0px 2px 8px rgba(0,0,0,0.03)"]
   );
 
   return (
@@ -512,11 +512,11 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           position: absolute;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 14px;
-          height: 14px;
+          width: 12px;
+          height: 12px;
           border-radius: 50%;
           background: var(--accent-color);
-          box-shadow: 0 0 12px var(--accent-color), 0 0 24px var(--accent-color);
+          box-shadow: 0 0 8px var(--accent-color);
           z-index: 12;
           border: 2px solid var(--white);
         }
@@ -670,24 +670,24 @@ export default function SpecialtyCurtain({ onExploreClick }) {
           box-shadow: 0 0 50px rgba(0, 0, 0, 0.06);
         }
 
-        /* Left Panel - Light Teal Glass */
+        /* Left Panel - Light Glass */
         .panel-left {
           left: 0;
-          background: linear-gradient(135deg, rgba(240, 253, 250, 0.98) 0%, rgba(204, 251, 241, 0.95) 100%);
+          background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(20px);
           color: var(--text-primary);
           justify-content: flex-end;
-          border-right: 1px solid rgba(13, 148, 136, 0.2);
+          border-right: 1px solid rgba(13, 148, 136, 0.1);
         }
 
-        /* Right Panel - Light Copper Glass */
+        /* Right Panel - Light Glass */
         .panel-right {
           right: 0;
-          background: linear-gradient(135deg, rgba(255, 247, 237, 0.98) 0%, rgba(254, 215, 170, 0.95) 100%);
+          background: rgba(255, 255, 255, 0.92);
           backdrop-filter: blur(20px);
           color: var(--text-primary);
           justify-content: flex-start;
-          border-left: 1px solid rgba(249, 115, 22, 0.2);
+          border-left: 1px solid rgba(249, 115, 22, 0.1);
         }
 
         .panel-inner-content {

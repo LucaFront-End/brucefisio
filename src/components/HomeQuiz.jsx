@@ -17,15 +17,16 @@ import {
   Layers,
   Shield
 } from "lucide-react";
+import Model from "react-body-highlighter";
 import { PRODUCTS } from "../data/products";
 
 const ANATOMICAL_ZONES = [
   { 
     id: "cervical", 
     name: "Cervical & Cuello", 
-    cx: 100, 
-    cy: 70, 
     icon: Target,
+    muscleIds: ["neck", "trapezius"],
+    modelType: "posterior",
     muscles: "Trapecio, Esternocleidomastoideo & C7-T1",
     conditions: "Cervicalgia, cefaleas tensionales y contracturas por postura",
     dosageLevel: "Dosificación Media (2.2 - 3.5 MHz)"
@@ -33,9 +34,9 @@ const ANATOMICAL_ZONES = [
   { 
     id: "hombro", 
     name: "Hombro & Brazo", 
-    cx: 48, 
-    cy: 85, 
     icon: Flame,
+    muscleIds: ["front-deltoids", "biceps"],
+    modelType: "anterior",
     muscles: "Manguito Rotador, Deltoides & Biceps",
     conditions: "Tendinitis supraespinoso, bursitis subacromial y pinzamiento",
     dosageLevel: "Dosificación Alta (3.5 - 4.4 MHz)"
@@ -43,9 +44,9 @@ const ANATOMICAL_ZONES = [
   { 
     id: "lumbar", 
     name: "Lumbar & Espalda", 
-    cx: 100, 
-    cy: 155, 
     icon: Zap,
+    muscleIds: ["lower-back", "gluteal"],
+    modelType: "posterior",
     muscles: "Paravertebrales, Lumbales L1-L5 & Cuadrado Lumbar",
     conditions: "Lumbalgia aguda/crónica, ciática y espasmos musculares",
     dosageLevel: "Dosificación Máxima (4.4 MHz)"
@@ -53,9 +54,9 @@ const ANATOMICAL_ZONES = [
   { 
     id: "rodilla", 
     name: "Rodilla & Articulación", 
-    cx: 78, 
-    cy: 285, 
     icon: Activity,
+    muscleIds: ["knees", "quadriceps"],
+    modelType: "anterior",
     muscles: "Cuádriceps, Tendón Rotuliano & Meniscos",
     conditions: "Desgaste articular, sobrecarga ligamentosa y condromalacia",
     dosageLevel: "Dosificación Regulada (2.0 - 4.0 MHz)"
@@ -63,9 +64,9 @@ const ANATOMICAL_ZONES = [
   { 
     id: "tobillo", 
     name: "Tobillo & Pie", 
-    cx: 78, 
-    cy: 360, 
     icon: Shield,
+    muscleIds: ["calves"],
+    modelType: "posterior",
     muscles: "Ligamento Peroneoastrogalino & Tendón de Aquiles",
     conditions: "Esguinces, fascitis plantar y espolón calcáneo",
     dosageLevel: "Dosificación Focalizada (1.5 - 3.0 MHz)"
@@ -217,127 +218,15 @@ export default function HomeQuiz({ onOpenProductModal, onQuickAdd, products = PR
 
               {/* ANATOMICALLY ACCURATE HUMAN BODY VECTOR BLUEPRINT */}
               <div className="body-silhouette-wrapper">
-                <svg viewBox="0 0 200 400" className="anatomical-svg-full">
-                  <defs>
-                    <linearGradient id="bodyBlueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(13, 148, 136, 0.4)" />
-                      <stop offset="50%" stopColor="rgba(6, 182, 212, 0.2)" />
-                      <stop offset="100%" stopColor="rgba(13, 148, 136, 0.08)" />
-                    </linearGradient>
-                    <filter id="neonGlowFilter" x="-30%" y="-30%" width="160%" height="160%">
-                      <feGaussianBlur stdDeviation="2" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                  </defs>
-
-                  {/* Telemetry Radar & Axis Grid */}
-                  <circle cx="100" cy="200" r="180" stroke="rgba(13, 148, 136, 0.12)" strokeWidth="0.5" strokeDasharray="3 3" fill="none" />
-                  <circle cx="100" cy="200" r="125" stroke="rgba(6, 182, 212, 0.08)" strokeWidth="0.5" fill="none" />
-                  <line x1="100" y1="15" x2="100" y2="385" stroke="rgba(13, 148, 136, 0.18)" strokeWidth="0.5" strokeDasharray="2 2" />
-
-                  {/* ANATOMICALLY PROPORTIONED REALISTIC HUMAN SILHOUETTE */}
-                  <g className="anatomical-vector-body">
-                    {/* Cranium / Head */}
-                    <ellipse cx="100" cy="42" rx="14" ry="18" fill="url(#bodyBlueGradient)" stroke="var(--accent-color)" strokeWidth="1" />
-
-                    {/* Full Body Outline Path (Anatomically Proportioned) */}
-                    <path 
-                      d="
-                        M 100,60 
-                        C 94,60 88,64 84,68 
-                        C 72,74 54,80 44,86 
-                        C 40,88 38,94 40,102 
-                        L 46,155 
-                        C 47,161 44,168 40,178 
-                        C 37,188 34,200 36,208 
-                        C 38,214 43,217 47,214 
-                        C 50,210 51,198 51,185 
-                        L 53,160 
-                        C 55,150 58,140 62,132 
-                        C 63,142 63,154 62,168 
-                        C 60,192 57,220 59,245 
-                        C 61,255 64,265 67,272 
-                        C 69,280 67,298 67,315 
-                        C 67,330 70,345 70,358 
-                        C 70,364 66,368 62,370 
-                        L 62,375 L 84,375 L 84,370 
-                        C 80,366 81,358 80,348 
-                        C 79,333 82,312 83,292 
-                        C 84,278 86,268 87,253 
-                        L 88,198 
-                        C 92,192 96,188 100,188 
-                        C 104,188 108,192 112,198 
-                        L 113,253 
-                        C 114,268 116,278 117,292 
-                        C 118,312 121,333 120,348 
-                        C 119,358 120,366 116,370 
-                        L 116,375 L 138,375 L 138,370 
-                        C 134,368 130,364 130,358 
-                        C 130,345 133,330 133,315 
-                        C 133,298 131,280 133,272 
-                        C 136,265 139,255 141,245 
-                        C 143,220 140,192 138,168 
-                        C 137,154 137,142 138,132 
-                        C 142,140 145,150 147,160 
-                        L 149,185 
-                        C 149,198 150,210 153,214 
-                        C 157,217 162,214 164,208 
-                        C 166,200 163,188 160,178 
-                        C 156,168 153,161 154,155 
-                        L 160,102 
-                        C 162,94 160,88 156,86 
-                        C 146,80 128,74 116,68 
-                        C 112,64 106,60 100,60 Z
-                      " 
-                      fill="url(#bodyBlueGradient)" 
-                      stroke="var(--accent-color)" 
-                      strokeWidth="1.2" 
-                    />
-
-                    {/* Internal Anatomical Clavicles & Pectoral Lines */}
-                    <path d="M 72,78 C 84,82 100,82 100,82 M 128,78 C 116,82 100,82 100,82" stroke="rgba(13, 148, 136, 0.6)" strokeWidth="0.8" fill="none" />
-                    <path d="M 65,96 C 80,94 98,96 100,104 M 135,96 C 120,94 102,96 100,104" stroke="rgba(13, 148, 136, 0.4)" strokeWidth="0.8" fill="none" />
-
-                    {/* Spine Line Axis */}
-                    <line x1="100" y1="65" x2="100" y2="188" stroke="rgba(6, 182, 212, 0.4)" strokeWidth="0.8" strokeDasharray="4 2" />
-
-                    {/* Abdominal Muscle Separator Lines */}
-                    <path d="M 85,124 L 115,124 M 86,140 L 114,140 M 88,156 L 112,156" stroke="rgba(13, 148, 136, 0.35)" strokeWidth="0.6" />
-
-                    {/* Knees (Patella Joints) */}
-                    <ellipse cx="78" cy="285" rx="5" ry="6" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1" />
-                    <ellipse cx="122" cy="285" rx="5" ry="6" fill="rgba(249, 115, 22, 0.25)" stroke="var(--secondary-accent)" strokeWidth="1" />
-                  </g>
-
-                  {/* Interactive Hotspot Nodes with Concentric Pulse Radar Rings */}
-                  {ANATOMICAL_ZONES.map((zone, idx) => {
-                    const isSelected = idx === selectedZoneIdx;
-                    return (
-                      <g 
-                        key={zone.id} 
-                        className={`hologram-node ${isSelected ? "selected" : ""}`}
-                        onClick={() => setSelectedZoneIdx(idx)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <circle 
-                          cx={zone.cx} 
-                          cy={zone.cy} 
-                          r={isSelected ? "8" : "5"} 
-                          fill={isSelected ? "var(--secondary-accent)" : "var(--accent-color)"}
-                          stroke="var(--white)"
-                          strokeWidth="1.5"
-                          filter="url(#neonGlowFilter)"
-                        />
-                        {isSelected && (
-                          <>
-                            <circle cx={zone.cx} cy={zone.cy} r="15" stroke="var(--secondary-accent)" strokeWidth="1.2" fill="none" className="pulse-node" />
-                            <circle cx={zone.cx} cy={zone.cy} r="25" stroke="rgba(249, 115, 22, 0.5)" strokeWidth="0.8" strokeDasharray="3 3" fill="none" />
-                          </>
-                        )}
-                      </g>
-                    );
-                  })}
-                </svg>
+                <Model 
+                  data={[{ name: 'Scanner', muscles: activeZone.muscleIds }]} 
+                  type={activeZone.modelType}
+                  highlightedColors={["#0d9488", "#0d9488"]} 
+                  style={{ width: '100%', height: '100%' }}
+                  onClick={(exercise) => {
+                    // Optional interactive support
+                  }}
+                />
               </div>
 
               {/* Active Zone Label Overlay */}
