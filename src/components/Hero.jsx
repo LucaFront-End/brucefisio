@@ -42,6 +42,110 @@ const THERAPEUTIC_GOALS = [
   }
 ];
 
+const MagneticParticleStage = () => {
+  const containerRef = useRef(null);
+  const particles = Array.from({ length: 144 }); // 12x12 grid
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const children = containerRef.current.children;
+    for (let i = 0; i < children.length; i++) {
+      const el = children[i];
+      if (el.classList.contains('particle-node')) {
+        const elRect = el.getBoundingClientRect();
+        // Calculate center of particle relative to container
+        const elX = (elRect.left - rect.left) + elRect.width / 2;
+        const elY = (elRect.top - rect.top) + elRect.height / 2;
+        
+        const dx = elX - mouseX;
+        const dy = elY - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        const maxDist = 160; // radius of magnetic repulsion
+        if (dist < maxDist) {
+          const force = (maxDist - dist) / maxDist;
+          const moveX = (dx / dist) * force * 50; 
+          const moveY = (dy / dist) * force * 50;
+          el.style.transform = `translate(${moveX}px, ${moveY}px) scale(2)`;
+          el.style.background = '#0d9488';
+          el.style.boxShadow = '0 0 12px rgba(13, 148, 136, 0.8)';
+        } else {
+          el.style.transform = 'translate(0px, 0px) scale(1)';
+          el.style.background = 'rgba(13, 148, 136, 0.15)';
+          el.style.boxShadow = 'none';
+        }
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!containerRef.current) return;
+    const children = containerRef.current.children;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].classList.contains('particle-node')) {
+        children[i].style.transform = 'translate(0px, 0px) scale(1)';
+        children[i].style.background = 'rgba(13, 148, 136, 0.15)';
+        children[i].style.boxShadow = 'none';
+      }
+    }
+  };
+
+  return (
+    <div 
+      className="magnetic-particle-container" 
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* 12x12 Grid of Particles */}
+      {particles.map((_, i) => (
+        <motion.div 
+          key={i} 
+          className="particle-node"
+          initial={{ opacity: 0, x: (Math.random() - 0.5) * 1000, y: (Math.random() - 0.5) * 1000, scale: 0 }}
+          whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          viewport={{ once: false, margin: "-50px" }}
+          transition={{ duration: 1.2, type: "spring", bounce: 0.3, delay: Math.random() * 0.5 }}
+        />
+      ))}
+
+      {/* Central Device Image */}
+      <motion.div 
+        className="magnetic-device-wrapper"
+        initial={{ opacity: 0, filter: 'blur(20px)', scale: 0.5 }}
+        whileInView={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+        viewport={{ once: false, margin: "-50px" }}
+        transition={{ duration: 1.5, delay: 0.4, ease: "easeOut" }}
+      >
+        <img src="/images/hero_device.png" alt="Medical Device" className="magnetic-device-img" />
+      </motion.div>
+
+      {/* Floating HUD Panels */}
+      <motion.div 
+        className="hud-panel hud-top-left glass-clean-card"
+        initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.9, type: "spring" }}
+        viewport={{ once: false, margin: "-50px" }}
+      >
+        <span className="hud-val text-teal">4,000 Hz</span>
+        <span className="hud-label">Frecuencia Modulada</span>
+      </motion.div>
+
+      <motion.div 
+        className="hud-panel hud-bottom-right glass-clean-card"
+        initial={{ opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 1.1, type: "spring" }}
+        viewport={{ once: false, margin: "-50px" }}
+      >
+        <span className="hud-val">6.0 cm</span>
+        <span className="hud-label">Penetración Tisular</span>
+      </motion.div>
+    </div>
+  );
+};
+
 export default function Hero({ 
   onShopClick, 
   onSpecialtyClick, 
@@ -49,11 +153,6 @@ export default function Hero({
   onOpenProductModal, 
   products = PRODUCTS 
 }) {
-  // X-Ray Slider State
-  const xrayRef = useRef(null);
-  const [sliderPos, setSliderPos] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-
   // Accordion State
   const [activeAccordion, setActiveAccordion] = useState(0);
 
@@ -71,30 +170,6 @@ export default function Hero({
     const text = `Hola Bruce Médica, me interesa cotizar información de: ${productName || 'Equipamiento Bruce Médica'}. ¿Tienen envío disponible?`;
     window.open(`https://wa.me/5215555750108?text=${encodeURIComponent(text)}`, "_blank");
   };
-
-  // X-Ray Drag Handlers
-  const handleXrayMove = (clientX) => {
-    if (!xrayRef.current) return;
-    const rect = xrayRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    setSliderPos((x / rect.width) * 100);
-  };
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (e) => {
-      if (isDragging) handleXrayMove(e.clientX);
-    };
-    const handleGlobalMouseUp = () => setIsDragging(false);
-
-    if (isDragging) {
-      window.addEventListener("mousemove", handleGlobalMouseMove);
-      window.addEventListener("mouseup", handleGlobalMouseUp);
-    }
-    return () => {
-      window.removeEventListener("mousemove", handleGlobalMouseMove);
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
-    };
-  }, [isDragging]);
 
   return (
     <section ref={containerRef} className="hero-awwwards-container">
@@ -136,77 +211,21 @@ export default function Hero({
             </div>
           </div>
 
-          {/* ================= SLIDE 2: X-RAY INTERACTIVE SCANNER ================= */}
+          {/* ================= SLIDE 2: MAGNETIC PARTICLE ASSEMBLY ================= */}
           <div className="hero-panel slide-2">
             <div className="slide-2-container">
               <div className="slide-header text-center">
                 <div className="chip-pill inline-flex">
                   <Cpu size={14} className="text-teal" />
-                  <span>Inspección Estructural Interactiva</span>
+                  <span>Matriz de Ensamblaje Reactivo</span>
                 </div>
-                <h2>Escáner de Rayos X Bio-Sync</h2>
-                <p className="subtext">Arrastra el deslizador para revelar la arquitectura interna del equipo.</p>
+                <h2>Arquitectura Bio-Magnética</h2>
+                <p className="subtext">Pasa el cursor sobre el campo de partículas para interactuar con la matriz estructural.</p>
               </div>
 
-              {/* X-Ray Stage */}
-              <div className="xray-stage-wrapper">
-                <div className="xray-background-glow"></div>
-                
-                <div 
-                  className="xray-interactive-container glass-clean-card"
-                  ref={xrayRef}
-                  onMouseMove={(e) => { if (!isDragging) handleXrayMove(e.clientX); }}
-                  onMouseDown={(e) => { setIsDragging(true); handleXrayMove(e.clientX); }}
-                >
-                  {/* Base Layer: Blueprint / X-Ray Vision */}
-                  <div className="xray-base-layer">
-                    <img src="/images/hero_device.png" alt="X-Ray Device Base" className="xray-img blueprint-effect" />
-                    
-                    {/* Blueprint annotations */}
-                    <div className="blueprint-node node-1">
-                      <span className="bp-dot"></span>
-                      <span className="bp-line"></span>
-                      <span className="bp-text">Módulo Emisor Láser 4000Hz</span>
-                    </div>
-                    <div className="blueprint-node node-2">
-                      <span className="bp-dot"></span>
-                      <span className="bp-line"></span>
-                      <span className="bp-text">Placa Base de Sincronización</span>
-                    </div>
-                  </div>
-
-                  {/* Overlay Layer: Normal Vision (clipped) */}
-                  <div 
-                    className="xray-overlay-layer" 
-                    style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
-                  >
-                    <img src="/images/hero_device.png" alt="Normal Device" className="xray-img normal-effect" />
-                    <div className="normal-badge">VISIÓN EXTERIOR</div>
-                  </div>
-
-                  {/* Slider Control Line */}
-                  <div className="xray-slider-line" style={{ left: `${sliderPos}%` }}>
-                    <div className="xray-thumb">
-                      <MoveRight size={16} className="text-teal" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Technical HUD Metrics below */}
-                <div className="xray-hud-metrics">
-                  <div className="hud-metric">
-                    <span className="h-label">Estructura</span>
-                    <strong className="h-val">Aleación Aeroespacial</strong>
-                  </div>
-                  <div className="hud-metric">
-                    <span className="h-label">Circuito</span>
-                    <strong className="h-val text-teal">Micro-chip SoC Médico</strong>
-                  </div>
-                  <div className="hud-metric">
-                    <span className="h-label">Aislante</span>
-                    <strong className="h-val">Polímero Dieléctrico</strong>
-                  </div>
-                </div>
+              {/* Magnetic Particle Stage Component */}
+              <div className="magnetic-stage-wrapper">
+                <MagneticParticleStage />
               </div>
             </div>
           </div>
@@ -479,7 +498,7 @@ export default function Hero({
         @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
 
 
-        /* ================= SLIDE 2: X-RAY SCANNER ================= */
+        /* ================= SLIDE 2: MAGNETIC PARTICLE ASSEMBLY ================= */
         .slide-2-container {
           display: flex;
           flex-direction: column;
@@ -493,150 +512,70 @@ export default function Hero({
         .slide-header h2 { font-family: var(--font-heading); font-size: 2.5rem; font-weight: 900; color: #0f172a; margin-top: 0.3rem; letter-spacing: -0.02em; }
         .slide-header .subtext { font-size: 1rem; color: #64748b; margin-top: 0.2rem; }
 
-        .xray-stage-wrapper {
-          position: relative;
+        .magnetic-stage-wrapper {
           width: 100%;
           display: flex;
-          flex-direction: column;
-          align-items: center;
+          justify-content: center;
         }
 
-        .xray-background-glow {
-          position: absolute;
-          width: 80%;
-          height: 80%;
-          background: radial-gradient(circle, rgba(13,148,136,0.1) 0%, rgba(255,255,255,0) 70%);
-          z-index: 0;
-        }
-
-        .xray-interactive-container {
+        .magnetic-particle-container {
           position: relative;
-          width: 100%;
-          height: 400px;
-          border-radius: 30px;
-          overflow: hidden;
-          cursor: crosshair;
-          z-index: 2;
-          background: #ffffff;
-          box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
-          border: 1px solid #e2e8f0;
+          width: clamp(300px, 40vw, 550px);
+          aspect-ratio: 1 / 1;
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          grid-template-rows: repeat(12, 1fr);
+          gap: clamp(6px, 1.2vw, 15px);
+          place-items: center;
         }
 
-        .xray-base-layer, .xray-overlay-layer {
+        .particle-node {
+          width: clamp(4px, 0.8vw, 8px);
+          height: clamp(4px, 0.8vw, 8px);
+          border-radius: 50%;
+          background: rgba(13, 148, 136, 0.15);
+          transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.25s, box-shadow 0.25s;
+          pointer-events: none; /* Let the container handle mouse events */
+        }
+
+        .magnetic-device-wrapper {
           position: absolute;
           inset: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 100%;
-          height: 100%;
-        }
-
-        .xray-base-layer {
-          background: #020617; /* Dark background for blueprint */
-        }
-
-        .xray-overlay-layer {
-          background: #ffffff;
-          /* Clip path dynamically updated via React inline style */
-          will-change: clip-path;
-        }
-
-        .xray-img {
-          height: 80%;
-          max-height: 320px;
-          object-fit: contain;
-          pointer-events: none;
-          user-select: none;
-        }
-
-        /* CSS Filter Magic for Blueprint Effect */
-        .blueprint-effect {
-          filter: invert(1) hue-rotate(180deg) brightness(1.2) contrast(1.5) drop-shadow(0 0 10px rgba(6,182,212,0.8));
-          opacity: 0.8;
-        }
-
-        .normal-effect {
-          filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-        }
-
-        /* Blueprint Annotations */
-        .blueprint-node {
-          position: absolute;
-          display: flex;
-          align-items: center;
-          gap: 10px;
+          pointer-events: none; /* Crucial so we can hover particles under it */
           z-index: 5;
         }
-        .node-1 { top: 30%; left: 15%; }
-        .node-2 { bottom: 25%; right: 15%; flex-direction: row-reverse; }
 
-        .bp-dot { width: 8px; height: 8px; background: #06b6d4; border-radius: 50%; box-shadow: 0 0 10px #06b6d4; }
-        .bp-line { width: 60px; height: 1px; background: rgba(6,182,212,0.5); }
-        .bp-text { color: #06b6d4; font-size: 0.75rem; font-family: monospace; letter-spacing: 0.05em; font-weight: 600; text-shadow: 0 0 5px rgba(6,182,212,0.5); }
-
-        .normal-badge {
-          position: absolute;
-          top: 1.5rem;
-          right: 1.5rem;
-          background: rgba(255,255,255,0.8);
-          backdrop-filter: blur(10px);
-          color: #0f172a;
-          font-size: 0.7rem;
-          font-weight: 800;
-          padding: 0.3rem 0.8rem;
-          border-radius: 50px;
-          border: 1px solid #e2e8f0;
-          letter-spacing: 0.1em;
+        .magnetic-device-img {
+          width: 85%;
+          height: 85%;
+          object-fit: contain;
+          filter: drop-shadow(0 20px 40px rgba(15, 23, 42, 0.2));
+          animation: floatSlow 5s ease-in-out infinite;
         }
 
-        .xray-slider-line {
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+
+        .hud-panel {
           position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 2px;
-          background: #0d9488;
-          transform: translateX(-50%);
-          z-index: 10;
+          padding: 1.2rem 1.8rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
           pointer-events: none;
-          box-shadow: 0 0 15px rgba(13, 148, 136, 0.8);
+          z-index: 10;
         }
 
-        .xray-thumb {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 44px;
-          height: 44px;
-          background: #ffffff;
-          border: 2px solid #0d9488;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4);
-          pointer-events: auto;
-          cursor: grab;
-          transition: transform 0.2s;
-        }
-        .xray-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(0.9); }
+        .hud-top-left { top: 10%; left: -25%; }
+        .hud-bottom-right { bottom: 10%; right: -25%; }
 
-        .xray-hud-metrics {
-          display: flex;
-          gap: 2rem;
-          margin-top: 2rem;
-          padding: 1.25rem 3rem;
-          background: rgba(248, 250, 252, 0.8);
-          border: 1px solid #e2e8f0;
-          border-radius: 100px;
-          backdrop-filter: blur(10px);
-          z-index: 2;
-        }
-
-        .hud-metric { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
-        .h-label { font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
-        .h-val { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 800; color: #0f172a; }
+        .hud-val { font-family: var(--font-heading); font-size: 1.7rem; font-weight: 900; color: #0f172a; }
+        .hud-label { font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
 
         /* ================= SLIDE 3: HORIZONTAL ACCORDION ================= */
         .slide-3-container {
