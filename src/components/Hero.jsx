@@ -13,7 +13,7 @@ const PAIN_POINTS = [
   {
     id: "dolor-cronico",
     tag: "RETENCIÓN",
-    title: "Abandono por falta de resultados rápidos.",
+    title: "Pacientes que no vuelven por falta de resultados.",
     impactMetric: "-45%",
     impactLabel: "Fuga de Pacientes",
     severityColor: "#ef4444",
@@ -22,16 +22,16 @@ const PAIN_POINTS = [
   {
     id: "fallas-equipo",
     tag: "OPERACIÓN",
-    title: "Citas canceladas por fallas de equipo.",
+    title: "Citas perdidas por equipos obsoletos que fallan.",
     impactMetric: "$12k+",
-    impactLabel: "Pérdida Semanal",
+    impactLabel: "Fuga Semanal",
     severityColor: "#f97316",
     icon: ShieldAlert
   },
   {
     id: "postop-lento",
     tag: "EFICIENCIA",
-    title: "Recuperaciones estancadas con terapia manual.",
+    title: "Sesiones eternas estancadas en terapia manual.",
     impactMetric: "3x",
     impactLabel: "Más lentitud",
     severityColor: "#eab308",
@@ -40,9 +40,9 @@ const PAIN_POINTS = [
   {
     id: "competencia",
     tag: "CRECIMIENTO",
-    title: "Fuga de pacientes a clínicas mejor equipadas.",
+    title: "Pacientes robados por clínicas mejor equipadas.",
     impactMetric: "-30%",
-    impactLabel: "Cuota de Mercado",
+    impactLabel: "Pérdida de Mercado",
     severityColor: "#ef4444",
     icon: TrendingDown
   }
@@ -160,17 +160,17 @@ export default function Hero({
             </div>
           </div>
 
-          {/* ================= SLIDE 2: DOLENCIAS (CONCISE & VISUAL) ================= */}
-          <div className="hero-panel slide-2">
+          {/* ================= SLIDE 2: DOLENCIAS (DARK DRAMATIC LOSS THEME) ================= */}
+          <div className="hero-panel slide-2 theme-dark-loss">
             <div className="slide-2-container-concise">
               
               <div className="slide-header text-center slide-2-header-adjusted">
                 <div className="chip-pill-pain inline-flex">
-                  <AlertTriangle size={14} className="text-red" />
-                  <span>El Desafío Clínico Real</span>
+                  <span className="live-warning-dot"></span>
+                  <span>FUGA DE CAPITAL ACTIVA</span>
                 </div>
-                <h2>¿Qué frena el crecimiento de tu clínica?</h2>
-                <p className="subtext">Identifica los cuellos de botella que más afectan la rentabilidad y retención de tus pacientes hoy.</p>
+                <h2 className="loss-title">El costo real de <span className="highlight-loss">quedarse atrás.</span></h2>
+                <p className="subtext-loss">Cada equipo descalibrado y tratamiento lento es un paciente que decide no volver. Identifica dónde está sangrando tu clínica.</p>
               </div>
 
               <div className="pain-concise-grid">
@@ -179,18 +179,20 @@ export default function Hero({
                   return (
                     <div 
                       key={pain.id}
-                      className="pain-bento-card glass-clean-card"
+                      className="pain-bento-card dark-glass-card"
                       onMouseEnter={() => setSelectedPainIdx(idx)}
                     >
                       <div className="pain-bento-header">
                         <span className="pain-tag" style={{ color: pain.severityColor }}>{pain.tag}</span>
-                        <div className="pain-icon-box" style={{ background: `${pain.severityColor}15`, color: pain.severityColor }}>
+                        <div className="pain-icon-box" style={{ background: `${pain.severityColor}20`, color: pain.severityColor, border: `1px solid ${pain.severityColor}40` }}>
                           <PainIcon size={18} />
                         </div>
                       </div>
 
                       <div className="pain-bento-metric-box">
-                        <span className="p-huge-metric" style={{ color: pain.severityColor }}>{pain.impactMetric}</span>
+                        <span className="p-huge-metric" style={{ color: pain.severityColor, textShadow: `0 0 20px ${pain.severityColor}40` }}>
+                          {pain.impactMetric}
+                        </span>
                         <span className="p-metric-lbl">{pain.impactLabel}</span>
                       </div>
 
@@ -436,7 +438,12 @@ export default function Hero({
         .wheel-clean { width: 4px; height: 6px; background: #0d9488; border-radius: 2px; animation: scrollWheel 2s infinite; }
         @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
 
-        /* SLIDE 2: CONCISE PAIN POINTS */
+        /* SLIDE 2: CONCISE PAIN POINTS (DARK LOSS THEME) */
+        .theme-dark-loss {
+          background: #020617; /* Very dark slate/blue */
+          color: #f8fafc;
+        }
+
         .slide-2-container-concise {
           display: flex;
           flex-direction: column;
@@ -449,36 +456,67 @@ export default function Hero({
         }
 
         .slide-2-header-adjusted {
-          margin-bottom: 3rem;
+          margin-bottom: 3.5rem;
         }
 
         .chip-pill-pain {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
-          padding: 0.4rem 1rem;
+          gap: 0.6rem;
+          padding: 0.4rem 1.2rem;
           border-radius: 50px;
-          background: rgba(239, 68, 68, 0.08);
-          border: 1px solid rgba(239, 68, 68, 0.2);
-          font-size: 0.82rem;
-          font-weight: 700;
+          background: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          font-size: 0.75rem;
+          font-weight: 800;
           color: #ef4444;
           margin-bottom: 1rem;
+          letter-spacing: 0.05em;
         }
 
-        .slide-2-header-adjusted h2 {
+        .live-warning-dot {
+          width: 8px;
+          height: 8px;
+          background: #ef4444;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #ef4444;
+          animation: warningPulse 1.5s infinite;
+        }
+
+        @keyframes warningPulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+
+        .loss-title {
           font-family: var(--font-heading);
-          font-size: 2.2rem;
+          font-size: 2.8rem;
           font-weight: 900;
-          color: #0f172a;
+          color: #ffffff;
           margin: 0.5rem 0;
+          letter-spacing: -0.02em;
         }
 
-        .slide-2-header-adjusted .subtext {
-          font-size: 1.05rem;
-          color: #64748b;
-          max-width: 600px;
-          margin: 0 auto;
+        .highlight-loss {
+          color: #ef4444;
+          position: relative;
+          display: inline-block;
+        }
+
+        .highlight-loss::after {
+          content: "";
+          position: absolute;
+          bottom: 2px;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background: #ef4444;
+          opacity: 0.5;
+        }
+
+        .subtext-loss {
+          font-size: 1.1rem;
+          color: #94a3b8;
+          max-width: 650px;
+          margin: 0.5rem auto 0;
+          line-height: 1.6;
         }
 
         .pain-concise-grid {
@@ -488,23 +526,26 @@ export default function Hero({
           width: 100%;
         }
 
-        .pain-bento-card {
+        .dark-glass-card {
           padding: 1.8rem 1.5rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border: 1px solid #e2e8f0;
-          height: 340px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+          height: 350px;
           cursor: crosshair;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          background: rgba(255, 255, 255, 0.7);
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
         }
 
-        .pain-bento-card:hover {
+        .dark-glass-card:hover {
           transform: translateY(-8px);
-          background: rgba(255, 255, 255, 1);
-          box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1);
-          border-color: #cbd5e1;
+          background: rgba(30, 41, 59, 0.8);
+          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+          border-color: rgba(255, 255, 255, 0.2);
         }
 
         .pain-bento-header {
@@ -547,14 +588,14 @@ export default function Hero({
         .p-metric-lbl {
           font-size: 0.85rem;
           font-weight: 700;
-          color: #475569;
+          color: #94a3b8;
           margin-top: 0.4rem;
         }
 
-        .pain-bento-card h3 {
+        .dark-glass-card h3 {
           font-size: 1rem;
           font-weight: 600;
-          color: #334155;
+          color: #f8fafc;
           line-height: 1.4;
           margin-bottom: 1.5rem;
         }
@@ -562,17 +603,17 @@ export default function Hero({
         .pain-bento-footer {
           margin-top: auto;
           padding-top: 1rem;
-          border-top: 1px dashed #e2e8f0;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
           font-size: 0.75rem;
           font-weight: 700;
-          color: #94a3b8;
+          color: #64748b;
           text-transform: uppercase;
           letter-spacing: 0.05em;
           transition: color 0.2s;
         }
 
-        .pain-bento-card:hover .pain-bento-footer {
-          color: #0d9488;
+        .dark-glass-card:hover .pain-bento-footer {
+          color: #f8fafc;
         }
 
         /* SLIDE 3: SOLUTIONS */
