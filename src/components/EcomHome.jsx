@@ -143,17 +143,17 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
 
-  // Hero Slides with clean product cutouts and crisp copy
+  // Hero Slides with generated studio product photography
   const heroSlides = [
     {
       badge: "⚡ EQUIPO BIOMÉDICO DE ALTA ESPECIALIDAD",
       title: "Electroterapia Clínica Chattanooga Intelect® 4C",
-      subtitle: "Estándar de oro en clínicas de fisioterapia. 4 canales independientes, protocolos prediseñados y tecnología de electro-estimulación de alta precisión.",
+      subtitle: "Estándar de oro en clínicas de fisioterapia. 4 canales independientes, protocolos prediseñados y estimulación de alta precisión.",
       price: "$7,499 MXN",
       oldPrice: "$8,900 MXN",
       discount: "15% OFF",
       badgeColor: "#007EE5",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+      image: "/images/hero_electroterapia.png",
       rating: "4.9 ★★★★★ (140+ Reseñas)"
     },
     {
@@ -164,7 +164,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
       oldPrice: "$4,599 MXN",
       discount: "20% OFF",
       badgeColor: "#f97316",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+      image: "/images/hero_massage_gun.png",
       rating: "5.0 ★★★★★ (320+ Vendidos)"
     },
     {
@@ -175,7 +175,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
       oldPrice: "$15,500 MXN",
       discount: "25% OFF",
       badgeColor: "#10b981",
-      image: "https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=800&auto=format&fit=crop",
+      image: "/images/hero_laser.png",
       rating: "4.9 ★★★★★ (Grado Hospitalario)"
     }
   ];
@@ -205,24 +205,9 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   return (
     <div className="ecom-home-wrapper">
-      {/* 1. TOP PROMO TICKER BAR */}
-      <div className="ecom-top-ticker">
-        <div className="ticker-content">
-          <span className="ticker-badge"><Zap size={13} /> OFERTA ESPECIAL</span>
-          <p>
-            ¡Hasta <strong>25% OFF</strong> en Equipos de Electroterapia! Envíos sin costo a todo México.
-          </p>
-        </div>
-        <div className="ticker-right">
-          <span><ShieldCheck size={14} /> Soporte Biomédico 24/7</span>
-          <span className="divider">|</span>
-          <span><Truck size={14} /> Facturación e IVA Incluido</span>
-        </div>
-      </div>
-
       <div className="container ecom-container">
 
-        {/* 2. HERO ECOM SECTION (Light Luxury Main Banner + Right Side Split Bento) */}
+        {/* 1. HERO ECOM SECTION (Light Luxury Main Banner + 3 Right Side Bento Cards) */}
         <section className="ecom-hero-grid">
           {/* Main Hero Slider Banner */}
           <div className="ecom-hero-main-card">
@@ -283,7 +268,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                   </div>
                 </div>
 
-                {/* Crisp Clean Product Stage */}
+                {/* Studio Product Image Stage */}
                 <div className="hero-main-img-stage">
                   <div className="img-glow-backdrop"></div>
                   <img 
@@ -307,14 +292,14 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
             </AnimatePresence>
           </div>
 
-          {/* Right Side Split Bento Cards (Clean High-Contrast) */}
+          {/* Right Side 3 Stacked Bento Cards */}
           <div className="ecom-hero-side-bento">
             {/* Bento Card 1 */}
             <div className="side-bento-card bento-card-light-blue" onClick={() => navigate("/specialty")}>
               <div className="bento-text-side">
                 <span className="bento-tag tag-blue">ALTA ESPECIALIDAD</span>
                 <h3>Láser THEAL 92W</h3>
-                <p>Analgesia inmediata en patologías complejas.</p>
+                <p>Analgesia inmediata profunda.</p>
                 <div className="bento-price-row">
                   <span className="bento-price">12 MSI</span>
                   <span className="bento-action-link">Ver Ficha <ChevronRight size={14} /></span>
@@ -322,7 +307,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
               </div>
               <div className="bento-img-side">
                 <img 
-                  src="https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=300&auto=format&fit=crop" 
+                  src="/images/hero_laser.png" 
                   alt="Láser THEAL" 
                   className="bento-cutout-img"
                 />
@@ -332,9 +317,9 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
             {/* Bento Card 2 */}
             <div className="side-bento-card bento-card-light-dark" onClick={() => navigate("/specialty")}>
               <div className="bento-text-side">
-                <span className="bento-tag tag-green">NEURO-REHABILITACIÓN</span>
+                <span className="bento-tag tag-green">NEURO-REHAB</span>
                 <h3>CUREO® 5.0 VR</h3>
-                <p>Realidad virtual inmersiva clínica.</p>
+                <p>Realidad virtual inmersiva.</p>
                 <div className="bento-price-row">
                   <span className="bento-price text-green">DEMO GRATIS</span>
                   <span className="bento-action-link">Probar <ChevronRight size={14} /></span>
@@ -342,14 +327,49 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
               </div>
               <div className="bento-img-side">
                 <img 
-                  src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=300&auto=format&fit=crop" 
+                  src="/images/hero_vr.png" 
                   alt="CUREO VR" 
+                  className="bento-cutout-img"
+                />
+              </div>
+            </div>
+
+            {/* Bento Card 3 */}
+            <div className="side-bento-card bento-card-light-orange" onClick={() => navigate("/shop")}>
+              <div className="bento-text-side">
+                <span className="bento-tag tag-orange">TERAPIA MANUAL</span>
+                <h3>Bruce Pulse™ 5V</h3>
+                <p>Percusión muscular de 60W.</p>
+                <div className="bento-price-row">
+                  <span className="bento-price text-orange">20% OFF</span>
+                  <span className="bento-action-link">Comprar <ChevronRight size={14} /></span>
+                </div>
+              </div>
+              <div className="bento-img-side">
+                <img 
+                  src="/images/hero_massage_gun.png" 
+                  alt="Bruce Pro Pulse" 
                   className="bento-cutout-img"
                 />
               </div>
             </div>
           </div>
         </section>
+
+        {/* 2. PROMO TICKER BAR (MOVED BELOW HERO) */}
+        <div className="ecom-top-ticker ecom-ticker-below-hero">
+          <div className="ticker-content">
+            <span className="ticker-badge"><Zap size={13} /> OFERTA ESPECIAL</span>
+            <p>
+              ¡Hasta <strong>25% OFF</strong> en Equipos de Electroterapia! Envíos sin costo a todo México.
+            </p>
+          </div>
+          <div className="ticker-right">
+            <span><ShieldCheck size={14} /> Soporte Biomédico 24/7</span>
+            <span className="divider">|</span>
+            <span><Truck size={14} /> Facturación e IVA Incluido</span>
+          </div>
+        </div>
 
         {/* 3. CATEGORY CIRCULAR THUMBNAILS BAR */}
         <section className="ecom-categories-section">
