@@ -425,50 +425,56 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           </div>
         </section>
 
-        {/* 4. HOT DEALS / FLASH SALES SECTION WITH COUNTDOWN TIMER */}
-        <section className="ecom-flash-section">
+        {/* 4. HOT DEALS / FLASH SALES SECTION WITH HIGH URGENCY */}
+        <section className="ecom-flash-section urgency-mode">
           <div className="flash-header-banner">
             <div className="flash-title-block">
-              <div className="flame-badge"><Flame size={16} /> OFERTAS RELÁMPAGO</div>
-              <h2>¡Descuentos Exclusivos de la Semana!</h2>
-              <p>Precios especiales de importación directa con cupo de stock limitado.</p>
+              <div className="flame-badge pulse-red">
+                <Flame size={16} className="text-red-fire" /> ⚡ OFERTAS RELÁMPAGO DE ALTA DEMANDA
+              </div>
+              <h2>¡Liquidación Flash — Hasta 30% OFF!</h2>
+              <p>Precios directos de fábrica por tiempo limitado. Una vez finalizado el contador o agotado el cupo asignado, volverán a tarifa regular.</p>
             </div>
 
-            {/* Countdown Clock */}
-            <div className="flash-timer-box">
-              <span className="timer-label"><Clock size={15} /> Finaliza en:</span>
+            {/* Live Countdown Clock */}
+            <div className="flash-timer-box urgency-timer">
+              <div className="timer-live-row">
+                <span className="live-pulse-dot"></span>
+                <span className="timer-label">VENTA EN VIVO | FINALIZA EN:</span>
+              </div>
               <div className="timer-digits">
                 <div className="digit-unit">
-                  <span className="num">{String(timeLeft.hours).padStart(2, "0")}</span>
+                  <span className="num num-fire">{String(timeLeft.hours).padStart(2, "0")}</span>
                   <span className="lbl">Horas</span>
                 </div>
-                <span className="colon">:</span>
+                <span className="colon colon-fire">:</span>
                 <div className="digit-unit">
-                  <span className="num">{String(timeLeft.minutes).padStart(2, "0")}</span>
+                  <span className="num num-fire">{String(timeLeft.minutes).padStart(2, "0")}</span>
                   <span className="lbl">Min</span>
                 </div>
-                <span className="colon">:</span>
+                <span className="colon colon-fire">:</span>
                 <div className="digit-unit">
-                  <span className="num">{String(timeLeft.seconds).padStart(2, "0")}</span>
+                  <span className="num num-fire num-seconds">{String(timeLeft.seconds).padStart(2, "0")}</span>
                   <span className="lbl">Seg</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Flash Deals Product Grid (4 Curated Items) */}
+          {/* Flash Deals Product Grid */}
           <div className="flash-products-grid">
             {flashDeals.map((prod) => {
-              const progressPct = Math.round((prod.soldCount / prod.totalStock) * 100);
+              const progressPct = Math.min(92, Math.max(70, Math.round((prod.soldCount / prod.totalStock) * 100)));
+              const remainingStock = Math.max(2, prod.totalStock - prod.soldCount);
               const isWished = wishlist.includes(prod.id);
 
               return (
-                <div key={prod.id} className="ecom-product-card flash-card">
+                <div key={prod.id} className="ecom-product-card flash-card-urgent">
                   {/* Image Stage */}
                   <div className="product-card-stage" onClick={() => onOpenProductModal(prod)}>
                     {/* Badges inside stage */}
                     <div className="card-badge-container">
-                      {prod.badge && <span className="card-badge badge-red">{prod.badge}</span>}
+                      <span className="card-badge badge-fire-red">🔥 {prod.discount > 0 ? `-${prod.discount}% OFF` : "OFERTA RELÁMPAGO"}</span>
                       <span className="card-badge badge-blue">12 MSI</span>
                     </div>
 
@@ -494,7 +500,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
                   {/* Product Body */}
                   <div className="product-card-body">
-                    <span className="prod-category">{prod.category}</span>
+                    <span className="prod-category text-fire">{prod.category}</span>
                     <h3 className="prod-title" onClick={() => onOpenProductModal(prod)}>
                       {prod.name}
                     </h3>
@@ -512,26 +518,26 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
                     {/* Price Block */}
                     <div className="prod-price-row">
-                      <span className="price-main">${prod.price.toLocaleString("es-MX")} MXN</span>
+                      <span className="price-main price-fire">${prod.price.toLocaleString("es-MX")} MXN</span>
                       {prod.originalPrice > prod.price && (
                         <span className="price-old">${prod.originalPrice.toLocaleString("es-MX")}</span>
                       )}
                     </div>
 
-                    {/* Stock Progress Bar */}
-                    <div className="stock-progress-block">
+                    {/* Urgency Stock Progress Bar */}
+                    <div className="stock-progress-block urgency-stock">
                       <div className="stock-text">
-                        <span>Vendidos: <strong>{prod.soldCount}</strong></span>
-                        <span>Disponibles: <strong>{prod.totalStock - prod.soldCount}</strong></span>
+                        <span>🔥 Vendido: <strong>{progressPct}%</strong></span>
+                        <span className="stock-urgent-tag">¡Solo {remainingStock} disp.!</span>
                       </div>
                       <div className="progress-bar-track">
-                        <div className="progress-bar-fill" style={{ width: `${progressPct}%` }}></div>
+                        <div className="progress-bar-fill fire-fill" style={{ width: `${progressPct}%` }}></div>
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <button className="btn-add-cart" onClick={() => onQuickAdd(prod)}>
-                      <ShoppingCart size={16} /> Agregar al Carrito
+                    {/* Urgent Action Button */}
+                    <button className="btn-add-cart btn-fire-action" onClick={() => onQuickAdd(prod)}>
+                      <Zap size={16} /> ¡Aprovechar Oferta!
                     </button>
                   </div>
                 </div>
