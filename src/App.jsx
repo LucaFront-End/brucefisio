@@ -19,6 +19,7 @@ import HomeQuiz from "./components/HomeQuiz";
 import HomeCompare from "./components/HomeCompare";
 import HomeReviews from "./components/HomeReviews";
 import HomeCTA from "./components/HomeCTA";
+import EcomHome from "./components/EcomHome";
 
 // Mock Data
 import { PRODUCTS } from "./data/products";
@@ -236,8 +237,60 @@ export default function App() {
     exit: { opacity: 0, y: -10, transition: { duration: 0.3 } }
   };
 
+  const [homeMode, setHomeMode] = useState("ecom"); // "ecom" | "editorial"
+
   return (
     <div className="app-wrapper">
+      {/* Floating Home Style Mode Switcher for Client Demo */}
+      <div style={{
+        position: "fixed",
+        bottom: "20px",
+        left: "20px",
+        zIndex: 9999,
+        background: "rgba(15, 23, 42, 0.95)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.15)",
+        padding: "6px",
+        borderRadius: "50px",
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
+        display: "flex",
+        alignItems: "center",
+        gap: "4px"
+      }}>
+        <button
+          onClick={() => setHomeMode("ecom")}
+          style={{
+            background: homeMode === "ecom" ? "#007EE5" : "transparent",
+            color: "#ffffff",
+            border: "none",
+            padding: "6px 14px",
+            borderRadius: "50px",
+            fontSize: "0.75rem",
+            fontWeight: "800",
+            cursor: "pointer",
+            transition: "all 0.2s ease"
+          }}
+        >
+          🛒 Home E-Commerce
+        </button>
+        <button
+          onClick={() => setHomeMode("editorial")}
+          style={{
+            background: homeMode === "editorial" ? "#007EE5" : "transparent",
+            color: "#ffffff",
+            border: "none",
+            padding: "6px 14px",
+            borderRadius: "50px",
+            fontSize: "0.75rem",
+            fontWeight: "800",
+            cursor: "pointer",
+            transition: "all 0.2s ease"
+          }}
+        >
+          🎨 Home Horizontal (Awwwards)
+        </button>
+      </div>
+
       {/* Premium Global Wix Catalog Preloader */}
       <AnimatePresence>
         {loadingWix && (
@@ -348,13 +401,23 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={
               <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-                <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} products={products} />
-                <FeaturedRotary onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
-                <SpecialtyCurtain onExploreClick={() => navigate("/specialty")} />
-                <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
-                <HomeCompare onQuickAdd={handleQuickAdd} products={products} />
-                <HomeReviews onOpenProductModal={handleOpenProductModal} products={products} />
-                <HomeCTA />
+                {homeMode === "ecom" ? (
+                  <EcomHome 
+                    onQuickAdd={handleQuickAdd} 
+                    onOpenProductModal={handleOpenProductModal} 
+                    products={products} 
+                  />
+                ) : (
+                  <>
+                    <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} products={products} />
+                    <FeaturedRotary onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                    <SpecialtyCurtain onExploreClick={() => navigate("/specialty")} />
+                    <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                    <HomeCompare onQuickAdd={handleQuickAdd} products={products} />
+                    <HomeReviews onOpenProductModal={handleOpenProductModal} products={products} />
+                    <HomeCTA />
+                  </>
+                )}
               </motion.div>
             } />
             
