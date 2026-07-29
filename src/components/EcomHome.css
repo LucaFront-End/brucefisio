@@ -1545,23 +1545,24 @@
 /* 8. REVIEWS INFINITE MARQUEE WITH SIDE BLUR */
 .ecom-testimonials-section {
   margin-bottom: 3.5rem;
-  overflow: hidden;
 }
 
 .reviews-marquee-container {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   overflow: hidden;
   margin-top: 1.75rem;
-  padding: 1rem 0;
+  padding: 1.25rem 0;
 }
 
-/* Side Blur Overlays */
+/* Side Blur Overlays on Viewport Edges */
 .marquee-fade {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 160px;
+  width: 220px;
   z-index: 10;
   pointer-events: none;
 }
