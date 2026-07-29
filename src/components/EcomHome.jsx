@@ -61,37 +61,55 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     );
   };
 
-  // Rich categories with high-quality real images
+  // Rich Categories Bento List
   const categoriesList = [
     { 
-      name: "Electroterapia", 
+      title: "Electroterapia & Ultrasonido", 
+      sub: "Ondas de choque, TENS, EMS y ultrasonido terapéutico.",
+      tag: "🔥 MÁS DEMANDADO",
       count: "14 Equipos", 
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=300&auto=format&fit=crop"
+      image: "/images/hero_ultrasonido.png",
+      color: "blue"
     },
     { 
-      name: "Terapia Manual", 
+      title: "Terapia Percutiva Pro", 
+      sub: "Pistolas de masaje Bruce Pro y cabezales anatómicos.",
+      tag: "⚡ RECUPERACIÓN RÁPIDA",
       count: "18 Equipos", 
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=300&auto=format&fit=crop"
+      image: "/images/hero_massage_gun.png",
+      color: "orange"
     },
     { 
-      name: "Ejercicio Activo", 
-      count: "22 Equipos", 
-      image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop"
-    },
-    { 
-      name: "Movilidad & Camillas", 
-      count: "9 Equipos", 
-      image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=300&auto=format&fit=crop"
-    },
-    { 
-      name: "Vendaje & Cuidado", 
-      count: "35 Productos", 
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=300&auto=format&fit=crop"
-    },
-    { 
-      name: "Alta Especialidad VR", 
+      title: "Alta Especialidad VR & Láser", 
+      sub: "Realidad virtual CUREO® y láser THEAL de 92 Watts.",
+      tag: "🧠 INNOVACIÓN 5.0",
       count: "5 Sistemas", 
-      image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=300&auto=format&fit=crop"
+      image: "/images/hero_vr.png",
+      color: "purple"
+    },
+    { 
+      title: "Camillas & Mobiliario Clínico", 
+      sub: "Camillas eléctricas, hidráulicas y portátiles reforzadas.",
+      tag: "🏥 ERGONOMÍA PRO",
+      count: "9 Equipos", 
+      image: "/images/cat_camilla.png",
+      color: "cyan"
+    },
+    { 
+      title: "Ejercicio Activo & Cinesiterapia", 
+      sub: "Pesas, bandas de resistencia, balones y poleas.",
+      tag: "💪 REHABILITACIÓN",
+      count: "22 Equipos", 
+      image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=400&auto=format&fit=crop",
+      color: "green"
+    },
+    { 
+      title: "Vendaje & Gel Conductor", 
+      sub: "Cintas kinesiología, gel para electrodos y insumos.",
+      tag: "🩺 INSUMOS DIARIOS",
+      count: "35 Productos", 
+      image: "/images/cat_vendaje.png",
+      color: "red"
     }
   ];
 
@@ -379,31 +397,40 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
         </div>
 
         {/* 3. CATEGORY CIRCULAR THUMBNAILS BAR */}
-        <section className="ecom-categories-section">
+        {/* 3. EXPLORE CATEGORIES BENTO SHOWCASE */}
+        <section className="ecom-categories-bento-section">
           <div className="section-header">
             <div>
-              <span className="sub-tag">CATEGORÍAS DESTACADAS</span>
-              <h2 className="section-title">Explora por especialidad médica</h2>
+              <span className="sub-tag">CATÁLOGO ESPECIALIZADO POR CLASIFICACIÓN</span>
+              <h2 className="section-title">Explora por Categoría Médica</h2>
             </div>
             <button className="btn-link-all" onClick={() => navigate("/shop")}>
-              Ver todas las categorías <ArrowRight size={16} />
+              Ver Catálogo Completo <ArrowRight size={16} />
             </button>
           </div>
 
-          <div className="categories-pill-grid">
+          <div className="categories-bento-grid">
             {categoriesList.map((cat, idx) => (
               <motion.div 
                 key={idx}
-                className="category-pill-card"
-                whileHover={{ y: -6, scale: 1.03 }}
+                className={`cat-bento-card bento-theme-${cat.color}`}
+                whileHover={{ y: -6, scale: 1.02 }}
                 onClick={() => navigate("/shop")}
               >
-                <div className="cat-pill-img-box">
-                  <img src={cat.image} alt={cat.name} className="cat-pill-img" />
+                <div className="cat-bento-content">
+                  <div className="cat-header-pills">
+                    <span className="cat-badge-tag">{cat.tag}</span>
+                    <span className="cat-count-badge">{cat.count}</span>
+                  </div>
+                  <h3>{cat.title}</h3>
+                  <p>{cat.sub}</p>
+                  <div className="cat-action-link">
+                    <span>Explorar Categoría</span>
+                    <ChevronRight size={15} />
+                  </div>
                 </div>
-                <div className="cat-pill-info">
-                  <h4>{cat.name}</h4>
-                  <span>{cat.count}</span>
+                <div className="cat-bento-img-box">
+                  <img src={cat.image} alt={cat.title} className="cat-bento-img" />
                 </div>
               </motion.div>
             ))}
