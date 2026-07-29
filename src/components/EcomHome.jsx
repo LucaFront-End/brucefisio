@@ -61,56 +61,14 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     );
   };
 
-  // Rich Categories Bento List
+  // Minimalist compact categories list
   const categoriesList = [
-    { 
-      title: "Electroterapia & Ultrasonido", 
-      sub: "Ondas de choque, TENS, EMS y ultrasonido terapéutico.",
-      tag: "🔥 MÁS DEMANDADO",
-      count: "14 Equipos", 
-      image: "/images/hero_ultrasonido.png",
-      color: "blue"
-    },
-    { 
-      title: "Terapia Percutiva Pro", 
-      sub: "Pistolas de masaje Bruce Pro y cabezales anatómicos.",
-      tag: "⚡ RECUPERACIÓN RÁPIDA",
-      count: "18 Equipos", 
-      image: "/images/hero_massage_gun.png",
-      color: "orange"
-    },
-    { 
-      title: "Alta Especialidad VR & Láser", 
-      sub: "Realidad virtual CUREO® y láser THEAL de 92 Watts.",
-      tag: "🧠 INNOVACIÓN 5.0",
-      count: "5 Sistemas", 
-      image: "/images/hero_vr.png",
-      color: "purple"
-    },
-    { 
-      title: "Camillas & Mobiliario Clínico", 
-      sub: "Camillas eléctricas, hidráulicas y portátiles reforzadas.",
-      tag: "🏥 ERGONOMÍA PRO",
-      count: "9 Equipos", 
-      image: "/images/cat_camilla.png",
-      color: "cyan"
-    },
-    { 
-      title: "Ejercicio Activo & Cinesiterapia", 
-      sub: "Pesas, bandas de resistencia, balones y poleas.",
-      tag: "💪 REHABILITACIÓN",
-      count: "22 Equipos", 
-      image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=400&auto=format&fit=crop",
-      color: "green"
-    },
-    { 
-      title: "Vendaje & Gel Conductor", 
-      sub: "Cintas kinesiología, gel para electrodos y insumos.",
-      tag: "🩺 INSUMOS DIARIOS",
-      count: "35 Productos", 
-      image: "/images/cat_vendaje.png",
-      color: "red"
-    }
+    { name: "Electroterapia", count: "14 Equipos", image: "/images/hero_ultrasonido.png" },
+    { name: "Terapia Percutiva", count: "18 Equipos", image: "/images/hero_massage_gun.png" },
+    { name: "Alta Especialidad", count: "5 Sistemas", image: "/images/hero_vr.png" },
+    { name: "Camillas & Mobiliario", count: "9 Equipos", image: "/images/cat_camilla.png" },
+    { name: "Ejercicio Activo", count: "22 Equipos", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop" },
+    { name: "Vendaje & Insumos", count: "35 Productos", image: "/images/cat_vendaje.png" }
   ];
 
   // Map products with enhanced real images and e-commerce fields
@@ -396,42 +354,24 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           </div>
         </div>
 
-        {/* 3. CATEGORY CIRCULAR THUMBNAILS BAR */}
-        {/* 3. EXPLORE CATEGORIES BENTO SHOWCASE */}
-        <section className="ecom-categories-bento-section">
-          <div className="section-header">
-            <div>
-              <span className="sub-tag">CATÁLOGO ESPECIALIZADO POR CLASIFICACIÓN</span>
-              <h2 className="section-title">Explora por Categoría Médica</h2>
-            </div>
-            <button className="btn-link-all" onClick={() => navigate("/shop")}>
-              Ver Catálogo Completo <ArrowRight size={16} />
-            </button>
-          </div>
-
-          <div className="categories-bento-grid">
+        {/* 3. MINIMALIST COMPACT CATEGORIES BAR */}
+        <section className="ecom-categories-minimal-bar">
+          <div className="categories-minimal-grid">
             {categoriesList.map((cat, idx) => (
               <motion.div 
                 key={idx}
-                className={`cat-bento-card bento-theme-${cat.color}`}
-                whileHover={{ y: -6, scale: 1.02 }}
+                className="category-minimal-pill"
+                whileHover={{ y: -3, scale: 1.02 }}
                 onClick={() => navigate("/shop")}
               >
-                <div className="cat-bento-content">
-                  <div className="cat-header-pills">
-                    <span className="cat-badge-tag">{cat.tag}</span>
-                    <span className="cat-count-badge">{cat.count}</span>
-                  </div>
-                  <h3>{cat.title}</h3>
-                  <p>{cat.sub}</p>
-                  <div className="cat-action-link">
-                    <span>Explorar Categoría</span>
-                    <ChevronRight size={15} />
-                  </div>
+                <div className="cat-mini-thumb">
+                  <img src={cat.image} alt={cat.name} className="cat-mini-img" />
                 </div>
-                <div className="cat-bento-img-box">
-                  <img src={cat.image} alt={cat.title} className="cat-bento-img" />
+                <div className="cat-mini-text">
+                  <span className="cat-mini-name">{cat.name}</span>
+                  <span className="cat-mini-count">{cat.count}</span>
                 </div>
+                <ChevronRight size={14} className="cat-mini-arrow" />
               </motion.div>
             ))}
           </div>

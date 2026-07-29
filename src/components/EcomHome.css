@@ -585,139 +585,91 @@
   gap: 0.7rem;
 }
 
-/* 3. EXPLORE CATEGORIES BENTO GRID */
-.ecom-categories-bento-section {
-  margin-bottom: 3.5rem;
+/* 3. MINIMALIST COMPACT CATEGORIES BAR */
+.ecom-categories-minimal-bar {
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
-.categories-bento-grid {
+.categories-minimal-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
 }
 
-.cat-bento-card {
-  border-radius: 24px;
-  padding: 1.75rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.25rem;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(0, 48, 87, 0.05);
-  border: 1px solid #e2e8f0;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 180px;
-}
-
-.bento-theme-blue { background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%); border-color: #dbeafe; }
-.bento-theme-orange { background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%); border-color: #ffedd5; }
-.bento-theme-purple { background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%); border-color: #f3e8ff; }
-.bento-theme-cyan { background: linear-gradient(135deg, #ffffff 0%, #ecfeff 100%); border-color: #cffafe; }
-.bento-theme-green { background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); border-color: #dcfce7; }
-.bento-theme-red { background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%); border-color: #fee2e2; }
-
-.cat-bento-card:hover {
-  box-shadow: 0 20px 40px rgba(0, 126, 229, 0.15);
-}
-
-.bento-theme-blue:hover { border-color: #007EE5; }
-.bento-theme-orange:hover { border-color: #f97316; }
-.bento-theme-purple:hover { border-color: #9333ea; }
-.bento-theme-cyan:hover { border-color: #06b6d4; }
-.bento-theme-green:hover { border-color: #10b981; }
-.bento-theme-red:hover { border-color: #ef4444; }
-
-.cat-bento-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.cat-header-pills {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.cat-badge-tag {
-  font-size: 0.65rem;
-  font-weight: 900;
-  padding: 0.22rem 0.6rem;
-  border-radius: 50px;
-  background: rgba(0, 48, 87, 0.08);
-  color: #003057;
-  letter-spacing: 0.04em;
-}
-
-.cat-count-badge {
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 0.22rem 0.55rem;
-  border-radius: 50px;
+.category-minimal-pill {
   background: #ffffff;
-  color: #64748b;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-.cat-bento-content h3 {
-  font-family: var(--font-heading);
-  font-size: 1.2rem;
-  font-weight: 900;
-  color: #003057;
-  line-height: 1.25;
-  margin-bottom: 0.35rem;
-}
-
-.cat-bento-content p {
-  font-size: 0.78rem;
-  color: #64748b;
-  line-height: 1.4;
-  margin-bottom: 1rem;
-}
-
-.cat-action-link {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #007EE5;
-  display: inline-flex;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  display: flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-top: auto;
-  transition: gap 0.25s ease;
+  gap: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 48, 87, 0.03);
+  transition: all 0.25s ease;
 }
 
-.cat-bento-card:hover .cat-action-link {
-  gap: 0.45rem;
+.category-minimal-pill:hover {
+  border-color: #007EE5;
+  background: #f8fafc;
+  box-shadow: 0 8px 20px rgba(0, 126, 229, 0.12);
 }
 
-.cat-bento-img-box {
-  width: 110px;
-  height: 110px;
-  border-radius: 18px;
+.cat-mini-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  border: 2px solid #ffffff;
+  background: #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.cat-bento-img {
+.cat-mini-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.45s ease;
+  transition: transform 0.3s ease;
 }
 
-.cat-bento-card:hover .cat-bento-img {
-  transform: scale(1.12);
+.category-minimal-pill:hover .cat-mini-img {
+  transform: scale(1.1);
+}
+
+.cat-mini-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cat-mini-name {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.cat-mini-count {
+  font-size: 0.68rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.cat-mini-arrow {
+  color: #94a3b8;
+  margin-left: auto;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.category-minimal-pill:hover .cat-mini-arrow {
+  color: #007EE5;
+  transform: translateX(2px);
 }
 
 /* 4. HOT DEALS FLASH SECTION (HIGH URGENCY MODE) */
@@ -1875,8 +1827,8 @@
   .trust-pillars-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .categories-bento-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .categories-minimal-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
   .ecom-cta-bar {
     flex-direction: column;
@@ -1886,8 +1838,8 @@
 }
 
 @media (max-width: 768px) {
-  .categories-bento-grid {
-    grid-template-columns: 1fr;
+  .categories-minimal-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   .hero-main-content-grid {
     grid-template-columns: 1fr;
@@ -1929,15 +1881,8 @@
   .hero-main-title {
     font-size: 1.6rem;
   }
-  .cat-bento-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  .cat-bento-img-box {
-    align-self: flex-end;
-    width: 90px;
-    height: 90px;
+  .categories-minimal-grid {
+    grid-template-columns: 1fr;
   }
   .ecom-top-ticker {
     flex-direction: column;
