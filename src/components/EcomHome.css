@@ -68,7 +68,7 @@
 /* 2. HERO ECOM GRID */
 .ecom-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 360px;
   gap: 1.5rem;
   margin-top: 1.5rem;
   margin-bottom: 2.5rem;
@@ -77,10 +77,10 @@
 .ecom-hero-main-card {
   background: #ffffff;
   border-radius: 24px;
-  padding: 3rem;
+  padding: 3.5rem 3rem;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
   align-items: center;
   position: relative;
   overflow: hidden;
@@ -108,19 +108,12 @@
 
 .hero-main-title {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   font-weight: 900;
-  line-height: 1.15;
+  line-height: 1.18;
   color: #0f172a;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
-}
-
-.highlight-blue {
-  color: #007EE5;
-  background: linear-gradient(120deg, rgba(0, 126, 229, 0.1) 0%, rgba(0, 126, 229, 0.2) 100%);
-  padding: 0.1em 0.3em;
-  border-radius: 6px;
 }
 
 .hero-main-subtitle {
@@ -230,22 +223,26 @@
   color: #007EE5;
 }
 
-.hero-trust-micro {
+.hero-slider-dots {
   display: flex;
-  gap: 1.25rem;
-  font-size: 0.78rem;
-  color: #475569;
-  font-weight: 600;
+  gap: 0.5rem;
 }
 
-.hero-trust-micro span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+.hero-slider-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.text-blue { color: #007EE5; }
-.text-orange { color: #f97316; }
+.hero-slider-dots .dot.active {
+  width: 28px;
+  border-radius: 10px;
+  background: #007EE5;
+}
 
 .hero-main-img-stage {
   position: relative;
@@ -258,32 +255,32 @@
 
 .img-glow-backdrop {
   position: absolute;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(0, 126, 229, 0.2) 0%, rgba(0, 126, 229, 0) 70%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(0, 126, 229, 0.18) 0%, rgba(0, 126, 229, 0) 70%);
   border-radius: 50%;
   z-index: 1;
 }
 
-.hero-product-svg {
-  width: 220px;
-  height: 220px;
+.hero-real-product-img {
+  width: 100%;
+  max-width: 320px;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 20px;
   z-index: 2;
-  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.12));
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
   transition: transform 0.5s ease;
 }
 
-.ecom-hero-main-card:hover .hero-product-svg {
-  transform: scale(1.05) rotate(2deg);
+.ecom-hero-main-card:hover .hero-real-product-img {
+  transform: scale(1.04);
 }
 
-.hero-product-placeholder {
-  font-size: 5rem;
-  z-index: 2;
-}
-
-.floating-stat-badge {
+.hero-badge-floating {
   position: absolute;
+  bottom: 10px;
+  right: 10px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid #e2e8f0;
@@ -296,23 +293,18 @@
   z-index: 3;
 }
 
-.stat-top-right {
-  top: 15px;
-  right: 10px;
-}
-
-.floating-stat-badge strong {
+.hero-badge-floating strong {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #0f172a;
 }
 
-.floating-stat-badge span {
+.hero-badge-floating span {
   font-size: 0.7rem;
   color: #64748b;
 }
 
-/* RIGHT BENTO BANNERS */
+/* RIGHT STACKED BENTO CARDS */
 .ecom-hero-side-bento {
   display: flex;
   flex-direction: column;
@@ -321,32 +313,51 @@
 
 .side-bento-card {
   border-radius: 20px;
-  padding: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   height: 100%;
+  min-height: 200px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
-.bento-blue {
-  background: linear-gradient(135deg, #003057 0%, #00569e 100%);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.bento-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.bento-dark {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+.side-bento-card:hover .bento-bg-img {
+  transform: scale(1.08);
+}
+
+.bento-card-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 1.75rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bento-card-blue .bento-card-overlay {
+  background: linear-gradient(135deg, rgba(0, 48, 87, 0.92) 0%, rgba(0, 126, 229, 0.85) 100%);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bento-card-dark .bento-card-overlay {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.88) 100%);
+  color: #ffffff;
 }
 
 .side-bento-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 48, 87, 0.25);
+  box-shadow: 0 16px 32px rgba(0, 48, 87, 0.25);
 }
 
 .bento-badge {
@@ -358,47 +369,40 @@
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .badge-green {
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.25);
   color: #34d399;
 }
 
 .side-bento-card h3 {
   font-family: var(--font-heading);
   font-size: 1.25rem;
-  font-weight: 800;
-  margin-bottom: 0.4rem;
+  font-weight: 900;
+  margin-bottom: 0.3rem;
   line-height: 1.25;
 }
 
 .side-bento-card p {
   font-size: 0.82rem;
-  opacity: 0.8;
+  opacity: 0.85;
   line-height: 1.4;
-  margin-bottom: 1.25rem;
 }
 
 .bento-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  padding-top: 0.85rem;
-}
-
-.bento-link {
+  padding-top: 0.75rem;
   font-size: 0.8rem;
   font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
 }
 
-.bento-pill-tag {
+.bento-price-tag {
   background: #ffffff;
   color: #003057;
   font-size: 0.65rem;
@@ -410,50 +414,6 @@
 .tag-green {
   background: #10b981;
   color: #ffffff;
-}
-
-/* 3. TRUST BAR */
-.ecom-trust-bar {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 1.5rem 2rem;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-  border: 1px solid #e2e8f0;
-  margin-bottom: 2.5rem;
-}
-
-.trust-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.trust-icon-box {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: rgba(0, 126, 229, 0.08);
-  color: #007EE5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.trust-item h4 {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 0.2rem;
-}
-
-.trust-item p {
-  font-size: 0.78rem;
-  color: #64748b;
-  line-height: 1.3;
 }
 
 /* SECTION GENERAL HEADERS */
@@ -499,21 +459,21 @@
   gap: 0.7rem;
 }
 
-/* 4. CATEGORY CIRCULAR PILLS */
+/* 3. CATEGORY CIRCULAR THUMBNAILS */
 .ecom-categories-section {
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .categories-pill-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .category-pill-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 1.25rem 1rem;
   display: flex;
   flex-direction: column;
@@ -526,19 +486,28 @@
 
 .category-pill-card:hover {
   border-color: #007EE5;
-  box-shadow: 0 10px 25px rgba(0, 126, 229, 0.12);
+  box-shadow: 0 12px 28px rgba(0, 126, 229, 0.14);
 }
 
-.cat-pill-icon {
-  width: 54px;
-  height: 54px;
+.cat-pill-img-box {
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
+  overflow: hidden;
   margin-bottom: 0.85rem;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  border: 2px solid #ffffff;
+}
+
+.cat-pill-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.category-pill-card:hover .cat-pill-img {
+  transform: scale(1.12);
 }
 
 .cat-pill-info h4 {
@@ -555,11 +524,11 @@
   font-weight: 600;
 }
 
-/* 5. HOT FLASH DEALS SECTION */
+/* 4. HOT DEALS FLASH SECTION */
 .ecom-flash-section {
   background: #ffffff;
   border-radius: 24px;
-  padding: 2rem;
+  padding: 2.25rem;
   margin-bottom: 3.5rem;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
   border: 1px solid #e2e8f0;
@@ -658,7 +627,7 @@
   color: #38bdf8;
 }
 
-/* PRODUCT CARDS (HIGH DENSITY ECOM) */
+/* PRODUCT CARDS (HIGH DENSITY REAL PHOTO ECOM) */
 .flash-products-grid, .ecom-products-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -730,7 +699,7 @@
 }
 
 .product-card-stage {
-  height: 180px;
+  height: 190px;
   position: relative;
   display: flex;
   align-items: center;
@@ -738,31 +707,20 @@
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 1rem;
+  background: #f8fafc;
   cursor: pointer;
 }
 
-.stage-glow {
-  position: absolute;
-  inset: 0;
-  opacity: 0.8;
+.product-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 12px;
-}
-
-.card-svg-thumb {
-  width: 110px;
-  height: 110px;
-  z-index: 2;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08));
   transition: transform 0.4s ease;
 }
 
-.ecom-product-card:hover .card-svg-thumb {
+.ecom-product-card:hover .product-real-img {
   transform: scale(1.08);
-}
-
-.card-img-placeholder {
-  font-size: 3rem;
-  z-index: 2;
 }
 
 .quick-view-overlay {
@@ -933,7 +891,7 @@
   box-shadow: 0 6px 16px rgba(0, 126, 229, 0.3);
 }
 
-/* 6. FEATURED TABS SECTION */
+/* 5. FEATURED TABS SECTION */
 .ecom-featured-section {
   margin-bottom: 3.5rem;
 }
@@ -964,7 +922,7 @@
   color: #ffffff;
 }
 
-/* 7. DUAL MID BANNERS */
+/* 6. DUAL MID PROMO BANNERS */
 .ecom-mid-banners-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -982,25 +940,52 @@
   align-items: center;
   cursor: pointer;
   transition: transform 0.3s ease;
+  min-height: 220px;
 }
 
 .mid-banner-card:hover {
   transform: translateY(-4px);
 }
 
-.banner-gradient-blue {
-  background: linear-gradient(135deg, #003057 0%, #007EE5 100%);
+.mid-banner-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.mid-banner-card:hover .mid-banner-bg-img {
+  transform: scale(1.08);
+}
+
+.banner-gradient-blue .mid-banner-content {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(90deg, rgba(0, 48, 87, 0.92) 0%, rgba(0, 126, 229, 0.85) 100%);
+  padding: 2.5rem;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  margin: -2.5rem;
   color: #ffffff;
 }
 
-.banner-gradient-dark {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+.banner-gradient-dark .mid-banner-content {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.88) 100%);
+  padding: 2.5rem;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  margin: -2.5rem;
   color: #ffffff;
 }
 
 .mid-banner-content {
-  max-width: 65%;
-  z-index: 2;
+  max-width: 70%;
 }
 
 .mid-tag {
@@ -1048,12 +1033,7 @@
   color: #ffffff;
 }
 
-.banner-icon-bg {
-  opacity: 0.15;
-  color: #ffffff;
-}
-
-/* 8. SPOTLIGHT PRODUCT SECTION */
+/* 7. SPOTLIGHT PRODUCT SECTION */
 .ecom-spotlight-section {
   margin-bottom: 3.5rem;
 }
@@ -1130,7 +1110,6 @@
   color: #94a3b8;
   text-transform: uppercase;
   font-weight: 700;
-
 }
 
 .sp-price {
@@ -1166,37 +1145,23 @@
 
 .spotlight-glow {
   position: absolute;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(0, 126, 229, 0.15) 0%, transparent 70%);
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(0, 126, 229, 0.18) 0%, transparent 70%);
   border-radius: 50%;
 }
 
-.spotlight-img-box {
-  position: relative;
+.spotlight-real-img {
+  width: 100%;
+  max-width: 340px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 20px;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
 }
 
-.badge-3d {
-  background: #0f172a;
-  color: #ffffff;
-  font-size: 0.65rem;
-  font-weight: 900;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  letter-spacing: 0.05em;
-}
-
-.spotlight-svg {
-  width: 200px;
-  height: 200px;
-}
-
-/* 9. TESTIMONIALS */
+/* 8. TESTIMONIALS */
 .ecom-testimonials-section {
   margin-bottom: 3.5rem;
 }
@@ -1262,7 +1227,7 @@
   color: #94a3b8;
 }
 
-/* 10. CTA WHATSAPP BAR */
+/* 9. CTA WHATSAPP BAR */
 .ecom-cta-bar {
   background: linear-gradient(135deg, #0f172a 0%, #003057 100%);
   color: #ffffff;
@@ -1343,9 +1308,6 @@
   .categories-pill-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .ecom-trust-bar {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .testimonials-grid {
     grid-template-columns: 1fr;
   }
@@ -1357,7 +1319,7 @@
 }
 
 @media (max-width: 640px) {
-  .flash-products-grid, .ecom-products-grid, .categories-pill-grid, .ecom-trust-bar {
+  .flash-products-grid, .ecom-products-grid, .categories-pill-grid {
     grid-template-columns: 1fr;
   }
   .hero-main-title {

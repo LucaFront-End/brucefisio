@@ -25,14 +25,15 @@ export const PRODUCTS = [
     price: 3899,
     category: "Terapia Manual",
     brand: "Bruce Pro",
-    imageBg: "linear-gradient(135deg, #ccfbf1 0%, #0d9488 100%)",
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+    imageBg: "linear-gradient(135deg, #e0f2fe 0%, #007EE5 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="25" y="30" width="12" height="35" rx="6" fill="#1e293b"/>
         <rect x="35" y="35" width="40" height="15" rx="7" fill="#0f172a"/>
-        <circle cx="75" cy="42.5" r="10" fill="#0d9488"/>
+        <circle cx="75" cy="42.5" r="10" fill="#007EE5"/>
         <rect x="50" y="47" width="10" height="25" rx="3" fill="#475569" transform="rotate(-15 50 47)"/>
-        <rect x="30" y="55" width="22" height="8" rx="4" fill="#0d9488"/>
+        <rect x="30" y="55" width="22" height="8" rx="4" fill="#007EE5"/>
       </svg>
     `,
     variables: {
@@ -47,15 +48,16 @@ export const PRODUCTS = [
     price: 7499,
     category: "Electroterapia",
     brand: "Chattanooga",
-    imageBg: "linear-gradient(135deg, #e0f2fe 0%, #0284c7 100%)",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+    imageBg: "linear-gradient(135deg, #e0f2fe 0%, #003057 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="20" y="20" width="60" height="60" rx="10" fill="#0f172a"/>
         <rect x="28" y="28" width="44" height="28" rx="4" fill="#1e293b"/>
-        <circle cx="38" cy="68" r="5" fill="#0d9488"/>
+        <circle cx="38" cy="68" r="5" fill="#007EE5"/>
         <circle cx="50" cy="68" r="5" fill="#38bdf8"/>
         <circle cx="62" cy="68" r="5" fill="#64748b"/>
-        <rect x="32" y="32" width="36" height="20" rx="2" fill="#0d9488" fill-opacity="0.2"/>
+        <rect x="32" y="32" width="36" height="20" rx="2" fill="#007EE5" fill-opacity="0.2"/>
         <path d="M36 45 Q 43 38, 50 45 T 64 45" stroke="#38bdf8" stroke-width="2" fill="none"/>
       </svg>
     `,
@@ -71,10 +73,11 @@ export const PRODUCTS = [
     price: 499,
     category: "Ejercicio Activo",
     brand: "Bruce Pro",
+    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #ffedd5 0%, #f97316 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 35 C 40 25, 60 45, 80 35 C 80 45, 60 55, 20 45 Z" fill="#0d9488"/>
+        <path d="M20 35 C 40 25, 60 45, 80 35 C 80 45, 60 55, 20 45 Z" fill="#007EE5"/>
         <path d="M20 50 C 40 40, 60 60, 80 50 C 80 60, 60 70, 20 60 Z" fill="#f97316"/>
         <path d="M20 65 C 40 55, 60 75, 80 65 C 80 75, 60 85, 20 75 Z" fill="#64748b"/>
       </svg>
@@ -91,12 +94,13 @@ export const PRODUCTS = [
     price: 2999,
     category: "Terapia Manual",
     brand: "Hyperice",
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #f1f5f9 0%, #475569 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="25" y="25" width="50" height="50" rx="25" fill="#1e293b"/>
         <circle cx="50" cy="50" r="18" fill="#0f172a"/>
-        <circle cx="50" cy="50" r="8" fill="#0d9488"/>
+        <circle cx="50" cy="50" r="8" fill="#007EE5"/>
         <path d="M28 35 H 72 M28 45 H 72 M28 55 H 72 M28 65 H 72" stroke="#475569" stroke-width="1.5" stroke-dasharray="2 3"/>
       </svg>
     `,
@@ -112,6 +116,7 @@ export const PRODUCTS = [
     price: 4590,
     category: "Movilidad y Camillas",
     brand: "Bruce Pro",
+    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #fef3c7 0%, #d97706 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -134,6 +139,7 @@ export const PRODUCTS = [
     price: 320,
     category: "Vendaje y Cuidado",
     brand: "Kinesio",
+    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #fae8ff 0%, #d946ef 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,6 +160,7 @@ export const PRODUCTS = [
     price: 850,
     category: "Ejercicio Activo",
     brand: "Gymnic",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #dbeafe 0%, #2563eb 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -175,20 +182,18 @@ export const PRODUCTS = [
     price: 8900,
     category: "Electroterapia",
     brand: "Chattanooga",
+    image: "https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=800&auto=format&fit=crop",
     imageBg: "linear-gradient(135deg, #ecfdf5 0%, #059669 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="25" y="20" width="50" height="50" rx="6" fill="#1e293b"/>
-        <rect x="33" y="28" width="34" height="20" rx="2" fill="#0f172a"/>
-        <circle cx="42" cy="58" r="4" fill="#059669"/>
-        <circle cx="58" cy="58" r="4" fill="#34d399"/>
-        <rect x="20" y="72" width="16" height="12" rx="3" fill="#64748b" transform="rotate(-20 20 72)"/>
-        <path d="M30 76 Q 40 85, 55 60" stroke="#64748b" stroke-width="3" fill="none" stroke-dasharray="2 2"/>
+        <rect x="30" y="20" width="40" height="60" rx="8" fill="#1e293b"/>
+        <circle cx="50" cy="40" r="12" fill="#059669"/>
+        <rect x="42" y="60" width="16" height="12" rx="2" fill="#475569"/>
       </svg>
     `,
     variables: {
-      name: "Modelo",
-      options: ["Estándar Clínico", "Profesional con Batería"]
+      name: "Cabezales",
+      options: ["1 cm² Superficial", "5 cm² Profundo (Estándar)"]
     }
   }
 ];
