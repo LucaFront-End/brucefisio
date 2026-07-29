@@ -299,85 +299,69 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
             </AnimatePresence>
           </div>
 
-          {/* Right Side 3 Stacked Bento Cards */}
+          {/* Right Side 4 Advantage & Solution Hub Cards */}
           <div className="ecom-hero-side-bento">
-            {/* Bento Card 1 */}
-            <div className="side-bento-card bento-card-light-blue" onClick={() => navigate("/specialty")}>
+            {/* Bento Card 1: FINANCIAMIENTO */}
+            <div className="side-bento-card bento-card-light-blue" onClick={() => navigate("/contact")}>
               <div className="bento-text-side">
-                <span className="bento-tag tag-blue">ALTA ESPECIALIDAD</span>
-                <h3>Láser THEAL 92W</h3>
-                <p>Analgesia inmediata profunda.</p>
+                <span className="bento-tag tag-blue">FACILIDADES DE PAGO</span>
+                <h3>Equipa en 12 MSI</h3>
+                <p>Tarjetas corporativas y leasing directo.</p>
                 <div className="bento-price-row">
-                  <span className="bento-price">12 MSI</span>
-                  <span className="bento-action-link">Ver Ficha <ChevronRight size={14} /></span>
+                  <span className="bento-price">HASTA 12 MESES</span>
+                  <span className="bento-action-link">Cotizar <ChevronRight size={14} /></span>
                 </div>
               </div>
-              <div className="bento-img-side">
-                <img 
-                  src="/images/hero_laser.png" 
-                  alt="Láser THEAL" 
-                  className="bento-cutout-img"
-                />
+              <div className="bento-icon-wrapper icon-blue">
+                <CreditCard size={28} />
               </div>
             </div>
 
-            {/* Bento Card 2 */}
-            <div className="side-bento-card bento-card-light-dark" onClick={() => navigate("/specialty")}>
+            {/* Bento Card 2: ALTA ESPECIALIDAD */}
+            <div className="side-bento-card bento-card-light-green" onClick={() => navigate("/specialty")}>
               <div className="bento-text-side">
-                <span className="bento-tag tag-green">NEURO-REHAB</span>
-                <h3>CUREO® 5.0 VR</h3>
-                <p>Realidad virtual inmersiva.</p>
+                <span className="bento-tag tag-green">ALTA ESPECIALIDAD</span>
+                <h3>Láser THEAL & VR</h3>
+                <p>Fotobiomodulación y Neuro-Rehab 3D.</p>
                 <div className="bento-price-row">
-                  <span className="bento-price text-green">DEMO GRATIS</span>
-                  <span className="bento-action-link">Probar <ChevronRight size={14} /></span>
+                  <span className="bento-price text-green">TECNOLOGÍA TOP</span>
+                  <span className="bento-action-link">Ver Equipos <ChevronRight size={14} /></span>
                 </div>
               </div>
-              <div className="bento-img-side">
-                <img 
-                  src="/images/hero_vr.png" 
-                  alt="CUREO VR" 
-                  className="bento-cutout-img"
-                />
+              <div className="bento-icon-wrapper icon-green">
+                <Sparkles size={28} />
               </div>
             </div>
 
-            {/* Bento Card 3 */}
-            <div className="side-bento-card bento-card-light-orange" onClick={() => navigate("/shop")}>
+            {/* Bento Card 3: ENVÍOS PRIORITARIOS */}
+            <div className="side-bento-card bento-card-light-orange" onClick={() => navigate("/about")}>
               <div className="bento-text-side">
-                <span className="bento-tag tag-orange">TERAPIA MANUAL</span>
-                <h3>Bruce Pulse™ 5V</h3>
-                <p>Percusión muscular de 60W.</p>
+                <span className="bento-tag tag-orange">LOGÍSTICA CLÍNICA</span>
+                <h3>Envío Asegurado 24h</h3>
+                <p>Despacho prioritario directo a tu clínica.</p>
                 <div className="bento-price-row">
-                  <span className="bento-price text-orange">20% OFF</span>
-                  <span className="bento-action-link">Comprar <ChevronRight size={14} /></span>
+                  <span className="bento-price text-orange">COBERTURA 100%</span>
+                  <span className="bento-action-link">Ver Tiempos <ChevronRight size={14} /></span>
                 </div>
               </div>
-              <div className="bento-img-side">
-                <img 
-                  src="/images/hero_massage_gun.png" 
-                  alt="Bruce Pro Pulse" 
-                  className="bento-cutout-img"
-                />
+              <div className="bento-icon-wrapper icon-orange">
+                <Truck size={28} />
               </div>
             </div>
 
-            {/* Bento Card 4 */}
-            <div className="side-bento-card bento-card-light-purple" onClick={() => navigate("/shop")}>
+            {/* Bento Card 4: CAPACITACIÓN & CERTIFICACIÓN */}
+            <div className="side-bento-card bento-card-light-purple" onClick={() => navigate("/about")}>
               <div className="bento-text-side">
-                <span className="bento-tag tag-purple">ELECTROTERAPIA</span>
-                <h3>Ultrasonido US Pro</h3>
-                <p>Ondas profundas 1 y 3 MHz.</p>
+                <span className="bento-tag tag-purple">ACADEMIA BRUCE</span>
+                <h3>Capacitación Incluida</h3>
+                <p>Certificación técnica para tu personal.</p>
                 <div className="bento-price-row">
-                  <span className="bento-price text-purple">ENVÍO GRATIS</span>
-                  <span className="bento-action-link">Ver Más <ChevronRight size={14} /></span>
+                  <span className="bento-price text-purple">CURSOS OFICIALES</span>
+                  <span className="bento-action-link">Conocer <ChevronRight size={14} /></span>
                 </div>
               </div>
-              <div className="bento-img-side">
-                <img 
-                  src="/images/hero_ultrasonido.png" 
-                  alt="Ultrasonido US Pro" 
-                  className="bento-cutout-img"
-                />
+              <div className="bento-icon-wrapper icon-purple">
+                <Award size={28} />
               </div>
             </div>
           </div>
