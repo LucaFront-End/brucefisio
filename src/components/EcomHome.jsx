@@ -211,14 +211,6 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
         <section className="ecom-hero-grid">
           {/* Main Hero Slider Banner */}
           <div className="ecom-hero-main-card">
-            {/* Slider Navigation Arrows */}
-            <button className="hero-nav-arrow arrow-left" onClick={prevHeroSlide} aria-label="Anterior">
-              <ChevronLeft size={20} />
-            </button>
-            <button className="hero-nav-arrow arrow-right" onClick={nextHeroSlide} aria-label="Siguiente">
-              <ChevronRight size={20} />
-            </button>
-
             <AnimatePresence mode="wait">
               <motion.div 
                 key={currentSlide}
@@ -257,14 +249,24 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                     </button>
                   </div>
 
-                  <div className="hero-slider-dots">
-                    {heroSlides.map((_, i) => (
-                      <button 
-                        key={i} 
-                        className={`dot ${currentSlide === i ? "active" : ""}`}
-                        onClick={() => setCurrentSlide(i)}
-                      />
-                    ))}
+                  <div className="hero-slider-nav-row">
+                    <div className="hero-slider-dots">
+                      {heroSlides.map((_, i) => (
+                        <button 
+                          key={i} 
+                          className={`dot ${currentSlide === i ? "active" : ""}`}
+                          onClick={() => setCurrentSlide(i)}
+                        />
+                      ))}
+                    </div>
+                    <div className="hero-arrows-inline">
+                      <button className="hero-nav-arrow-inline" onClick={prevHeroSlide} aria-label="Anterior">
+                        <ChevronLeft size={18} />
+                      </button>
+                      <button className="hero-nav-arrow-inline" onClick={nextHeroSlide} aria-label="Siguiente">
+                        <ChevronRight size={18} />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
