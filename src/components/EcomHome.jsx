@@ -353,6 +353,26 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 />
               </div>
             </div>
+
+            {/* Bento Card 4 */}
+            <div className="side-bento-card bento-card-light-purple" onClick={() => navigate("/shop")}>
+              <div className="bento-text-side">
+                <span className="bento-tag tag-purple">ELECTROTERAPIA</span>
+                <h3>Ultrasonido US Pro</h3>
+                <p>Ondas profundas 1 y 3 MHz.</p>
+                <div className="bento-price-row">
+                  <span className="bento-price text-purple">ENVÍO GRATIS</span>
+                  <span className="bento-action-link">Ver Más <ChevronRight size={14} /></span>
+                </div>
+              </div>
+              <div className="bento-img-side">
+                <img 
+                  src="/images/hero_ultrasonido.png" 
+                  alt="Ultrasonido US Pro" 
+                  className="bento-cutout-img"
+                />
+              </div>
+            </div>
           </div>
         </section>
 
