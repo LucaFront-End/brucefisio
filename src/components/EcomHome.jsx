@@ -870,66 +870,134 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           </AnimatePresence>
         </section>
 
-        {/* 8. TESTIMONIALS FROM VERIFIED CLINICS */}
+        {/* 8. TESTIMONIALS FROM VERIFIED CLINICS (INFINITE MARQUEE LOOP) */}
         <section className="ecom-testimonials-section">
           <div className="section-header text-center">
-            <span className="sub-tag">RESEÑAS VERIFICADAS</span>
+            <span className="sub-tag">RESEÑAS Y TESTIMONIOS VERIFICADOS</span>
             <h2 className="section-title">Confianza de las mejores clínicas de México</h2>
           </div>
 
-          <div className="testimonials-grid">
-            <div className="testimonial-card">
-              <div className="stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star size={14} key={i} fill="#f59e0b" color="#f59e0b" />
-                ))}
-              </div>
-              <p className="test-quote">
-                "El equipo Láser THEAL revolucionó mi consulta. Mis pacientes con inflamaciones severas sienten alivio desde la primera sesión. La atención de Bruce Médica fue impecable."
-              </p>
-              <div className="test-author">
-                <div className="avatar">Dr</div>
-                <div>
-                  <h4>Dr. Alejandro Morales</h4>
-                  <span>Director en Clínica KineFit — CDMX</span>
-                </div>
-              </div>
-            </div>
+          <div className="reviews-marquee-container">
+            {/* Side Fade Blur Overlays */}
+            <div className="marquee-fade fade-left"></div>
+            <div className="marquee-fade fade-right"></div>
 
-            <div className="testimonial-card">
-              <div className="stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star size={14} key={i} fill="#f59e0b" color="#f59e0b" />
-                ))}
-              </div>
-              <p className="test-quote">
-                "Compré la pistola Bruce Pro Pulse y dos camillas. La entrega fue súper rápida y la garantía de 2 años me da una tranquilidad total en el día a día."
-              </p>
-              <div className="test-author">
-                <div className="avatar bg-blue">Lic</div>
-                <div>
-                  <h4>Lic. Valeria Ramos</h4>
-                  <span>Fisioterapeuta Deportiva — Guadalajara</span>
+            <div className="reviews-marquee-track">
+              {[
+                {
+                  id: 1,
+                  quote: "El equipo Láser THEAL revolucionó mi consulta. Mis pacientes con inflamaciones severas sienten alivio desde la primera sesión. La atención de Bruce Médica fue impecable.",
+                  name: "Dr. Alejandro Morales",
+                  title: "Director en Clínica KineFit — CDMX",
+                  avatar: "Dr",
+                  colorClass: ""
+                },
+                {
+                  id: 2,
+                  quote: "Compré la pistola Bruce Pro Pulse y dos camillas. La entrega fue súper rápida y la garantía de 2 años me da una tranquilidad total en el día a día.",
+                  name: "Lic. Valeria Ramos",
+                  title: "Fisioterapeuta Deportiva — Guadalajara",
+                  avatar: "Lic",
+                  colorClass: "bg-blue"
+                },
+                {
+                  id: 3,
+                  quote: "La capacitación presencial que incluyeron con el electroestimulador hizo que todo mi equipo supiera sacarle el 100% al aparato desde el primer día.",
+                  name: "Dr. Roberto Garza",
+                  title: "Centro de Rehabilitación Garza — Monterrey",
+                  avatar: "Dr",
+                  colorClass: "bg-green"
+                },
+                {
+                  id: 4,
+                  quote: "Implementamos el sistema CUREO VR en nuestro módulo neurológico y el enganche de los pacientes ha sido espectacular. Gran inversión para la clínica.",
+                  name: "Lic. Sofía Mendoza",
+                  title: "Especialista en Neuro-Rehabilitación — Puebla",
+                  avatar: "Lic",
+                  colorClass: "bg-purple"
+                },
+                {
+                  id: 5,
+                  quote: "Los esquemas de leasing en 12 MSI nos permitieron renovar todo el equipamiento de fisioterapia de la clínica sin descapitalizarnos. Excelente servicio.",
+                  name: "Dr. Carlos Benítez",
+                  title: "Director MedFit — Querétaro",
+                  avatar: "Dr",
+                  colorClass: ""
+                },
+                {
+                  id: 6,
+                  quote: "El soporte técnico y los mantenimientos preventivos son inmediatos. Es raro encontrar proveedores de equipo médico tan serios en México.",
+                  name: "Lic. Mariana Torres",
+                  title: "Clínica TraumaFix — Mérida",
+                  avatar: "Lic",
+                  colorClass: "bg-orange"
+                },
+                // Duplicated set for seamless loop
+                {
+                  id: 7,
+                  quote: "El equipo Láser THEAL revolucionó mi consulta. Mis pacientes con inflamaciones severas sienten alivio desde la primera sesión. La atención de Bruce Médica fue impecable.",
+                  name: "Dr. Alejandro Morales",
+                  title: "Director en Clínica KineFit — CDMX",
+                  avatar: "Dr",
+                  colorClass: ""
+                },
+                {
+                  id: 8,
+                  quote: "Compré la pistola Bruce Pro Pulse y dos camillas. La entrega fue súper rápida y la garantía de 2 años me da una tranquilidad total en el día a día.",
+                  name: "Lic. Valeria Ramos",
+                  title: "Fisioterapeuta Deportiva — Guadalajara",
+                  avatar: "Lic",
+                  colorClass: "bg-blue"
+                },
+                {
+                  id: 9,
+                  quote: "La capacitación presencial que incluyeron con el electroestimulador hizo que todo mi equipo supiera sacarle el 100% al aparato desde el primer día.",
+                  name: "Dr. Roberto Garza",
+                  title: "Centro de Rehabilitación Garza — Monterrey",
+                  avatar: "Dr",
+                  colorClass: "bg-green"
+                },
+                {
+                  id: 10,
+                  quote: "Implementamos el sistema CUREO VR en nuestro módulo neurológico y el enganche de los pacientes ha sido espectacular. Gran inversión para la clínica.",
+                  name: "Lic. Sofía Mendoza",
+                  title: "Especialista en Neuro-Rehabilitación — Puebla",
+                  avatar: "Lic",
+                  colorClass: "bg-purple"
+                },
+                {
+                  id: 11,
+                  quote: "Los esquemas de leasing en 12 MSI nos permitieron renovar todo el equipamiento de fisioterapia de la clínica sin descapitalizarnos. Excelente servicio.",
+                  name: "Dr. Carlos Benítez",
+                  title: "Director MedFit — Querétaro",
+                  avatar: "Dr",
+                  colorClass: ""
+                },
+                {
+                  id: 12,
+                  quote: "El soporte técnico y los mantenimientos preventivos son inmediatos. Es raro encontrar proveedores de equipo médico tan serios en México.",
+                  name: "Lic. Mariana Torres",
+                  title: "Clínica TraumaFix — Mérida",
+                  avatar: "Lic",
+                  colorClass: "bg-orange"
+                }
+              ].map((test, index) => (
+                <div key={`${test.id}-${index}`} className="testimonial-card-marquee">
+                  <div className="stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Star size={14} key={i} fill="#f59e0b" color="#f59e0b" />
+                    ))}
+                  </div>
+                  <p className="test-quote">"{test.quote}"</p>
+                  <div className="test-author">
+                    <div className={`avatar ${test.colorClass}`}>{test.avatar}</div>
+                    <div>
+                      <h4>{test.name}</h4>
+                      <span>{test.title}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="testimonial-card">
-              <div className="stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star size={14} key={i} fill="#f59e0b" color="#f59e0b" />
-                ))}
-              </div>
-              <p className="test-quote">
-                "La capacitación presencial que incluyeron con el electroestimulador hizo que todo mi equipo supiera sacarle el 100% al aparato desde el primer día."
-              </p>
-              <div className="test-author">
-                <div className="avatar bg-green">Dr</div>
-                <div>
-                  <h4>Dr. Roberto Garza</h4>
-                  <span>Centro de Rehabilitación Garza — Monterrey</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
