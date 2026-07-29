@@ -143,30 +143,60 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
 
-  // Hero Slides configuration
+  // Extended Rich Hero Slides Configuration
   const heroSlides = [
     {
-      badge: "NUEVO LANZAMIENTO BIOMÉDICO",
-      title: "Electroestimulador Chattanooga Intelect® Advanced",
-      subtitle: "Estándar de oro clínico con 4 canales independientes y protocolos anatómicos 3D.",
+      badge: "⚡ EQUIPO MÉDICO DE ALTA ESPECIALIDAD",
+      title: "Electroterapia Clínica Chattanooga Intelect® 4C",
+      subtitle: "Estándar de oro biomédico. Desinflama rápidamente tejidos profundos con 4 canales automáticos y guía anatómica 3D.",
       price: "$7,499 MXN",
       oldPrice: "$8,900 MXN",
       discount: "15% OFF",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop"
+      badgeColor: "#38bdf8",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop",
+      rating: "4.9 ★★★★★ (140+ Clínicas)"
     },
     {
-      badge: "TECNOLOGÍA DE PERCUSIÓN",
-      title: "Pistola de Masaje Bruce Pro Pulse™ 5V",
-      titleHighlight: "Recuperación Profunda",
-      subtitle: "Motor ultra silencioso sin escobillas y 6 cabezales de grado fisioterapéutico.",
+      badge: "🔥 TOP SELLER TERAPIA PERCUTIVA",
+      title: "Pistola de Masaje Profesional Bruce Pro Pulse™",
+      subtitle: "Motor ultra silencioso QuietGlide™ de 60W. 5 velocidades de alta percusión y 6 cabezales fisioterapéuticos.",
       price: "$3,899 MXN",
       oldPrice: "$4,599 MXN",
       discount: "20% OFF",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop"
+      badgeColor: "#f97316",
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
+      rating: "5.0 ★★★★★ (320+ Vendidos)"
+    },
+    {
+      badge: "🔬 ANALGESIA Y REGENERACIÓN TISULAR",
+      title: "Sistemas Láser Terapéutico THEAL 92W",
+      subtitle: "Fotobiomodulación directa para analgesia inmediata en patologías articulares y musculares complejas.",
+      price: "$12,990 MXN",
+      oldPrice: "$15,500 MXN",
+      discount: "25% OFF",
+      badgeColor: "#10b981",
+      image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=1000&auto=format&fit=crop",
+      rating: "4.9 ★★★★★ (Alta Especialidad)"
     }
   ];
 
   const currentHero = heroSlides[currentSlide];
+
+  const nextHeroSlide = () => {
+    setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+  };
+
+  const prevHeroSlide = () => {
+    setCurrentSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  // Auto-play hero slider
+  useEffect(() => {
+    const heroTimer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(heroTimer);
+  }, [heroSlides.length]);
 
   const handleWhatsAppQuote = () => {
     const text = `Hola Bruce Médica, solicito información y cotización para equipar mi clínica de fisioterapia.`;
@@ -192,66 +222,89 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
       <div className="container ecom-container">
 
-        {/* 2. HERO ECOM SECTION (Main Banner + Right Side Bento Cards) */}
+        {/* 2. HERO ECOM SECTION (Main Slider Banner + Right Side Bento Cards) */}
         <section className="ecom-hero-grid">
           {/* Main Hero Slider Banner */}
           <div className="ecom-hero-main-card">
-            <div className="hero-main-content">
-              <div className="hero-main-badge">
-                <Sparkles size={14} /> {currentHero.badge}
-              </div>
-              <h1 className="hero-main-title">
-                {currentHero.title}
-              </h1>
-              <p className="hero-main-subtitle">
-                {currentHero.subtitle}
-              </p>
+            {/* Slider Navigation Arrows */}
+            <button className="hero-nav-arrow arrow-left" onClick={prevHeroSlide} aria-label="Anterior">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="hero-nav-arrow arrow-right" onClick={nextHeroSlide} aria-label="Siguiente">
+              <ChevronRight size={20} />
+            </button>
 
-              <div className="hero-main-price-row">
-                <div className="price-tag">
-                  <span className="price-label">Precio Especial</span>
-                  <span className="current-price">{currentHero.price}</span>
-                  <span className="old-price">{currentHero.oldPrice}</span>
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={currentSlide}
+                className="hero-main-content-grid"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <div className="hero-main-content">
+                  <div className="hero-main-badge" style={{ borderColor: currentHero.badgeColor, color: currentHero.badgeColor }}>
+                    <Sparkles size={14} /> {currentHero.badge}
+                  </div>
+                  <h1 className="hero-main-title">
+                    {currentHero.title}
+                  </h1>
+                  <p className="hero-main-subtitle">
+                    {currentHero.subtitle}
+                  </p>
+
+                  <div className="hero-main-price-row">
+                    <div className="price-tag">
+                      <span className="price-label">Precio Especial</span>
+                      <span className="current-price">{currentHero.price}</span>
+                      <span className="old-price">{currentHero.oldPrice}</span>
+                    </div>
+                    <div className="hero-discount-pill">-{currentHero.discount} HOY</div>
+                  </div>
+
+                  <div className="hero-main-actions">
+                    <button className="btn-ecom-primary" onClick={() => navigate("/shop")}>
+                      <ShoppingBag size={18} /> Comprar Ahora
+                    </button>
+                    <button className="btn-ecom-secondary" onClick={() => navigate("/specialty")}>
+                      Ficha Técnica <ArrowRight size={16} />
+                    </button>
+                  </div>
+
+                  <div className="hero-slider-dots">
+                    {heroSlides.map((_, i) => (
+                      <button 
+                        key={i} 
+                        className={`dot ${currentSlide === i ? "active" : ""}`}
+                        onClick={() => setCurrentSlide(i)}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className="hero-discount-pill">-{currentHero.discount} HOY</div>
-              </div>
 
-              <div className="hero-main-actions">
-                <button className="btn-ecom-primary" onClick={() => navigate("/shop")}>
-                  <ShoppingBag size={18} /> Comprar Ahora
-                </button>
-                <button className="btn-ecom-secondary" onClick={() => navigate("/specialty")}>
-                  Ver Especificaciones <ArrowRight size={16} />
-                </button>
-              </div>
-
-              <div className="hero-slider-dots">
-                {heroSlides.map((_, i) => (
-                  <button 
-                    key={i} 
-                    className={`dot ${currentSlide === i ? "active" : ""}`}
-                    onClick={() => setCurrentSlide(i)}
+                {/* High Resolution Product Image Stage */}
+                <div className="hero-main-img-stage">
+                  <div className="img-glow-backdrop"></div>
+                  <img 
+                    src={currentHero.image} 
+                    alt={currentHero.title} 
+                    className="hero-real-product-img"
                   />
-                ))}
-              </div>
-            </div>
-
-            {/* High Resolution Product Image Stage */}
-            <div className="hero-main-img-stage">
-              <div className="img-glow-backdrop"></div>
-              <img 
-                src={currentHero.image} 
-                alt="Product Hero Showcase" 
-                className="hero-real-product-img"
-              />
-              <div className="hero-badge-floating">
-                <ShieldCheck size={16} className="text-blue" />
-                <div>
-                  <strong>Garantía 2 Años</strong>
-                  <span>Directa Bruce Médica</span>
+                  <div className="hero-badge-floating floating-top">
+                    <Star size={15} fill="#f59e0b" color="#f59e0b" />
+                    <span>{currentHero.rating}</span>
+                  </div>
+                  <div className="hero-badge-floating floating-bottom">
+                    <ShieldCheck size={16} className="text-blue-light" />
+                    <div>
+                      <strong>Garantía 2 Años</strong>
+                      <span>Directa Bruce Médica</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Right Side Stacked Bento Cards */}
@@ -269,7 +322,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 <p>Potencia de grado hospitalario para analgesia inmediata.</p>
                 <div className="bento-footer">
                   <span>Ver Ficha Técnica <ChevronRight size={16} /></span>
-                  <div className="bento-price-tag">12 MSI</div>
+                  <div className="bento-price-tag">HASTA 12 MSI</div>
                 </div>
               </div>
             </div>

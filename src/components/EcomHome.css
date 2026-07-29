@@ -75,17 +75,51 @@
 }
 
 .ecom-hero-main-card {
-  background: #ffffff;
+  background: linear-gradient(135deg, #00172e 0%, #002847 50%, #003e6b 100%);
   border-radius: 24px;
   padding: 3.5rem 3rem;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 2.5rem;
-  align-items: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 50px rgba(0, 24, 46, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.hero-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.hero-nav-arrow:hover {
+  background: #007EE5;
+  border-color: #007EE5;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 126, 229, 0.4);
+}
+
+.arrow-left { left: 15px; }
+.arrow-right { right: 15px; }
+
+.hero-main-content-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  width: 100%;
 }
 
 .hero-main-content {
@@ -96,31 +130,34 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(0, 126, 229, 0.1);
-  color: #007EE5;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.4rem 1rem;
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-bottom: 1.25rem;
+  text-transform: uppercase;
 }
 
 .hero-main-title {
   font-family: var(--font-heading);
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 900;
-  line-height: 1.18;
-  color: #0f172a;
+  line-height: 1.15;
+  color: #ffffff;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .hero-main-subtitle {
-  font-size: 0.95rem;
-  color: #64748b;
+  font-size: 1rem;
+  color: #cbd5e1;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  font-weight: 400;
 }
 
 .hero-main-price-row {
@@ -140,13 +177,14 @@
   text-transform: uppercase;
   color: #94a3b8;
   font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .current-price {
   font-family: var(--font-heading);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 900;
-  color: #003057;
+  color: #ffffff;
   line-height: 1;
 }
 
@@ -158,12 +196,13 @@
 }
 
 .hero-discount-pill {
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: #ffffff;
-  padding: 0.4rem 0.8rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 8px;
-  font-weight: 800;
-  font-size: 0.75rem;
+  font-weight: 900;
+  font-size: 0.78rem;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
   animation: pulseBadge 2s infinite;
 }
 
@@ -180,33 +219,34 @@
 }
 
 .btn-ecom-primary {
-  background: #007EE5;
-  color: #ffffff;
+  background: #ffffff;
+  color: #003057;
   border: none;
-  padding: 0.9rem 1.8rem;
+  padding: 0.95rem 2rem;
   border-radius: 12px;
   font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-weight: 900;
+  font-size: 0.98rem;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 126, 229, 0.3);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .btn-ecom-primary:hover {
-  background: #0066bd;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 126, 229, 0.4);
+  background: #38bdf8;
+  color: #0f172a;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(56, 189, 248, 0.4);
 }
 
 .btn-ecom-secondary {
-  background: #f1f5f9;
-  color: #003057;
-  border: 1px solid #cbd5e1;
-  padding: 0.9rem 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.95rem 1.6rem;
   border-radius: 12px;
   font-family: var(--font-heading);
   font-weight: 700;
@@ -219,8 +259,8 @@
 }
 
 .btn-ecom-secondary:hover {
-  background: #e2e8f0;
-  color: #007EE5;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .hero-slider-dots {
@@ -229,10 +269,10 @@
 }
 
 .hero-slider-dots .dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: #cbd5e1;
+  background: rgba(255, 255, 255, 0.3);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -241,7 +281,7 @@
 .hero-slider-dots .dot.active {
   width: 28px;
   border-radius: 10px;
-  background: #007EE5;
+  background: #38bdf8;
 }
 
 .hero-main-img-stage {
@@ -257,7 +297,7 @@
   position: absolute;
   width: 280px;
   height: 280px;
-  background: radial-gradient(circle, rgba(0, 126, 229, 0.18) 0%, rgba(0, 126, 229, 0) 70%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   z-index: 1;
 }
@@ -269,7 +309,8 @@
   object-fit: cover;
   border-radius: 20px;
   z-index: 2;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.15);
   transition: transform 0.5s ease;
 }
 
@@ -279,30 +320,43 @@
 
 .hero-badge-floating {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid #e2e8f0;
-  padding: 0.65rem 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  padding: 0.6rem 1rem;
   border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   gap: 0.6rem;
   z-index: 3;
 }
 
+.floating-top {
+  top: 15px;
+  left: -10px;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.floating-bottom {
+  bottom: 10px;
+  right: -10px;
+}
+
 .hero-badge-floating strong {
   display: block;
   font-size: 0.82rem;
-  color: #0f172a;
+  color: #ffffff;
 }
 
 .hero-badge-floating span {
   font-size: 0.7rem;
-  color: #64748b;
+  color: #94a3b8;
 }
+
+.text-blue-light { color: #38bdf8; }
 
 /* RIGHT STACKED BENTO CARDS */
 .ecom-hero-side-bento {
