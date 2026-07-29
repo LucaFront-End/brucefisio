@@ -406,6 +406,7 @@ export default function App() {
                     onQuickAdd={handleQuickAdd} 
                     onOpenProductModal={handleOpenProductModal} 
                     products={products} 
+                    setCategoryFilter={setCategoryFilter}
                   />
                 ) : (
                   <>

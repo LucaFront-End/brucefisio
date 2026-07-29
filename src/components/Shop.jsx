@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion as motionFramer } from "framer-motion";
 import { SlidersHorizontal, ShoppingCart, Eye, AlertCircle, RotateCcw } from "lucide-react";
 import { PRODUCTS } from "../data/products";
@@ -14,6 +15,15 @@ export default function Shop({
   onQuickAdd,
   products = PRODUCTS
 }) {
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const catQuery = searchParams.get("category") || searchParams.get("cat");
+    if (catQuery && setCategoryFilter) {
+      setCategoryFilter(catQuery);
+    }
+  }, [searchParams, setCategoryFilter]);
+
   const categoriesList = Array.from(new Set(products.map(p => p.category))).filter(Boolean).sort();
   const brandsList = Array.from(new Set(products.map(p => p.brand))).filter(Boolean).sort();
 
