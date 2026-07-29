@@ -54,10 +54,6 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     return () => clearInterval(timer);
   }, []);
 
-  const handleWhatsAppQuote = () => {
-    window.open("https://wa.me/5215500000000?text=Hola%20Bruce%20M%C3%A9dica,%20quisiera%20recibir%20asesor%C3%ADa%20para%20equipar%20mi%20consultorio", "_blank");
-  };
-
   const toggleWishlist = (productId, e) => {
     e.stopPropagation();
     setWishlist(prev => 
