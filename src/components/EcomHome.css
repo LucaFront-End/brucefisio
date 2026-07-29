@@ -783,12 +783,12 @@
 
 .card-badge-container {
   position: absolute;
-  top: 14px;
-  left: 14px;
+  top: 10px;
+  left: 10px;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  z-index: 3;
+  z-index: 10;
 }
 
 .card-badge {
@@ -798,7 +798,7 @@
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
 .badge-red { background: #ef4444; color: #ffffff; }
@@ -808,8 +808,8 @@
 
 .btn-wishlist {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 10px;
+  right: 10px;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -820,9 +820,9 @@
   justify-content: center;
   color: #64748b;
   cursor: pointer;
-  z-index: 3;
+  z-index: 10;
   transition: all 0.25s ease;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
 
 .btn-wishlist:hover, .btn-wishlist.active {
@@ -869,7 +869,7 @@
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 3;
+  z-index: 5;
 }
 
 .ecom-product-card:hover .quick-view-overlay {

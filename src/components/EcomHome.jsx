@@ -464,22 +464,22 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
               return (
                 <div key={prod.id} className="ecom-product-card flash-card">
-                  {/* Badges */}
-                  <div className="card-badge-container">
-                    {prod.badge && <span className="card-badge badge-red">{prod.badge}</span>}
-                    <span className="card-badge badge-blue">12 MSI</span>
-                  </div>
-
-                  {/* Wishlist Button */}
-                  <button 
-                    className={`btn-wishlist ${isWished ? "active" : ""}`}
-                    onClick={(e) => toggleWishlist(prod.id, e)}
-                  >
-                    <Heart size={16} fill={isWished ? "#ef4444" : "none"} />
-                  </button>
-
                   {/* Image Stage */}
                   <div className="product-card-stage" onClick={() => onOpenProductModal(prod)}>
+                    {/* Badges inside stage */}
+                    <div className="card-badge-container">
+                      {prod.badge && <span className="card-badge badge-red">{prod.badge}</span>}
+                      <span className="card-badge badge-blue">12 MSI</span>
+                    </div>
+
+                    {/* Wishlist Button inside stage */}
+                    <button 
+                      className={`btn-wishlist ${isWished ? "active" : ""}`}
+                      onClick={(e) => { e.stopPropagation(); toggleWishlist(prod.id, e); }}
+                    >
+                      <Heart size={16} fill={isWished ? "#ef4444" : "none"} />
+                    </button>
+
                     <img 
                       src={prod.image} 
                       alt={prod.name} 
@@ -588,26 +588,26 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
               return (
                 <div key={prod.id} className="ecom-product-card">
-                  {/* Badges */}
-                  <div className="card-badge-container">
-                    {prod.badge && (
-                      <span className={`card-badge ${prod.badge.includes("OFF") || prod.badge.includes("%") ? "badge-red" : prod.badge === "Bestseller" ? "badge-gold" : "badge-blue"}`}>
-                        {prod.badge}
-                      </span>
-                    )}
-                    {prod.price > 2000 && <span className="card-badge badge-green">12 MSI</span>}
-                  </div>
-
-                  {/* Wishlist Button */}
-                  <button 
-                    className={`btn-wishlist ${isWished ? "active" : ""}`}
-                    onClick={(e) => toggleWishlist(prod.id, e)}
-                  >
-                    <Heart size={16} fill={isWished ? "#ef4444" : "none"} />
-                  </button>
-
                   {/* Image Stage */}
                   <div className="product-card-stage" onClick={() => onOpenProductModal(prod)}>
+                    {/* Badges inside stage */}
+                    <div className="card-badge-container">
+                      {prod.badge && (
+                        <span className={`card-badge ${prod.badge.includes("OFF") || prod.badge.includes("%") ? "badge-red" : prod.badge === "Bestseller" ? "badge-gold" : "badge-blue"}`}>
+                          {prod.badge}
+                        </span>
+                      )}
+                      {prod.price > 2000 && <span className="card-badge badge-green">12 MSI</span>}
+                    </div>
+
+                    {/* Wishlist Button inside stage */}
+                    <button 
+                      className={`btn-wishlist ${isWished ? "active" : ""}`}
+                      onClick={(e) => { e.stopPropagation(); toggleWishlist(prod.id, e); }}
+                    >
+                      <Heart size={16} fill={isWished ? "#ef4444" : "none"} />
+                    </button>
+
                     <img 
                       src={prod.image} 
                       alt={prod.name} 
