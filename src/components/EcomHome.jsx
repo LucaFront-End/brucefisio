@@ -666,37 +666,54 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           </div>
         </section>
 
-        {/* 6. PROMO BENTO BANNERS */}
-        <section className="ecom-mid-banners-grid">
-          <div className="mid-banner-card banner-gradient-blue" onClick={() => navigate("/contact")}>
-            <img 
-              src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=600&auto=format&fit=crop" 
-              alt="Financiamiento" 
-              className="mid-banner-bg-img"
-            />
-            <div className="mid-banner-content">
-              <span className="mid-tag">FINANCIAMIENTO CORPORATIVO</span>
-              <h3>Equipa tu Consultorio hasta en 12 MSI</h3>
-              <p>Aceptamos tarjetas de crédito corporativas y leasing biomédico directo.</p>
-              <button className="btn-banner-action">
-                Solicitar Cotización <ArrowRight size={16} />
-              </button>
+        {/* 6. TRUST & VALUE PROPOSITIONS GRID */}
+        <section className="ecom-trust-pillars-section">
+          <div className="section-header">
+            <div>
+              <span className="sub-tag">RESPALDO Y GARANTÍA BIOMÉDICA</span>
+              <h2 className="section-title">¿Por qué las mejores clínicas eligen Bruce Médica?</h2>
             </div>
           </div>
 
-          <div className="mid-banner-card banner-gradient-dark" onClick={() => navigate("/about")}>
-            <img 
-              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop" 
-              alt="Capacitación" 
-              className="mid-banner-bg-img"
-            />
-            <div className="mid-banner-content">
-              <span className="mid-tag tag-green">CAPACITACIÓN INCLUIDA</span>
-              <h3>Certificación Biomédica Gratuita</h3>
-              <p>Entrenamiento técnico oficial para todo tu equipo de fisioterapeutas.</p>
-              <button className="btn-banner-action btn-green">
-                Academia Bruce <ArrowRight size={16} />
-              </button>
+          <div className="trust-pillars-grid">
+            {/* Pillar 1 */}
+            <div className="trust-pillar-card" onClick={() => navigate("/about")}>
+              <div className="pillar-icon-box icon-blue">
+                <ShieldCheck size={26} />
+              </div>
+              <h3>Garantía Biomédica 2 Años</h3>
+              <p>Respaldo directo de fábrica sin intermediarios. Equipo de sustitución temporal disponible durante mantenimientos.</p>
+              <span className="pillar-link">Conocer Cobertura <ChevronRight size={15} /></span>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="trust-pillar-card" onClick={() => navigate("/about")}>
+              <div className="pillar-icon-box icon-green">
+                <Truck size={26} />
+              </div>
+              <h3>Logística Clínica Prioritaria</h3>
+              <p>Empaque especial de alta protección y seguro total de carga asegurado a cualquier clínica en México.</p>
+              <span className="pillar-link text-green">Tiempos de Entrega <ChevronRight size={15} /></span>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="trust-pillar-card" onClick={() => navigate("/contact")}>
+              <div className="pillar-icon-box icon-purple">
+                <CreditCard size={26} />
+              </div>
+              <h3>Hasta 12 MSI y Leasing</h3>
+              <p>Equipa tu consultorio hoy mismo con tarjetas corporativas o arrendamiento 100% deducible de impuestos.</p>
+              <span className="pillar-link text-purple">Opciones de Pago <ChevronRight size={15} /></span>
+            </div>
+
+            {/* Pillar 4 */}
+            <div className="trust-pillar-card" onClick={() => navigate("/about")}>
+              <div className="pillar-icon-box icon-orange">
+                <Award size={26} />
+              </div>
+              <h3>Capacitación Incluida</h3>
+              <p>Certificación técnica e instrucción paso a paso para que tu equipo de fisioterapeutas domine los equipos.</p>
+              <span className="pillar-link text-orange">Academia Bruce <ChevronRight size={15} /></span>
             </div>
           </div>
         </section>
