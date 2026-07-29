@@ -69,14 +69,13 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     navigate(`/shop?category=${encodeURIComponent(targetFilter)}`);
   };
 
-  // Minimalist compact categories list with exact filter names
+  // Minimalist compact categories list (5 items for 1 clean horizontal row)
   const categoriesList = [
-    { name: "Electroterapia", filterName: "Electroterapia", count: "14 Equipos", image: "/images/hero_ultrasonido.png" },
-    { name: "Terapia Manual", filterName: "Terapia Manual", count: "18 Equipos", image: "/images/hero_massage_gun.png" },
-    { name: "Alta Especialidad", filterName: "Alta Especialidad", count: "5 Sistemas", image: "/images/hero_vr.png" },
-    { name: "Camillas & Mobiliario", filterName: "Movilidad y Camillas", count: "9 Equipos", image: "/images/cat_camilla.png" },
-    { name: "Ejercicio Activo", filterName: "Ejercicio Activo", count: "22 Equipos", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop" },
-    { name: "Vendaje & Insumos", filterName: "Vendaje y Cuidado", count: "35 Productos", image: "/images/cat_vendaje.png" }
+    { name: "Electroterapia", count: "14 Equipos", image: "/images/hero_ultrasonido.png" },
+    { name: "Terapia Manual", count: "18 Equipos", image: "/images/hero_massage_gun.png" },
+    { name: "Alta Especialidad", count: "5 Sistemas", image: "/images/hero_vr.png" },
+    { name: "Camillas & Mobiliario", count: "9 Equipos", image: "/images/cat_camilla.png" },
+    { name: "Ejercicio Activo", count: "22 Equipos", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop" }
   ];
 
   // Map products with enhanced real images and e-commerce fields
