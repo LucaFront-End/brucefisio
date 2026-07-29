@@ -370,7 +370,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 key={idx}
                 className="category-minimal-pill"
                 whileHover={{ y: -3, scale: 1.02 }}
-                onClick={() => handleCategoryClick(cat)}
+                onClick={() => navigate("/shop")}
               >
                 <div className="cat-mini-thumb">
                   <img src={cat.image} alt={cat.name} className="cat-mini-img" />
