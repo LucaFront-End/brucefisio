@@ -54,6 +54,10 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     return () => clearInterval(timer);
   }, []);
 
+  const handleWhatsAppQuote = () => {
+    window.open("https://wa.me/5215500000000?text=Hola%20Bruce%20M%C3%A9dica,%20quisiera%20recibir%20asesor%C3%ADa%20para%20equipar%20mi%20consultorio", "_blank");
+  };
+
   const toggleWishlist = (productId, e) => {
     e.stopPropagation();
     setWishlist(prev => 
@@ -1002,11 +1006,13 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           </div>
         </section>
 
-        {/* 9. CTA WHATSAPP & NEWSLETTER BAR */}
+        {/* 9. CTA WHATSAPP & CONSULTING BAR */}
         <section className="ecom-cta-bar">
+          <div className="cta-glow-bg"></div>
           <div className="cta-left-text">
+            <span className="cta-top-tag"><Sparkles size={14} /> ASESORÍA BIOMÉDICA EN TIEMPO REAL</span>
             <h2>¿Dudas sobre qué equipo requiere tu consultorio?</h2>
-            <p>Habla directamente con un Asesor Biomédico especializado por WhatsApp y recibe cotización formal inmediata.</p>
+            <p>Habla directamente con nuestros Ingenieros Biomédicos por WhatsApp y recibe asesoría técnica + cotización formal en minutos.</p>
           </div>
 
           <div className="cta-right-actions">
