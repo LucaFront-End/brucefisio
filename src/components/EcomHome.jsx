@@ -143,40 +143,40 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
 
-  // Extended Rich Hero Slides Configuration
+  // Hero Slides with clean product cutouts and crisp copy
   const heroSlides = [
     {
-      badge: "⚡ EQUIPO MÉDICO DE ALTA ESPECIALIDAD",
+      badge: "⚡ EQUIPO BIOMÉDICO DE ALTA ESPECIALIDAD",
       title: "Electroterapia Clínica Chattanooga Intelect® 4C",
-      subtitle: "Estándar de oro biomédico. Desinflama rápidamente tejidos profundos con 4 canales automáticos y guía anatómica 3D.",
+      subtitle: "Estándar de oro en clínicas de fisioterapia. 4 canales independientes, protocolos prediseñados y tecnología de electro-estimulación de alta precisión.",
       price: "$7,499 MXN",
       oldPrice: "$8,900 MXN",
       discount: "15% OFF",
-      badgeColor: "#38bdf8",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000&auto=format&fit=crop",
-      rating: "4.9 ★★★★★ (140+ Clínicas)"
+      badgeColor: "#007EE5",
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+      rating: "4.9 ★★★★★ (140+ Reseñas)"
     },
     {
       badge: "🔥 TOP SELLER TERAPIA PERCUTIVA",
       title: "Pistola de Masaje Profesional Bruce Pro Pulse™",
-      subtitle: "Motor ultra silencioso QuietGlide™ de 60W. 5 velocidades de alta percusión y 6 cabezales fisioterapéuticos.",
+      subtitle: "Terapia de percusión profunda con motor ultra silencioso de 60W y 6 cabezales anatómicos intercambiables.",
       price: "$3,899 MXN",
       oldPrice: "$4,599 MXN",
       discount: "20% OFF",
       badgeColor: "#f97316",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
       rating: "5.0 ★★★★★ (320+ Vendidos)"
     },
     {
-      badge: "🔬 ANALGESIA Y REGENERACIÓN TISULAR",
+      badge: "🔬 ALTA POTENCIA TISULAR",
       title: "Sistemas Láser Terapéutico THEAL 92W",
-      subtitle: "Fotobiomodulación directa para analgesia inmediata en patologías articulares y musculares complejas.",
+      subtitle: "Fotobiomodulación directa para desinflamar rápidamente y acelerar la regeneración en lesiones complejas.",
       price: "$12,990 MXN",
       oldPrice: "$15,500 MXN",
       discount: "25% OFF",
       badgeColor: "#10b981",
-      image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=1000&auto=format&fit=crop",
-      rating: "4.9 ★★★★★ (Alta Especialidad)"
+      image: "https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=800&auto=format&fit=crop",
+      rating: "4.9 ★★★★★ (Grado Hospitalario)"
     }
   ];
 
@@ -208,9 +208,9 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
       {/* 1. TOP PROMO TICKER BAR */}
       <div className="ecom-top-ticker">
         <div className="ticker-content">
-          <span className="ticker-badge"><Zap size={13} /> OPORTUNIDAD CLÍNICA</span>
+          <span className="ticker-badge"><Zap size={13} /> OFERTA ESPECIAL</span>
           <p>
-            ¡Hasta <strong>25% OFF</strong> en Sistemas de Electroterapia! Envíos asegurados a todo México.
+            ¡Hasta <strong>25% OFF</strong> en Equipos de Electroterapia! Envíos sin costo a todo México.
           </p>
         </div>
         <div className="ticker-right">
@@ -222,7 +222,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
       <div className="container ecom-container">
 
-        {/* 2. HERO ECOM SECTION (Main Slider Banner + Right Side Bento Cards) */}
+        {/* 2. HERO ECOM SECTION (Light Luxury Main Banner + Right Side Split Bento) */}
         <section className="ecom-hero-grid">
           {/* Main Hero Slider Banner */}
           <div className="ecom-hero-main-card">
@@ -241,10 +241,10 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
               >
                 <div className="hero-main-content">
-                  <div className="hero-main-badge" style={{ borderColor: currentHero.badgeColor, color: currentHero.badgeColor }}>
+                  <div className="hero-main-badge">
                     <Sparkles size={14} /> {currentHero.badge}
                   </div>
                   <h1 className="hero-main-title">
@@ -256,7 +256,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
                   <div className="hero-main-price-row">
                     <div className="price-tag">
-                      <span className="price-label">Precio Especial</span>
+                      <span className="price-label">Precio Especial Clínica</span>
                       <span className="current-price">{currentHero.price}</span>
                       <span className="old-price">{currentHero.oldPrice}</span>
                     </div>
@@ -283,7 +283,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                   </div>
                 </div>
 
-                {/* High Resolution Product Image Stage */}
+                {/* Crisp Clean Product Stage */}
                 <div className="hero-main-img-stage">
                   <div className="img-glow-backdrop"></div>
                   <img 
@@ -296,7 +296,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                     <span>{currentHero.rating}</span>
                   </div>
                   <div className="hero-badge-floating floating-bottom">
-                    <ShieldCheck size={16} className="text-blue-light" />
+                    <ShieldCheck size={16} className="text-blue" />
                     <div>
                       <strong>Garantía 2 Años</strong>
                       <span>Directa Bruce Médica</span>
@@ -307,41 +307,45 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
             </AnimatePresence>
           </div>
 
-          {/* Right Side Stacked Bento Cards */}
+          {/* Right Side Split Bento Cards (Clean High-Contrast) */}
           <div className="ecom-hero-side-bento">
             {/* Bento Card 1 */}
-            <div className="side-bento-card bento-card-blue" onClick={() => navigate("/specialty")}>
-              <img 
-                src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=400&auto=format&fit=crop" 
-                alt="THEAL Laser" 
-                className="bento-bg-img"
-              />
-              <div className="bento-card-overlay">
-                <span className="bento-badge">ALTA ESPECIALIDAD</span>
+            <div className="side-bento-card bento-card-light-blue" onClick={() => navigate("/specialty")}>
+              <div className="bento-text-side">
+                <span className="bento-tag tag-blue">ALTA ESPECIALIDAD</span>
                 <h3>Láser THEAL 92W</h3>
-                <p>Potencia de grado hospitalario para analgesia inmediata.</p>
-                <div className="bento-footer">
-                  <span>Ver Ficha Técnica <ChevronRight size={16} /></span>
-                  <div className="bento-price-tag">HASTA 12 MSI</div>
+                <p>Analgesia inmediata en patologías complejas.</p>
+                <div className="bento-price-row">
+                  <span className="bento-price">12 MSI</span>
+                  <span className="bento-action-link">Ver Ficha <ChevronRight size={14} /></span>
                 </div>
+              </div>
+              <div className="bento-img-side">
+                <img 
+                  src="https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=300&auto=format&fit=crop" 
+                  alt="Láser THEAL" 
+                  className="bento-cutout-img"
+                />
               </div>
             </div>
 
             {/* Bento Card 2 */}
-            <div className="side-bento-card bento-card-dark" onClick={() => navigate("/specialty")}>
-              <img 
-                src="https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=400&auto=format&fit=crop" 
-                alt="CUREO VR" 
-                className="bento-bg-img"
-              />
-              <div className="bento-card-overlay">
-                <span className="bento-badge badge-green">NEURO-REHABILITACIÓN</span>
+            <div className="side-bento-card bento-card-light-dark" onClick={() => navigate("/specialty")}>
+              <div className="bento-text-side">
+                <span className="bento-tag tag-green">NEURO-REHABILITACIÓN</span>
                 <h3>CUREO® 5.0 VR</h3>
-                <p>Realidad virtual inmersiva clínica para terapia funcional.</p>
-                <div className="bento-footer">
-                  <span>Solicitar Demo <ChevronRight size={16} /></span>
-                  <div className="bento-price-tag tag-green">DEMO GRATIS</div>
+                <p>Realidad virtual inmersiva clínica.</p>
+                <div className="bento-price-row">
+                  <span className="bento-price text-green">DEMO GRATIS</span>
+                  <span className="bento-action-link">Probar <ChevronRight size={14} /></span>
                 </div>
+              </div>
+              <div className="bento-img-side">
+                <img 
+                  src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=300&auto=format&fit=crop" 
+                  alt="CUREO VR" 
+                  className="bento-cutout-img"
+                />
               </div>
             </div>
           </div>
