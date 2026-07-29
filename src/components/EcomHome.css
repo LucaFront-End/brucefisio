@@ -10,9 +10,9 @@
 }
 
 .ecom-container {
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 /* 1. TOP PROMO TICKER BAR */
@@ -79,16 +79,16 @@
 /* 2. HERO ECOM GRID (LIGHT LUXURY AESTHETIC - 100% LEGIBILITY) */
 .ecom-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
+  grid-template-columns: 1fr 420px;
+  gap: 1.75rem;
+  margin-top: 1.75rem;
   margin-bottom: 2.5rem;
 }
 
 .ecom-hero-main-card {
   background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
-  border-radius: 24px;
-  padding: 3.5rem 3.5rem;
+  border-radius: 28px;
+  padding: 3.5rem 3.75rem;
   position: relative;
   overflow: hidden;
   box-shadow: 0 16px 40px rgba(0, 48, 87, 0.08);
@@ -1771,19 +1771,42 @@
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE DESIGN FOR ALL BREAKPOINTS */
+@media (max-width: 1280px) {
+  .ecom-container {
+    max-width: 1200px;
+    padding: 0 1.5rem;
+  }
+  .ecom-hero-grid {
+    grid-template-columns: 1fr 380px;
+    gap: 1.25rem;
+  }
+  .ecom-hero-main-card {
+    padding: 2.75rem 2.5rem;
+  }
+}
+
 @media (max-width: 1024px) {
-  .ecom-hero-grid, .spotlight-card, .ecom-mid-banners-grid {
+  .ecom-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .ecom-hero-side-bento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .spotlight-card, .ecom-mid-banners-grid, .flagship-hero-card {
     grid-template-columns: 1fr;
   }
   .flash-products-grid, .ecom-products-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .trust-pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .categories-pill-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-  .testimonials-grid {
-    grid-template-columns: 1fr;
   }
   .ecom-cta-bar {
     flex-direction: column;
@@ -1792,15 +1815,51 @@
   }
 }
 
-@media (max-width: 640px) {
-  .flash-products-grid, .ecom-products-grid, .categories-pill-grid {
+@media (max-width: 768px) {
+  .hero-main-content-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .hero-main-img-stage {
+    height: 250px;
   }
   .hero-main-title {
-    font-size: 1.8rem;
+    font-size: 1.85rem;
+  }
+  .ecom-hero-side-bento {
+    grid-template-columns: 1fr;
+  }
+  .trust-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .flash-products-grid, .ecom-products-grid {
+    grid-template-columns: 1fr;
+  }
+  .categories-pill-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .flagship-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .flagship-toggle-pills {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .ecom-container {
+    padding: 0 1rem;
   }
   .ecom-hero-main-card {
-    padding: 1.5rem;
+    padding: 1.5rem 1.25rem;
+  }
+  .hero-main-title {
+    font-size: 1.6rem;
+  }
+  .categories-pill-grid {
     grid-template-columns: 1fr;
   }
   .ecom-top-ticker {
