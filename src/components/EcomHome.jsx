@@ -114,15 +114,190 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     };
   });
 
-  // Curated lists to avoid repetition
-  const flashDeals = enhancedProducts.slice(0, 4);
-  const trendingProducts = enhancedProducts.slice(0, 4);
-  
-  const filteredProducts = enhancedProducts.slice(0, 8).filter(p => {
-    if (activeTab === "bestsellers") return p.rating >= 4.8 || p.badge === "Bestseller";
-    if (activeTab === "deals") return p.discount > 0;
-    if (activeTab === "new") return p.badge === "NUEVO" || p.id.includes("3") || p.id.includes("5");
-    return true;
+  // 1. DEDICATED FLASH DEALS (4 EXCLUSIVE OFFERS FOR FLASH SALES)
+  const flashDeals = [
+    {
+      id: "flash-1",
+      name: "Pistola de Masaje Bruce Pro Pulse™ 5V",
+      description: "Terapia de percusión profunda con motor ultra silencioso de 60W y 6 cabezales ergonómicos.",
+      price: 3899,
+      originalPrice: 4899,
+      discount: 20,
+      badge: "20% OFF",
+      category: "Terapia Manual",
+      image: "/images/hero_massage_gun.png",
+      rating: "5.0",
+      reviewsCount: 320,
+      soldCount: 14,
+      totalStock: 16
+    },
+    {
+      id: "flash-2",
+      name: "Ultrasonido Terapéutico US Pro 3MHz",
+      description: "Ondas profundas de 1 y 3 MHz para tratamiento acelerado de tejidos inflamados.",
+      price: 8900,
+      originalPrice: 11500,
+      discount: 22,
+      badge: "22% OFF",
+      category: "Electroterapia",
+      image: "/images/hero_ultrasonido.png",
+      rating: "4.9",
+      reviewsCount: 185,
+      soldCount: 9,
+      totalStock: 12
+    },
+    {
+      id: "flash-3",
+      name: "Kit de Vendajes Kinesiológicos (10 Rollos)",
+      description: "Algodón elástico de alta adherencia y resistencia al agua para clínicas.",
+      price: 2499,
+      originalPrice: 3500,
+      discount: 28,
+      badge: "28% OFF",
+      category: "Vendaje y Cuidado",
+      image: "/images/cat_vendaje.png",
+      rating: "4.8",
+      reviewsCount: 94,
+      soldCount: 22,
+      totalStock: 25
+    },
+    {
+      id: "flash-4",
+      name: "Camilla Médica Hidráulica Pro Treatment",
+      description: "Estructura reforzada de acero con ajuste hidráulico suave para consulta intensiva.",
+      price: 12400,
+      originalPrice: 14900,
+      discount: 16,
+      badge: "16% OFF",
+      category: "Movilidad y Camillas",
+      image: "/images/cat_camilla.png",
+      rating: "4.9",
+      reviewsCount: 62,
+      soldCount: 5,
+      totalStock: 6
+    }
+  ];
+
+  // 2. DEDICATED FEATURED PRODUCTS (VARIED REAL DISTINCT ITEMS PER CATEGORY)
+  const catalogFeaturedList = [
+    {
+      id: "feat-1",
+      name: "Electroestimulador Chattanooga Intelect® 4C",
+      description: "Estándar de oro en electroterapia clínica. 4 canales independientes.",
+      price: 7499,
+      originalPrice: 8900,
+      discount: 15,
+      badge: "Bestseller",
+      category: "Electroterapia",
+      catKey: "electro",
+      image: "/images/hero_electroterapia.png",
+      rating: "4.9",
+      reviewsCount: 142
+    },
+    {
+      id: "feat-2",
+      name: "Láser de Alta Potencia THEAL 92W",
+      description: "Fotobiomodulación directa para acelerar regeneración muscular profunda.",
+      price: 12990,
+      originalPrice: 15500,
+      discount: 16,
+      badge: "ALTA ESPECIALIDAD",
+      category: "Alta Especialidad",
+      catKey: "especialidad",
+      image: "/images/chelt_laser_showcase.png",
+      rating: "4.9",
+      reviewsCount: 58
+    },
+    {
+      id: "feat-3",
+      name: "Sistema de Realidad Virtual CUREO® 5.0 VR",
+      description: "Rehabilitación neuro-motora inmersiva con biofeedback en tiempo real.",
+      price: 18500,
+      originalPrice: 21000,
+      discount: 12,
+      badge: "VR NEURO-REHAB",
+      category: "Alta Especialidad",
+      catKey: "especialidad",
+      image: "/images/cureo_vr_showcase.png",
+      rating: "5.0",
+      reviewsCount: 39
+    },
+    {
+      id: "feat-4",
+      name: "Rodillo Vibratorio Hyperice Vyper 3",
+      description: "Rodillo de espuma de alta densidad con 3 niveles de vibración asistida.",
+      price: 2999,
+      originalPrice: 3499,
+      discount: 14,
+      badge: "MÚSCULO PROFUNDO",
+      category: "Terapia Manual",
+      catKey: "manual",
+      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
+      rating: "4.8",
+      reviewsCount: 110
+    },
+    {
+      id: "feat-5",
+      name: "Balón de Ejercicio Suizo Gymnic Plus 65cm",
+      description: "Resistencia anti-estallido para cinesiterapia y entrenamiento de postura.",
+      price: 850,
+      originalPrice: 1050,
+      discount: 19,
+      badge: "CINESITERAPIA",
+      category: "Ejercicio Activo",
+      catKey: "ejercicio",
+      image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
+      rating: "4.7",
+      reviewsCount: 215
+    },
+    {
+      id: "feat-6",
+      name: "Bandas Elásticas Loop de Resistencia (Set 5)",
+      description: "Set de látex natural para fortalecimiento graduado en clínica.",
+      price: 499,
+      originalPrice: 650,
+      discount: 23,
+      badge: "POPULAR",
+      category: "Ejercicio Activo",
+      catKey: "ejercicio",
+      image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
+      rating: "4.8",
+      reviewsCount: 340
+    },
+    {
+      id: "feat-7",
+      name: "Camilla Portátil Madera de Haya Bruce Confort",
+      description: "Acolchado de 5cm con sistema tensor de acero de alta resistencia.",
+      price: 4590,
+      originalPrice: 5300,
+      discount: 13,
+      badge: "MOVILIDAD",
+      category: "Movilidad y Camillas",
+      catKey: "camillas",
+      image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
+      rating: "4.9",
+      reviewsCount: 88
+    },
+    {
+      id: "feat-8",
+      name: "Gel Conductor Electroterapia 5 Litros",
+      description: "Gel de alta viscosidad no irritante para electrodos y ecografía.",
+      price: 380,
+      originalPrice: 450,
+      discount: 15,
+      badge: "INSUMOS",
+      category: "Vendaje y Cuidado",
+      catKey: "camillas",
+      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop",
+      rating: "4.9",
+      reviewsCount: 165
+    }
+  ];
+
+  // Filter Featured Products by active category tab
+  const filteredProducts = catalogFeaturedList.filter(p => {
+    if (activeTab === "all") return true;
+    return p.catKey === activeTab;
   });
 
   const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
@@ -522,22 +697,34 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 Todos los Equipos
               </button>
               <button 
-                className={`tab-btn ${activeTab === "bestsellers" ? "active" : ""}`}
-                onClick={() => setActiveTab("bestsellers")}
+                className={`tab-btn ${activeTab === "electro" ? "active" : ""}`}
+                onClick={() => setActiveTab("electro")}
               >
-                🔥 Más Vendidos
+                ⚡ Electroterapia
               </button>
               <button 
-                className={`tab-btn ${activeTab === "deals" ? "active" : ""}`}
-                onClick={() => setActiveTab("deals")}
+                className={`tab-btn ${activeTab === "manual" ? "active" : ""}`}
+                onClick={() => setActiveTab("manual")}
               >
-                🏷️ Ofertas Especiales
+                🎯 Terapia Manual
               </button>
               <button 
-                className={`tab-btn ${activeTab === "new" ? "active" : ""}`}
-                onClick={() => setActiveTab("new")}
+                className={`tab-btn ${activeTab === "especialidad" ? "active" : ""}`}
+                onClick={() => setActiveTab("especialidad")}
               >
-                ✨ Nuevos Ingresos
+                🧠 Alta Especialidad
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === "ejercicio" ? "active" : ""}`}
+                onClick={() => setActiveTab("ejercicio")}
+              >
+                💪 Ejercicio & Rehab
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === "camillas" ? "active" : ""}`}
+                onClick={() => setActiveTab("camillas")}
+              >
+                🏥 Camillas & Insumos
               </button>
             </div>
           </div>
