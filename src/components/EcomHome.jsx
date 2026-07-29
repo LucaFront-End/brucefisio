@@ -554,7 +554,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 className={`tab-btn ${activeTab === "all" ? "active" : ""}`}
                 onClick={() => setActiveTab("all")}
               >
-                Todos
+                Todos los Equipos
               </button>
               <button 
                 className={`tab-btn ${activeTab === "bestsellers" ? "active" : ""}`}
@@ -581,14 +581,24 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <div className="ecom-products-grid">
             {filteredProducts.map((prod) => {
               const isWished = wishlist.includes(prod.id);
+              // Clean title if ALL CAPS
+              const formattedName = prod.name && prod.name === prod.name.toUpperCase() && prod.name.length > 5
+                ? prod.name.toLowerCase().replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())
+                : prod.name;
+
               return (
                 <div key={prod.id} className="ecom-product-card">
                   {/* Badges */}
                   <div className="card-badge-container">
-                    {prod.badge && <span className="card-badge badge-blue">{prod.badge}</span>}
+                    {prod.badge && (
+                      <span className={`card-badge ${prod.badge.includes("OFF") || prod.badge.includes("%") ? "badge-red" : prod.badge === "Bestseller" ? "badge-gold" : "badge-blue"}`}>
+                        {prod.badge}
+                      </span>
+                    )}
+                    {prod.price > 2000 && <span className="card-badge badge-green">12 MSI</span>}
                   </div>
 
-                  {/* Wishlist */}
+                  {/* Wishlist Button */}
                   <button 
                     className={`btn-wishlist ${isWished ? "active" : ""}`}
                     onClick={(e) => toggleWishlist(prod.id, e)}
@@ -603,16 +613,21 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                       alt={prod.name} 
                       className="product-real-img"
                     />
+                    <div className="quick-view-overlay">
+                      <button className="btn-quick-view">
+                        <Eye size={15} /> Vista Rápida
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Body */}
+                  {/* Product Card Body */}
                   <div className="product-card-body">
-                    <span className="prod-category">{prod.category}</span>
-                    <h3 className="prod-title" onClick={() => onOpenProductModal(prod)}>
-                      {prod.name}
+                    <span className="prod-category">{prod.category || "Fisioterapia"}</span>
+                    <h3 className="prod-title" onClick={() => onOpenProductModal(prod)} title={prod.name}>
+                      {formattedName}
                     </h3>
 
-                    {/* Ratings */}
+                    {/* Star Ratings */}
                     <div className="prod-rating-row">
                       <div className="stars">
                         {[...Array(5)].map((_, i) => (
@@ -623,7 +638,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                       <span className="reviews-cnt">({prod.reviewsCount})</span>
                     </div>
 
-                    {/* Price */}
+                    {/* Price Block */}
                     <div className="prod-price-row">
                       <span className="price-main">${prod.price.toLocaleString("es-MX")} MXN</span>
                       {prod.originalPrice > prod.price && (
@@ -632,7 +647,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                     </div>
 
                     <div className="stock-status">
-                      <span className="dot-green"></span> En Stock — Envío Inmediato
+                      <span className="dot-green"></span> En Stock Directo — Envío 24h
                     </div>
 
                     <button className="btn-add-cart" onClick={() => onQuickAdd(prod)}>
