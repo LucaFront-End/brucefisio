@@ -444,17 +444,17 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
               </div>
               <div className="timer-digits">
                 <div className="digit-unit">
-                  <span className="num num-fire">{String(timeLeft.hours).padStart(2, "0")}</span>
+                  <span className="num">{String(timeLeft.hours).padStart(2, "0")}</span>
                   <span className="lbl">Horas</span>
                 </div>
-                <span className="colon colon-fire">:</span>
+                <span className="colon">:</span>
                 <div className="digit-unit">
-                  <span className="num num-fire">{String(timeLeft.minutes).padStart(2, "0")}</span>
+                  <span className="num">{String(timeLeft.minutes).padStart(2, "0")}</span>
                   <span className="lbl">Min</span>
                 </div>
-                <span className="colon colon-fire">:</span>
+                <span className="colon">:</span>
                 <div className="digit-unit">
-                  <span className="num num-fire num-seconds">{String(timeLeft.seconds).padStart(2, "0")}</span>
+                  <span className="num num-seconds">{String(timeLeft.seconds).padStart(2, "0")}</span>
                   <span className="lbl">Seg</span>
                 </div>
               </div>
