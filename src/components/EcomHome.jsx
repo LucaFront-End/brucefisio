@@ -21,7 +21,9 @@ import {
   TrendingUp,
   Percent,
   Layers,
-  ChevronLeft
+  ChevronLeft,
+  Activity,
+  HeartPulse
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./EcomHome.css";
@@ -694,37 +696,37 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 className={`tab-btn ${activeTab === "all" ? "active" : ""}`}
                 onClick={() => setActiveTab("all")}
               >
-                Todos los Equipos
+                <Layers size={14} /> Todos
               </button>
               <button 
                 className={`tab-btn ${activeTab === "electro" ? "active" : ""}`}
                 onClick={() => setActiveTab("electro")}
               >
-                ⚡ Electroterapia
+                <Zap size={14} /> Electroterapia
               </button>
               <button 
                 className={`tab-btn ${activeTab === "manual" ? "active" : ""}`}
                 onClick={() => setActiveTab("manual")}
               >
-                🎯 Terapia Manual
+                <Activity size={14} /> Terapia Manual
               </button>
               <button 
                 className={`tab-btn ${activeTab === "especialidad" ? "active" : ""}`}
                 onClick={() => setActiveTab("especialidad")}
               >
-                🧠 Alta Especialidad
+                <Sparkles size={14} /> Alta Especialidad
               </button>
               <button 
                 className={`tab-btn ${activeTab === "ejercicio" ? "active" : ""}`}
                 onClick={() => setActiveTab("ejercicio")}
               >
-                💪 Ejercicio & Rehab
+                <HeartPulse size={14} /> Ejercicio & Rehab
               </button>
               <button 
                 className={`tab-btn ${activeTab === "camillas" ? "active" : ""}`}
                 onClick={() => setActiveTab("camillas")}
               >
-                🏥 Camillas & Insumos
+                <ShieldCheck size={14} /> Camillas & Insumos
               </button>
             </div>
           </div>

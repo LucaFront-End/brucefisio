@@ -585,6 +585,51 @@
   gap: 0.7rem;
 }
 
+/* ECOM TABS BAR (ULTRA-PREMIUM SEGMENTED CONTROL) */
+.ecom-tabs-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #f1f5f9;
+  padding: 0.35rem;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.tab-btn {
+  background: transparent;
+  color: #64748b;
+  border: none;
+  padding: 0.55rem 1.15rem;
+  border-radius: 50px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: #007EE5;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.tab-btn.active {
+  background: #003057 !important;
+  color: #ffffff !important;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 48, 87, 0.25);
+}
+
+.tab-btn.active svg {
+  color: #38bdf8;
+}
+
 /* 3. MINIMALIST COMPACT CATEGORIES BAR */
 .ecom-categories-minimal-bar {
   margin-top: 1.75rem;
