@@ -432,36 +432,44 @@ export default function Navbar({
         }
         .dropdown-menu {
           position: absolute;
-          top: calc(100% + 8px);
+          top: calc(100% + 10px);
           left: 50%;
           transform: translateX(-50%);
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(0, 126, 229, 0.15);
+          background: rgba(255, 255, 255, 0.97);
+          backdrop-filter: blur(20px) saturate(180%);
+          border: 1px solid rgba(0, 126, 229, 0.18);
           border-radius: 20px;
-          box-shadow: var(--shadow-lg);
-          padding: 1.25rem;
-          min-width: 480px; /* Wider for multi-column */
+          box-shadow: 0 20px 50px rgba(0, 48, 87, 0.12), 0 0 1px rgba(0, 0, 0, 0.1);
+          padding: 1.25rem 1.5rem;
+          min-width: 760px; /* Wide horizontal Mega-Menu width */
+          max-width: 880px;
           z-index: 101;
         }
         .dropdown-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0.5rem 1rem;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0.35rem 1rem;
+          max-height: 380px;
+          overflow-y: auto;
+          padding-right: 0.25rem;
         }
         .dropdown-item {
           font-family: var(--font-body);
           text-align: left;
-          padding: 0.65rem 1rem;
+          padding: 0.45rem 0.75rem;
           border-radius: 8px;
-          color: var(--text-secondary);
-          font-size: 0.9rem;
-          transition: all var(--transition-fast);
+          color: #334155;
+          font-size: 0.84rem;
+          font-weight: 600;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          transition: all 0.2s ease;
         }
         .dropdown-item:hover {
-          background: rgba(0, 126, 229, 0.05);
-          color: var(--accent-color);
-          padding-left: 1.25rem;
+          background: rgba(0, 126, 229, 0.08);
+          color: #007EE5;
+          transform: translateX(3px);
         }
         .specialty-dropdown {
           min-width: 320px;
