@@ -170,6 +170,9 @@ export default function App() {
 
       return updatedItems;
     });
+
+    // Auto-open Cart Drawer Sidebar immediately
+    setIsCartOpen(true);
   };
 
   const handleQuickAdd = (product) => {
