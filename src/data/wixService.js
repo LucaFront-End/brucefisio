@@ -207,13 +207,16 @@ export async function fetchProductsFromWix() {
         }
       }
 
-      // Resolve main image URL
-      let imageUrl = prod.media?.mainMedia?.image?.url || "";
-      if (imageUrl && imageUrl.startsWith('wix:image://v1/')) {
-         const parts = imageUrl.split('/');
-         const filename = parts[3];
-         imageUrl = `https://static.wixstatic.com/media/${filename}`;
-      }
+      // Extract full media gallery items
+      const mediaGallery = (prod.media?.items || []).map(item => {
+        let url = item.image?.url || item.url || "";
+        if (url && url.startsWith('wix:image://v1/')) {
+          const parts = url.split('/');
+          url = `https://static.wixstatic.com/media/${parts[3]}`;
+        }
+        return url;
+      }).filter(Boolean);
+
       const rawName = prod.name || "Producto sin nombre";
       
       return {
@@ -229,21 +232,32 @@ export async function fetchProductsFromWix() {
         imageBg: "#ffffff",
         imageSvg: "", // Uses real photos, HTML img tags will render
         image: imageUrl,
+        mediaGallery: mediaGallery,
         quoteOnly: !prod.price?.price || prod.price.price === 0,
         variables: parseProductVariables(prod, resolvedCategory),
         additionalInfoSections: prod.additionalInfoSections || [],
-        variants: (prod.variants || []).map(v => {
-          let vImg = v.variant?.media?.mainMedia?.image?.url || null;
+        variants: (prod.variants || []).map((v, vIdx) => {
+          let vImg = v.variant?.media?.mainMedia?.image?.url || 
+                     v.media?.mainMedia?.image?.url || 
+                     v.variant?.media?.items?.[0]?.image?.url || 
+                     v.media?.items?.[0]?.image?.url || 
+                     v.variant?.image || null;
+
           if (vImg && vImg.startsWith('wix:image://v1/')) {
              const parts = vImg.split('/');
              const filename = parts[3];
              vImg = `https://static.wixstatic.com/media/${filename}`;
           }
+
+          if (!vImg && mediaGallery[vIdx]) {
+            vImg = mediaGallery[vIdx];
+          }
+
           return {
             id: v.id,
             choices: v.choices,
-            price: Number(v.variant?.priceData?.price || v.variant?.price?.price || 0),
-            sku: v.variant?.sku || "",
+            price: Number(v.variant?.priceData?.price || v.variant?.price?.price || v.priceData?.price || v.price?.price || 0),
+            sku: v.variant?.sku || v.sku || "",
             image: vImg,
             inStock: v.stock?.inStock ?? true,
             quantity: v.stock?.quantity ?? 0
@@ -290,6 +304,16 @@ export async function fetchProductById(id) {
       }
     }
 
+    // Extract full media gallery items
+    const mediaGallery = (prod.media?.items || []).map(item => {
+      let url = item.image?.url || item.url || "";
+      if (url && url.startsWith('wix:image://v1/')) {
+        const parts = url.split('/');
+        url = `https://static.wixstatic.com/media/${parts[3]}`;
+      }
+      return url;
+    }).filter(Boolean);
+
     let imageUrl = prod.media?.mainMedia?.image?.url || "";
     if (imageUrl && imageUrl.startsWith('wix:image://v1/')) {
        const parts = imageUrl.split('/');
@@ -310,21 +334,32 @@ export async function fetchProductById(id) {
       imageBg: "#ffffff",
       imageSvg: "", 
       image: imageUrl,
+      mediaGallery: mediaGallery,
       quoteOnly: !prod.price?.price || prod.price.price === 0,
       variables: parseProductVariables(prod, resolvedCategory),
       additionalInfoSections: prod.additionalInfoSections || [],
-      variants: (prod.variants || []).map(v => {
-        let vImg = v.variant?.media?.mainMedia?.image?.url || null;
+      variants: (prod.variants || []).map((v, vIdx) => {
+        let vImg = v.variant?.media?.mainMedia?.image?.url || 
+                   v.media?.mainMedia?.image?.url || 
+                   v.variant?.media?.items?.[0]?.image?.url || 
+                   v.media?.items?.[0]?.image?.url || 
+                   v.variant?.image || null;
+
         if (vImg && vImg.startsWith('wix:image://v1/')) {
            const parts = vImg.split('/');
            const filename = parts[3];
            vImg = `https://static.wixstatic.com/media/${filename}`;
         }
+
+        if (!vImg && mediaGallery[vIdx]) {
+          vImg = mediaGallery[vIdx];
+        }
+
         return {
           id: v.id,
           choices: v.choices,
-          price: Number(v.variant?.priceData?.price || v.variant?.price?.price || 0),
-          sku: v.variant?.sku || "",
+          price: Number(v.variant?.priceData?.price || v.variant?.price?.price || v.priceData?.price || v.price?.price || 0),
+          sku: v.variant?.sku || v.sku || "",
           image: vImg,
           inStock: v.stock?.inStock ?? true,
           quantity: v.stock?.quantity ?? 0

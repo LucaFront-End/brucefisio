@@ -34,21 +34,38 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       .trim();
   };
 
-  // Build resolved list of variant objects matching 100% with Wix Store and ProductPage prices
+  // Build resolved list of variant objects matching 100% with Wix Store and ProductPage prices & images
   const getResolvedVariants = (prod) => {
     if (!prod) return [];
     
     const basePrice = Number(prod.price) > 0 ? Number(prod.price) : 0;
+    const mediaGallery = prod.mediaGallery || [];
     
     // 1. If product has real variants from Wix Stores API (with choices & prices)
     if (prod.variants && prod.variants.length > 0) {
       return prod.variants.map((v, idx) => {
         const choiceVal = v.choices ? Object.values(v.choices).join(" / ") : `Versión ${idx + 1}`;
         const price = Number(v.price) > 0 ? Number(v.price) : basePrice;
+        
+        // Match specific image for variant choice
+        let variantImg = v.image;
+        if (!variantImg && prod.variables?.options) {
+          const matchedOpt = prod.variables.options.find(o => {
+            const val = typeof o === 'object' ? o.value : o;
+            return val === choiceVal || choiceVal.includes(val) || (typeof val === 'string' && choiceVal.toLowerCase().includes(val.toLowerCase()));
+          });
+          if (matchedOpt && typeof matchedOpt === 'object' && matchedOpt.image) {
+            variantImg = matchedOpt.image;
+          }
+        }
+        if (!variantImg && mediaGallery[idx]) {
+          variantImg = mediaGallery[idx];
+        }
+
         return {
           id: v.id || `${prod.id}-v-${idx}`,
           value: choiceVal,
-          image: v.image || prod.image,
+          image: variantImg || prod.image,
           price: price,
           badge: idx === 0 ? "PRINCIPAL" : "OPCIÓN"
         };
@@ -60,7 +77,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     if (rawOptions.length > 0) {
       return rawOptions.map((opt, idx) => {
         const valueName = typeof opt === 'object' ? (opt.value || opt.name || `Opción ${idx+1}`) : String(opt);
-        const image = typeof opt === 'object' && opt.image ? opt.image : prod.image;
+        const optImg = typeof opt === 'object' && opt.image ? opt.image : (mediaGallery[idx] || prod.image);
         const optPrice = typeof opt === 'object' && Number(opt.price) > 0 
           ? Number(opt.price) 
           : basePrice;
@@ -68,7 +85,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         return {
           id: `${prod.id}-v-${idx}`,
           value: valueName,
-          image: image || prod.image,
+          image: optImg,
           price: optPrice,
           badge: idx === 0 ? "POPULAR" : "OPCIÓN"
         };
@@ -92,8 +109,8 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
 
   useEffect(() => {
     setCurrentProduct(product);
-    if (product?.id) {
-      // Fetch full variants with prices from Wix if not already attached
+    // ONLY fetch if variants is missing from product
+    if (product?.id && (!product.variants || product.variants.length === 0)) {
       fetchProductById(product.id).then(res => {
         if (res && res.variants && res.variants.length > 0) {
           setCurrentProduct(res);
