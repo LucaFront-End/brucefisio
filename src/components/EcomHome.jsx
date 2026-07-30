@@ -977,10 +977,10 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                           <img src={prod.image} alt={prod.name} className="brand-prod-img" />
                         </div>
                         <div className="brand-prod-content">
-                          <span className="brand-prod-specs">{prod.description || `${prod.category || "Fisioterapia"} • Grado Clínico`}</span>
+                          <span className="brand-prod-specs">{prod.category || "Equipamiento Fisioterapia"} • Grado Clínico</span>
                           <h4 className="brand-prod-name">{prod.name}</h4>
                           <div className="brand-prod-bottom">
-                            <span className="brand-prod-price">${prod.price.toLocaleString()} MXN</span>
+                            <span className="brand-prod-price">${prod.price.toLocaleString("es-MX")} MXN</span>
                             <button 
                               className="btn-brand-quick-add" 
                               onClick={(e) => { e.stopPropagation(); onQuickAdd(prod); }}
