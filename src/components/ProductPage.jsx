@@ -116,10 +116,22 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
     
     let targetPrice = product.price;
     let targetSku = product.sku;
-    let targetImage = product.image; // Start with main product image as base
+    let targetImage = product.image; // Default to main product image
 
-    // 1. PRIORITY: Get price, SKU, and image from actual Wix variants array
-    //    (variants have per-combination real product photos)
+    // 1. IMAGE: Use variables.options choice image (manually configured by store owner per option)
+    //    This is the most reliable and intentional image per choice in Wix.
+    //    Never use variants[].image — that field can contain unrelated lifestyle photos.
+    if (product.variables?.options) {
+      const optObj = product.variables.options.find(o => {
+        const val = typeof o === 'object' ? o.value : o;
+        return val === variantVal;
+      });
+      if (optObj && typeof optObj === 'object' && optObj.image) {
+        targetImage = optObj.image;
+      }
+    }
+
+    // 2. PRICE & SKU: Get from actual Wix variants array (has per-combination real prices)
     if (product.variants && product.variants.length > 0 && variantVal) {
       const optionName = product.variables?.name;
       const matched = product.variants.find(v => {
@@ -129,18 +141,8 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
       if (matched) {
         if (matched.price > 0) targetPrice = matched.price;
         if (matched.sku) targetSku = matched.sku;
-        if (matched.image) targetImage = matched.image; // Real product variant photo
-      }
-    }
-
-    // 2. FALLBACK: Only use variables.options image if variant had no image
-    if (targetImage === product.image && product.variables?.options) {
-      const optObj = product.variables.options.find(o => {
-        const val = typeof o === 'object' ? o.value : o;
-        return val === variantVal;
-      });
-      if (optObj && typeof optObj === 'object' && optObj.image) {
-        targetImage = optObj.image;
+        // NOTE: Intentionally NOT using matched.image — store owner configures
+        // variant images via productOptions.choices.media, not variants.media
       }
     }
 
