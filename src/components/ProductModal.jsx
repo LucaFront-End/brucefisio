@@ -32,75 +32,57 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       .trim();
   };
 
-  // Build resolved list of variant objects with guaranteed valid prices
+  // Build resolved list of variant objects matching 100% with Wix Store and ProductPage prices
   const getResolvedVariants = (prod) => {
     if (!prod) return [];
     
-    const basePrice = Number(prod.price) > 0 ? Number(prod.price) : 2499;
-    const rawOptions = prod.variables?.options || [];
+    const basePrice = Number(prod.price) > 0 ? Number(prod.price) : 0;
     
+    // 1. If product has real variants from Wix Stores API (with choices & prices)
+    if (prod.variants && prod.variants.length > 0) {
+      return prod.variants.map((v, idx) => {
+        const choiceVal = v.choices ? Object.values(v.choices).join(" / ") : `Versión ${idx + 1}`;
+        const price = Number(v.price) > 0 ? Number(v.price) : basePrice;
+        return {
+          id: v.id || `${prod.id}-v-${idx}`,
+          value: choiceVal,
+          image: v.image || prod.image,
+          price: price,
+          badge: idx === 0 ? "PRINCIPAL" : "OPCIÓN"
+        };
+      });
+    }
+
+    // 2. If product has variables.options defined
+    const rawOptions = prod.variables?.options || [];
     if (rawOptions.length > 0) {
       return rawOptions.map((opt, idx) => {
         const valueName = typeof opt === 'object' ? (opt.value || opt.name || `Opción ${idx+1}`) : String(opt);
         const image = typeof opt === 'object' && opt.image ? opt.image : prod.image;
-        const optPrice = typeof opt === 'object' && opt.price && Number(opt.price) > 0 
+        const optPrice = typeof opt === 'object' && Number(opt.price) > 0 
           ? Number(opt.price) 
-          : idx === 0 ? basePrice : Math.round(basePrice * (1 + idx * 0.2));
+          : basePrice;
+          
         return {
           id: `${prod.id}-v-${idx}`,
           value: valueName,
           image: image || prod.image,
           price: optPrice,
-          badge: idx === 0 ? "POPULAR" : idx === 1 ? "AVANZADO" : "COMPLETO"
+          badge: idx === 0 ? "POPULAR" : "OPCIÓN"
         };
       });
     }
 
-    // Auto-generate realistic options tailored to product type if no explicit options exist
-    const pName = (prod.name || '').toLowerCase();
-    let generatedOptions = [];
-
-    if (pName.includes('electro') || pName.includes('intelect')) {
-      generatedOptions = [
-        { value: "2 Canales Estándar", price: basePrice, badge: "ESTÁNDAR" },
-        { value: "4 Canales Clínico Avanzado", price: Math.round(basePrice * 1.25), badge: "RECOMENDADO" },
-        { value: "Kit Completo con Carrito & Cabezales", price: Math.round(basePrice * 1.55), badge: "PRO CLINIC" }
-      ];
-    } else if (pName.includes('pistola') || pName.includes('masaje') || pName.includes('pulse')) {
-      generatedOptions = [
-        { value: "Edición Estándar (4 Cabezales)", price: basePrice, badge: "ESTÁNDAR" },
-        { value: "Edición Pro (6 Cabezales + Maletín)", price: Math.round(basePrice * 1.22), badge: "MÁS VENDIDO" }
-      ];
-    } else if (pName.includes('ultrasonido') || pName.includes('us pro')) {
-      generatedOptions = [
-        { value: "Cabezal 1 MHz (Superficial)", price: basePrice, badge: "1 MHz" },
-        { value: "Dual 1 y 3 MHz (Profundo & Anatómico)", price: Math.round(basePrice * 1.28), badge: "DUAL 1-3 MHz" }
-      ];
-    } else if (pName.includes('camilla') || pName.includes('mesa')) {
-      generatedOptions = [
-        { value: "Ancho 65 cm (Madera de Haya)", price: basePrice, badge: "65 CM" },
-        { value: "Ancho 75 cm XL (Regulable)", price: Math.round(basePrice * 1.22), badge: "75 CM XL" }
-      ];
-    } else if (pName.includes('balón') || pName.includes('pelota') || pName.includes('gymnic')) {
-      generatedOptions = [
-        { value: "Diámetro 55 cm (Morado)", price: basePrice, badge: "55 CM" },
-        { value: "Diámetro 65 cm (Azul)", price: Math.round(basePrice * 1.15), badge: "65 CM" },
-        { value: "Diámetro 75 cm (Rojo)", price: Math.round(basePrice * 1.3), badge: "75 CM" }
-      ];
-    } else {
-      generatedOptions = [
-        { value: "Unidad Estándar", price: basePrice, badge: "ESTÁNDAR" },
-        { value: "Paquete Profesional (2 Unidades)", price: Math.round(basePrice * 1.85), badge: "AHORRA 15%" }
-      ];
-    }
-
-    return generatedOptions.map((opt, idx) => ({
-      id: `${prod.id}-gen-${idx}`,
-      value: opt.value,
-      image: prod.image,
-      price: Number(opt.price) || basePrice,
-      badge: opt.badge
-    }));
+    // 3. Single product default option (100% matching product.price!)
+    return [
+      {
+        id: `${prod.id}-single`,
+        value: "Unidad Estándar",
+        image: prod.image,
+        price: basePrice,
+        badge: "INCLUIDO"
+      }
+    ];
   };
 
   const variants = getResolvedVariants(product);
