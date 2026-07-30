@@ -26,6 +26,7 @@ import {
   HeartPulse
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PRODUCTS } from "../data/products";
 import "./EcomHome.css";
 
 export default function EcomHome({ onQuickAdd, onOpenProductModal, products = [], setCategoryFilter }) {
@@ -924,31 +925,32 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
               // Dedicated fallbacks per brand to guarantee ZERO duplicate products across brand tabs
               if (currentBrandProducts.length === 0) {
+                const pool = enhancedProducts.length > 0 ? enhancedProducts : PRODUCTS;
                 if (target === "chattanooga") {
                   currentBrandProducts = [
-                    enhancedProducts.find(p => p.name.includes("Intelect") || p.name.includes("Chattanooga")) || PRODUCTS[1],
-                    enhancedProducts.find(p => p.name.includes("Ultrasonido")) || PRODUCTS[7]
-                  ];
+                    pool.find(p => (p.name || '').includes("Intelect") || (p.name || '').includes("Chattanooga")) || PRODUCTS[1],
+                    pool.find(p => (p.name || '').includes("Ultrasonido")) || PRODUCTS[7]
+                  ].filter(Boolean);
                 } else if (target === "brucepro") {
                   currentBrandProducts = [
-                    enhancedProducts.find(p => p.name.includes("Pulse") || p.name.includes("Bruce")) || PRODUCTS[0],
-                    enhancedProducts.find(p => p.name.includes("Camilla")) || PRODUCTS[4]
-                  ];
+                    pool.find(p => (p.name || '').includes("Pulse") || (p.name || '').includes("Bruce")) || PRODUCTS[0],
+                    pool.find(p => (p.name || '').includes("Camilla")) || PRODUCTS[4]
+                  ].filter(Boolean);
                 } else if (target === "hyperice") {
                   currentBrandProducts = [
-                    enhancedProducts.find(p => p.name.includes("Vyper") || p.name.includes("Rodillo")) || PRODUCTS[3],
-                    enhancedProducts.find(p => p.name.includes("Hyperice")) || PRODUCTS[0]
-                  ];
+                    pool.find(p => (p.name || '').includes("Vyper") || (p.name || '').includes("Rodillo")) || PRODUCTS[3],
+                    pool.find(p => (p.name || '').includes("Hyperice")) || PRODUCTS[0]
+                  ].filter(Boolean);
                 } else if (target === "kinesio") {
                   currentBrandProducts = [
-                    enhancedProducts.find(p => p.name.includes("Kinesio") || p.name.includes("Vendaje")) || PRODUCTS[5],
-                    enhancedProducts.find(p => p.name.includes("Bandas")) || PRODUCTS[2]
-                  ];
+                    pool.find(p => (p.name || '').includes("Kinesio") || (p.name || '').includes("Vendaje")) || PRODUCTS[5],
+                    pool.find(p => (p.name || '').includes("Bandas")) || PRODUCTS[2]
+                  ].filter(Boolean);
                 } else if (target === "gymnic") {
                   currentBrandProducts = [
-                    enhancedProducts.find(p => p.name.includes("Gymnic") || p.name.includes("Balón")) || PRODUCTS[6],
-                    enhancedProducts.find(p => p.name.includes("Resistencia") || p.name.includes("Loop")) || PRODUCTS[2]
-                  ];
+                    pool.find(p => (p.name || '').includes("Gymnic") || (p.name || '').includes("Balón")) || PRODUCTS[6],
+                    pool.find(p => (p.name || '').includes("Resistencia") || (p.name || '').includes("Loop")) || PRODUCTS[2]
+                  ].filter(Boolean);
                 }
               }
 
