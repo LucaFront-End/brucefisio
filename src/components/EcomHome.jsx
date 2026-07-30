@@ -32,6 +32,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [activeFlagship, setActiveFlagship] = useState("chelt");
+  const [selectedBrand, setSelectedBrand] = useState("chattanooga");
   const [wishlist, setWishlist] = useState([]);
   
   // Active Hero Slide Index
@@ -78,6 +79,111 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     { name: "Alta Especialidad", count: "5 Sistemas", image: "/images/hero_vr.png" },
     { name: "Camillas & Mobiliario", count: "9 Equipos", image: "/images/cat_camilla.png" },
     { name: "Ejercicio Activo", count: "22 Equipos", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop" }
+  ];
+
+  // Official Brands showcase list with brand products
+  const brandListShowcase = [
+    { 
+      id: "chattanooga", 
+      name: "Chattanooga®", 
+      tagline: "Estándar de Oro en Electroterapia & Ultrasonido Clínico",
+      origin: "EE. UU.",
+      logo: "⚡",
+      products: [
+        {
+          id: "b-chat-1",
+          name: "Electroestimulador Chattanooga Intelect® 4C",
+          price: 7499,
+          badge: "CLÍNICO APROBADO",
+          image: "/images/hero_electroterapia.png",
+          specs: "4 Canales • Pantalla Táctil • 25+ Protocolos"
+        },
+        {
+          id: "b-chat-2",
+          name: "Ultrasonido Terapéutico Chattanooga US Pro",
+          price: 8900,
+          badge: "FOTOTERAPIA",
+          image: "/images/hero_ultrasonido.png",
+          specs: "1 & 3 MHz Dual • Cabezal Ergonómico 5cm²"
+        }
+      ]
+    },
+    { 
+      id: "brucepro", 
+      name: "Bruce Pro™", 
+      tagline: "Tecnología de Terapia de Percusión & Ergonomía Profesional",
+      origin: "Bruce Médica",
+      logo: "🏆",
+      products: [
+        {
+          id: "b-bruce-1",
+          name: "Pistola de Masaje Bruce Pro Pulse™ 5V",
+          price: 3899,
+          badge: "BESTSELLER",
+          image: "/images/hero_massage_gun.png",
+          specs: "Motor 60W • 6 Cabezales • Estuche Rígido"
+        },
+        {
+          id: "b-bruce-2",
+          name: "Camilla Portátil Madera de Haya Bruce Confort",
+          price: 4590,
+          badge: "RESISTENCIA 250KG",
+          image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
+          specs: "Espuma 5cm • Tensores de Acero • Bolsa de Viaje"
+        }
+      ]
+    },
+    { 
+      id: "hyperice", 
+      name: "Hyperice / Theragun", 
+      tagline: "Recuperación de Alto Rendimiento Deportivo & Vibración Terapéutica",
+      origin: "EE. UU.",
+      logo: "🔥",
+      products: [
+        {
+          id: "b-hyp-1",
+          name: "Rodillo Vibratorio Hyperice Vyper 3",
+          price: 2999,
+          badge: "VIBRACIÓN 3V",
+          image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
+          specs: "Espuma Alta Densidad • Batería 2h • Bluetooth"
+        }
+      ]
+    },
+    { 
+      id: "kinesio", 
+      name: "Kinesio Tex®", 
+      tagline: "Cintas Neuromusculares & Vendaje Funcional Hipoalergénico",
+      origin: "Japón",
+      logo: "🩹",
+      products: [
+        {
+          id: "b-kin-1",
+          name: "Kit de Vendajes Kinesiológicos Kinesio Classic (10 Rollos)",
+          price: 2499,
+          badge: "GRADO CLÍNICO",
+          image: "/images/cat_vendaje.png",
+          specs: "100% Algodón • Resistente al Agua • Adhesivo en Onda"
+        }
+      ]
+    },
+    { 
+      id: "gymnic", 
+      name: "Gymnic® Italia", 
+      tagline: "Cinesiterapia, Reeducación Postural & Balones Terapéuticos",
+      origin: "Italia",
+      logo: "⚽",
+      products: [
+        {
+          id: "b-gym-1",
+          name: "Balón de Ejercicio Suizo Gymnic Plus 65cm",
+          price: 850,
+          badge: "ANTI-ESTALLIDO",
+          image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
+          specs: "Soporta hasta 300kg • Libre de Látex • Fabricación Italiana"
+        }
+      ]
+    }
   ];
 
   // Map products with enhanced real images and e-commerce fields
@@ -863,6 +969,83 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
               <p>Certificación técnica e instrucción paso a paso para que tu equipo de fisioterapeutas domine los equipos.</p>
               <span className="pillar-link text-orange">Academia Bruce <ChevronRight size={15} /></span>
             </div>
+          </div>
+        </section>
+
+        {/* 7. OFFICIAL BRANDS & PRODUCTS SHOWCASE STRIP */}
+        <section className="ecom-brands-showcase-section">
+          <div className="section-header">
+            <div>
+              <span className="sub-tag">DISTRIBUCIÓN OFICIAL BIOMÉDICA</span>
+              <h2 className="section-title">Nuestras Marcas Aliadas</h2>
+            </div>
+            <button className="btn-link-all" onClick={() => navigate("/shop")}>
+              Ver Todas las Marcas <ArrowRight size={16} />
+            </button>
+          </div>
+
+          {/* Horizontal Brand Selector Pills Strip */}
+          <div className="brands-pill-strip">
+            {brandListShowcase.map((b) => (
+              <button
+                key={b.id}
+                className={`brand-strip-pill ${selectedBrand === b.id ? "active" : ""}`}
+                onClick={() => setSelectedBrand(b.id)}
+              >
+                <span className="brand-pill-logo">{b.logo}</span>
+                <div className="brand-pill-info">
+                  <span className="brand-pill-name">{b.name}</span>
+                  <span className="brand-pill-origin">{b.origin}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Brand Products Banner */}
+          <div className="active-brand-showcase-box">
+            {(() => {
+              const currentBrandObj = brandListShowcase.find(b => b.id === selectedBrand) || brandListShowcase[0];
+              return (
+                <div>
+                  <div className="brand-box-header">
+                    <div>
+                      <h3 className="brand-box-title">{currentBrandObj.name}</h3>
+                      <p className="brand-box-tagline">{currentBrandObj.tagline}</p>
+                    </div>
+                    <button 
+                      className="btn-brand-catalog" 
+                      onClick={() => navigate(`/shop?brand=${encodeURIComponent(currentBrandObj.name.replace('®', '').replace('™', '').trim())}`)}
+                    >
+                      Catálogo {currentBrandObj.name} <ChevronRight size={15} />
+                    </button>
+                  </div>
+
+                  <div className="brand-products-grid">
+                    {currentBrandObj.products.map((prod) => (
+                      <div key={prod.id} className="brand-product-card" onClick={() => onOpenProductModal(prod)}>
+                        <div className="brand-prod-img-box">
+                          <span className="brand-prod-badge">{prod.badge}</span>
+                          <img src={prod.image} alt={prod.name} className="brand-prod-img" />
+                        </div>
+                        <div className="brand-prod-content">
+                          <span className="brand-prod-specs">{prod.specs}</span>
+                          <h4 className="brand-prod-name">{prod.name}</h4>
+                          <div className="brand-prod-bottom">
+                            <span className="brand-prod-price">${prod.price.toLocaleString()} MXN</span>
+                            <button 
+                              className="btn-brand-quick-add" 
+                              onClick={(e) => { e.stopPropagation(); onQuickAdd(prod); }}
+                            >
+                              <ShoppingCart size={15} /> Agregar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </section>
 

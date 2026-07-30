@@ -1062,6 +1062,242 @@
   transform: scale(1.05);
 }
 
+/* 7. OFFICIAL BRANDS & PRODUCTS SHOWCASE STRIP */
+.ecom-brands-showcase-section {
+  margin-bottom: 3.5rem;
+}
+
+.brands-pill-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.brand-strip-pill {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 48, 87, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+}
+
+.brand-strip-pill:hover {
+  border-color: #007EE5;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 126, 229, 0.12);
+}
+
+.brand-strip-pill.active {
+  background: #003057;
+  border-color: #003057;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 48, 87, 0.2);
+}
+
+.brand-pill-logo {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.brand-pill-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand-pill-name {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-strip-pill.active .brand-pill-name {
+  color: #ffffff;
+}
+
+.brand-pill-origin {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.brand-strip-pill.active .brand-pill-origin {
+  color: #38bdf8;
+}
+
+.active-brand-showcase-box {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 48, 87, 0.05);
+}
+
+.brand-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 1.5rem;
+}
+
+.brand-box-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.brand-box-tagline {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 0.2rem;
+}
+
+.btn-brand-catalog {
+  background: #f0f7ff;
+  color: #007EE5;
+  border: 1px solid rgba(0, 126, 229, 0.2);
+  padding: 0.55rem 1.15rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-brand-catalog:hover {
+  background: #007EE5;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 126, 229, 0.25);
+}
+
+.brand-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.brand-product-card {
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 18px;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+.brand-product-card:hover {
+  border-color: #007EE5;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 126, 229, 0.12);
+}
+
+.brand-prod-img-box {
+  width: 110px;
+  height: 110px;
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 0.5rem;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-prod-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 0.58rem;
+  font-weight: 900;
+  background: #007EE5;
+  color: #ffffff;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+.brand-prod-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-prod-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.brand-prod-specs {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.brand-prod-name {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+  margin-bottom: 0.6rem;
+}
+
+.brand-prod-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.brand-prod-price {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #007EE5;
+}
+
+.btn-brand-quick-add {
+  background: #003057;
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-brand-quick-add:hover {
+  background: #007EE5;
+}
+
 /* PRODUCT CARD BODY */
 .prod-category {
   font-size: 0.68rem;
