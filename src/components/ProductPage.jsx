@@ -219,6 +219,14 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
     relatedProducts.push(...fillers);
   }
 
+  // Collect all unique gallery images from Wix mediaGallery + options + main image
+  const galleryImages = Array.from(new Set([
+    product?.image,
+    ...(product?.mediaGallery || []),
+    ...(product?.variables?.options || []).map(o => (typeof o === 'object' ? o.image : null)).filter(Boolean),
+    ...(product?.variants || []).map(v => v.image).filter(Boolean)
+  ])).filter(Boolean);
+
   return (
     <div className="product-page-container container">
       
@@ -242,6 +250,25 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
               <img src={mainImage || product.image} alt={product.name} className="showcase-prod-img" />
             )}
           </div>
+
+          {/* Wix Store Media Gallery Thumbnail Strip */}
+          {galleryImages.length > 1 && (
+            <div className="product-media-gallery-strip">
+              {galleryImages.map((imgUrl, idx) => {
+                const isActive = (mainImage || product.image) === imgUrl;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`gallery-thumb-card ${isActive ? "active" : ""}`}
+                    onClick={() => setMainImage(imgUrl)}
+                  >
+                    <img src={imgUrl} alt={`${product.name} foto ${idx + 1}`} className="gallery-thumb-img" />
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Symmetrical High-tech Parameter Badges */}
           <div className="product-features-grid-specs">
@@ -615,6 +642,50 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
           max-height: 80%;
           object-fit: contain;
           z-index: 1;
+        }
+
+        /* Wix Store Media Gallery Thumbnail Carousel */
+        .product-media-gallery-strip {
+          display: flex;
+          gap: 12px;
+          overflow-x: auto;
+          padding: 6px 4px 12px 4px;
+          scrollbar-width: thin;
+          scrollbar-color: var(--accent-color) transparent;
+          margin-top: -0.5rem;
+        }
+
+        .gallery-thumb-card {
+          flex: 0 0 76px;
+          height: 76px;
+          border-radius: 14px;
+          border: 2px solid var(--border-color);
+          background: #ffffff;
+          cursor: pointer;
+          overflow: hidden;
+          padding: 6px;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .gallery-thumb-card:hover {
+          border-color: var(--accent-color);
+          transform: translateY(-2px);
+        }
+
+        .gallery-thumb-card.active {
+          border-color: var(--accent-color);
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25), 0 4px 12px rgba(37, 99, 235, 0.15);
+          transform: scale(1.05);
+        }
+
+        .gallery-thumb-img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
 
         .showcase-svg-wrapper {
