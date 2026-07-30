@@ -63,6 +63,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
           value: choiceVal,
           image: variantImg || prod.image,
           price: price,
+          sku: v.sku || prod.sku || "",
           badge: idx === 0 ? "PRINCIPAL" : "OPCIÓN"
         };
       });
@@ -81,6 +82,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
           image: optImg || prod.image,
           // Price will be updated by variantPrices state once async fetch resolves
           price: basePrice,
+          sku: prod.sku || "",
           badge: idx === 0 ? "POPULAR" : "OPCIÓN"
         };
       });
@@ -93,6 +95,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         value: "Unidad Estándar",
         image: prod.image,
         price: basePrice,
+        sku: prod.sku || "",
         badge: "INCLUIDO"
       }
     ];
@@ -199,7 +202,10 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
               </div>
 
               <div className="quickbuy-info-meta">
-                <span className="quickbuy-category-pill">{product.brand || "BRUCE MÉDICA"} • {product.category || "Grado Clínico"}</span>
+                <span className="quickbuy-category-pill">
+                  {product.brand || "BRUCE MÉDICA"} • {product.category || "Grado Clínico"}
+                  {product.sku && <span style={{ marginLeft: "8px", opacity: 0.95, fontWeight: "700" }}>| SKU: {product.sku}</span>}
+                </span>
                 <h2 className="quickbuy-product-title">{product.name}</h2>
                 <div className="quickbuy-rating-row">
                   <div className="quickbuy-stars">
@@ -243,6 +249,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                 {variants.map((v) => {
                   const qty = quantities[v.value] || 1;
                   const isSuccess = addedVariants[v.value];
+                  const currentSku = v.sku || product.sku;
 
                   return (
                     <div key={v.id} className="quickbuy-variant-item-card">
@@ -258,7 +265,12 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                           {v.badge && <span className="variant-tag-badge">{v.badge}</span>}
                         </div>
                         <span className="variant-price">${v.price.toLocaleString("es-MX")} MXN</span>
-                        <span className="variant-stock-status">✓ En Stock — Envío 24-48h</span>
+                        <div style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "0.78rem", marginTop: "2px" }}>
+                          <span className="variant-stock-status">✓ En Stock</span>
+                          {currentSku && (
+                            <span style={{ color: "var(--text-secondary)", fontWeight: "600" }}>• SKU: {currentSku}</span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Stepper Quantity & Independent Add Button */}
