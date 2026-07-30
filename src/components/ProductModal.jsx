@@ -15,12 +15,15 @@ import {
   Eye
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { fetchProductById } from "../data/wixService";
 
 export default function ProductModal({ product, isOpen, onClose, onAddToCart }) {
   const navigate = useNavigate();
   const [quantities, setQuantities] = useState({});
   const [addedVariants, setAddedVariants] = useState({});
   const [customerNotes, setCustomerNotes] = useState("");
+  // Separate price map fetched async — updates prices without rebuilding variant structure
+  const [variantPrices, setVariantPrices] = useState({});
 
   // Safely clean raw HTML descriptions
   const cleanDescription = (str) => {
@@ -65,21 +68,19 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       });
     }
 
-    // 2. If product has variables.options defined
+    // 2. If product has variables.options defined (bulk query doesn't include variant prices)
     const rawOptions = prod.variables?.options || [];
     if (rawOptions.length > 0) {
       return rawOptions.map((opt, idx) => {
         const valueName = typeof opt === 'object' ? (opt.value || opt.name || `Opción ${idx+1}`) : String(opt);
         const optImg = typeof opt === 'object' && opt.image ? opt.image : prod.image;
-        const optPrice = typeof opt === 'object' && Number(opt.price) > 0 
-          ? Number(opt.price) 
-          : basePrice;
           
         return {
           id: `${prod.id}-v-${idx}`,
           value: valueName,
           image: optImg || prod.image,
-          price: optPrice,
+          // Price will be updated by variantPrices state once async fetch resolves
+          price: basePrice,
           badge: idx === 0 ? "POPULAR" : "OPCIÓN"
         };
       });
@@ -97,17 +98,40 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     ];
   };
 
-  const variants = getResolvedVariants(product);
+  const baseVariants = getResolvedVariants(product);
+  // Overlay individual prices from async fetch — preserving images & structure
+  const variants = baseVariants.map(v => ({
+    ...v,
+    price: variantPrices[v.value] !== undefined ? variantPrices[v.value] : v.price
+  }));
 
   useEffect(() => {
+    // Reset prices map on product change
+    setVariantPrices({});
     if (product && isOpen) {
       const initialQty = {};
-      variants.forEach(v => {
+      baseVariants.forEach(v => {
         initialQty[v.value] = 1;
       });
       setQuantities(initialQty);
       setAddedVariants({});
       setCustomerNotes("");
+
+      // Fetch individual variant prices if bulk query didn't include them
+      if (product?.id && (!product.variants || product.variants.length === 0) && product.variables?.options?.length > 0) {
+        fetchProductById(product.id).then(res => {
+          if (res?.variants?.length > 0) {
+            const priceMap = {};
+            res.variants.forEach(v => {
+              if (v.choices) {
+                const choiceVal = Object.values(v.choices).join(" / ");
+                priceMap[choiceVal] = Number(v.price) || 0;
+              }
+            });
+            setVariantPrices(priceMap);
+          }
+        }).catch(err => console.warn("Variant prices fetch failed, using base price", err));
+      }
     }
   }, [product, isOpen]);
 
