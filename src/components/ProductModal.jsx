@@ -15,11 +15,9 @@ import {
   Eye
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { fetchProductById } from "../data/wixService";
 
 export default function ProductModal({ product, isOpen, onClose, onAddToCart }) {
   const navigate = useNavigate();
-  const [currentProduct, setCurrentProduct] = useState(product);
   const [quantities, setQuantities] = useState({});
   const [addedVariants, setAddedVariants] = useState({});
   const [customerNotes, setCustomerNotes] = useState("");
@@ -39,7 +37,6 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     if (!prod) return [];
     
     const basePrice = Number(prod.price) > 0 ? Number(prod.price) : 0;
-    const mediaGallery = prod.mediaGallery || [];
     
     // 1. If product has real variants from Wix Stores API (with choices & prices)
     if (prod.variants && prod.variants.length > 0) {
@@ -47,7 +44,6 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         const choiceVal = v.choices ? Object.values(v.choices).join(" / ") : `Versión ${idx + 1}`;
         const price = Number(v.price) > 0 ? Number(v.price) : basePrice;
         
-        // Match specific image for variant choice
         let variantImg = v.image;
         if (!variantImg && prod.variables?.options) {
           const matchedOpt = prod.variables.options.find(o => {
@@ -57,9 +53,6 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
           if (matchedOpt && typeof matchedOpt === 'object' && matchedOpt.image) {
             variantImg = matchedOpt.image;
           }
-        }
-        if (!variantImg && mediaGallery[idx]) {
-          variantImg = mediaGallery[idx];
         }
 
         return {
@@ -77,7 +70,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     if (rawOptions.length > 0) {
       return rawOptions.map((opt, idx) => {
         const valueName = typeof opt === 'object' ? (opt.value || opt.name || `Opción ${idx+1}`) : String(opt);
-        const optImg = typeof opt === 'object' && opt.image ? opt.image : (mediaGallery[idx] || prod.image);
+        const optImg = typeof opt === 'object' && opt.image ? opt.image : prod.image;
         const optPrice = typeof opt === 'object' && Number(opt.price) > 0 
           ? Number(opt.price) 
           : basePrice;
@@ -85,7 +78,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
         return {
           id: `${prod.id}-v-${idx}`,
           value: valueName,
-          image: optImg,
+          image: optImg || prod.image,
           price: optPrice,
           badge: idx === 0 ? "POPULAR" : "OPCIÓN"
         };
@@ -104,23 +97,10 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     ];
   };
 
-  const activeProd = currentProduct || product;
-  const variants = getResolvedVariants(activeProd);
+  const variants = getResolvedVariants(product);
 
   useEffect(() => {
-    setCurrentProduct(product);
-    // ONLY fetch if variants is missing from product
-    if (product?.id && (!product.variants || product.variants.length === 0)) {
-      fetchProductById(product.id).then(res => {
-        if (res && res.variants && res.variants.length > 0) {
-          setCurrentProduct(res);
-        }
-      }).catch(err => console.error("Error fetching modal product variants", err));
-    }
-  }, [product, isOpen]);
-
-  useEffect(() => {
-    if (activeProd && isOpen) {
+    if (product && isOpen) {
       const initialQty = {};
       variants.forEach(v => {
         initialQty[v.value] = 1;
@@ -129,9 +109,9 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       setAddedVariants({});
       setCustomerNotes("");
     }
-  }, [activeProd, isOpen]);
+  }, [product, isOpen]);
 
-  if (!isOpen || !activeProd) return null;
+  if (!isOpen || !product) return null;
 
   const handleIncrement = (variantValue) => {
     setQuantities(prev => ({
@@ -143,7 +123,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
   const handleDecrement = (variantValue) => {
     setQuantities(prev => ({
       ...prev,
-      [variantValue]: Math.max(1, (prev[variantValue] || 1) - 1)
+      [variantValue]: (prev[variantValue] || 1) > 1 ? prev[variantValue] - 1 : 1
     }));
   };
 
@@ -152,10 +132,10 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     
     onAddToCart([{
       product: {
-        ...activeProd,
+        ...product,
         price: variant.price
       },
-      variantName: activeProd.variables?.name || "Opción / Versión",
+      variantName: product.variables?.name || "Opción / Versión",
       variantValue: variant.value,
       quantity: qty,
       notes: customerNotes
@@ -169,7 +149,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
 
   const handleGoToFullDetails = () => {
     onClose();
-    const targetPath = activeProd.slug ? `/product/${activeProd.slug}` : `/product/${activeProd.id}`;
+    const targetPath = product.slug ? `/product/${product.slug}` : `/product/${product.id}`;
     navigate(targetPath);
   };
 
@@ -193,17 +173,17 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
             {/* LEFT COLUMN: Main Image & Features */}
             <div className="quickbuy-left-col">
               <div className="quickbuy-img-stage">
-                <span className="quickbuy-badge-tag">{activeProd.badge || "OFERTA RÁPIDA"}</span>
+                <span className="quickbuy-badge-tag">{product.badge || "OFERTA RÁPIDA"}</span>
                 <img 
-                  src={activeProd.image} 
-                  alt={activeProd.name} 
+                  src={product.image} 
+                  alt={product.name} 
                   className="quickbuy-main-img" 
                 />
               </div>
 
               <div className="quickbuy-info-meta">
-                <span className="quickbuy-category-pill">{activeProd.brand || "BRUCE MÉDICA"} • {activeProd.category || "Grado Clínico"}</span>
-                <h2 className="quickbuy-product-title">{activeProd.name}</h2>
+                <span className="quickbuy-category-pill">{product.brand || "BRUCE MÉDICA"} • {product.category || "Grado Clínico"}</span>
+                <h2 className="quickbuy-product-title">{product.name}</h2>
                 <div className="quickbuy-rating-row">
                   <div className="quickbuy-stars">
                     {[...Array(5)].map((_, i) => (
@@ -215,7 +195,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                 </div>
 
                 <p className="quickbuy-short-desc">
-                  {cleanDescription(activeProd.description).substring(0, 160)}...
+                  {cleanDescription(product.description).substring(0, 160)}...
                 </p>
 
                 <div className="quickbuy-guarantee-pills">
