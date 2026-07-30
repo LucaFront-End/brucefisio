@@ -217,6 +217,14 @@ export async function fetchProductsFromWix() {
         return url;
       }).filter(Boolean);
 
+      // Resolve main image URL
+      let imageUrl = prod.media?.mainMedia?.image?.url || (mediaGallery.length > 0 ? mediaGallery[0] : "");
+      if (imageUrl && imageUrl.startsWith('wix:image://v1/')) {
+         const parts = imageUrl.split('/');
+         const filename = parts[3];
+         imageUrl = `https://static.wixstatic.com/media/${filename}`;
+      }
+
       const rawName = prod.name || "Producto sin nombre";
       
       return {
