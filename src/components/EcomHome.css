@@ -1101,9 +1101,18 @@
   box-shadow: 0 10px 24px rgba(0, 48, 87, 0.2);
 }
 
-.brand-pill-logo {
-  font-size: 1.4rem;
+.brand-pill-logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  color: #003057;
   flex-shrink: 0;
+  transition: color 0.25s ease;
+}
+
+.brand-strip-pill.active .brand-pill-logo-box {
+  color: #ffffff;
 }
 
 .brand-pill-info {
