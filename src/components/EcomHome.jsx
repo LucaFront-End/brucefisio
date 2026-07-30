@@ -243,44 +243,33 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
 
-  // Hero Slides with generated studio product photography
-  const heroSlides = [
-    {
-      badge: "⚡ EQUIPO BIOMÉDICO DE ALTA ESPECIALIDAD",
-      title: "Electroterapia Clínica Chattanooga Intelect® 4C",
-      subtitle: "Estándar de oro en clínicas de fisioterapia. 4 canales independientes, protocolos prediseñados y estimulación de alta precisión.",
-      price: "$7,499 MXN",
-      oldPrice: "$8,900 MXN",
-      discount: "15% OFF",
-      badgeColor: "#007EE5",
-      image: "/images/hero_electroterapia.png",
-      rating: "4.9 ★★★★★ (140+ Reseñas)"
-    },
-    {
-      badge: "🔥 TOP SELLER TERAPIA PERCUTIVA",
-      title: "Pistola de Masaje Profesional Bruce Pro Pulse™",
-      subtitle: "Terapia de percusión profunda con motor ultra silencioso de 60W y 6 cabezales anatómicos intercambiables.",
-      price: "$3,899 MXN",
-      oldPrice: "$4,599 MXN",
-      discount: "20% OFF",
-      badgeColor: "#f97316",
-      image: "/images/hero_massage_gun.png",
-      rating: "5.0 ★★★★★ (320+ Vendidos)"
-    },
-    {
-      badge: "🔬 ALTA POTENCIA TISULAR",
-      title: "Sistemas Láser Terapéutico THEAL 92W",
-      subtitle: "Fotobiomodulación directa para desinflamar rápidamente y acelerar la regeneración en lesiones complejas.",
-      price: "$12,990 MXN",
-      oldPrice: "$15,500 MXN",
-      discount: "25% OFF",
-      badgeColor: "#10b981",
-      image: "/images/hero_laser.png",
-      rating: "4.9 ★★★★★ (Grado Hospitalario)"
-    }
-  ];
+  // Connect Hero Slides directly to REAL connected catalog products
+  const heroProducts = [
+    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('electro') || (p.name || '').toLowerCase().includes('intelect')) || enhancedProducts[1] || enhancedProducts[0],
+    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('pistola') || (p.name || '').toLowerCase().includes('masaje') || (p.name || '').toLowerCase().includes('pulse')) || enhancedProducts[0],
+    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('ultrasonido') || (p.name || '').toLowerCase().includes('us pro')) || enhancedProducts[2] || enhancedProducts[0]
+  ].filter(Boolean);
 
-  const currentHero = heroSlides[currentSlide];
+  const heroSlides = heroProducts.map((p, idx) => {
+    const badges = [
+      "⚡ EQUIPO BIOMÉDICO DE ALTA ESPECIALIDAD",
+      "🔥 TOP SELLER TERAPIA PERCUTIVA",
+      "🔬 ULTRASONIDO CLÍNICO DUAL"
+    ];
+    return {
+      product: p,
+      badge: badges[idx % badges.length],
+      title: p.name,
+      subtitle: p.description || "Equipamiento profesional de alta precisión para clínicas y terapeutas.",
+      price: `$${p.price.toLocaleString("es-MX")} MXN`,
+      oldPrice: `$${(p.originalPrice || Math.round(p.price * 1.18)).toLocaleString("es-MX")} MXN`,
+      discount: p.discount ? `${p.discount}% OFF` : "15% OFF",
+      image: p.image || getRealProductImage(p),
+      rating: `${p.rating || "4.9"} ★★★★★ (${p.reviewsCount || 140}+ Reseñas)`
+    };
+  });
+
+  const currentHero = heroSlides[currentSlide] || heroSlides[0];
 
   const nextHeroSlide = () => {
     setCurrentSlide(prev => (prev + 1) % heroSlides.length);
@@ -292,6 +281,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
   // Auto-play hero slider
   useEffect(() => {
+    if (heroSlides.length <= 1) return;
     const heroTimer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % heroSlides.length);
     }, 6000);
@@ -322,30 +312,30 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
               >
                 <div className="hero-main-content">
                   <div className="hero-main-badge">
-                    <Sparkles size={14} /> {currentHero.badge}
+                    <Sparkles size={14} /> {currentHero?.badge}
                   </div>
-                  <h1 className="hero-main-title">
-                    {currentHero.title}
+                  <h1 className="hero-main-title" style={{ cursor: "pointer" }} onClick={() => currentHero?.product && onOpenProductModal(currentHero.product)}>
+                    {currentHero?.title}
                   </h1>
                   <p className="hero-main-subtitle">
-                    {currentHero.subtitle}
+                    {currentHero?.subtitle}
                   </p>
 
                   <div className="hero-main-price-row">
                     <div className="price-tag">
                       <span className="price-label">Precio Especial Clínica</span>
-                      <span className="current-price">{currentHero.price}</span>
-                      <span className="old-price">{currentHero.oldPrice}</span>
+                      <span className="current-price">{currentHero?.price}</span>
+                      <span className="old-price">{currentHero?.oldPrice}</span>
                     </div>
-                    <div className="hero-discount-pill">-{currentHero.discount} HOY</div>
+                    <div className="hero-discount-pill">-{currentHero?.discount} HOY</div>
                   </div>
 
                   <div className="hero-main-actions">
-                    <button className="btn-ecom-primary" onClick={() => navigate("/shop")}>
-                      <ShoppingBag size={18} /> Comprar Ahora
+                    <button className="btn-ecom-primary" onClick={() => currentHero?.product && onOpenProductModal(currentHero.product)}>
+                      <ShoppingBag size={18} /> Ver Producto
                     </button>
-                    <button className="btn-ecom-secondary" onClick={() => navigate("/specialty")}>
-                      Ficha Técnica <ArrowRight size={16} />
+                    <button className="btn-ecom-secondary" onClick={() => currentHero?.product && onQuickAdd(currentHero.product)}>
+                      <ShoppingCart size={16} /> Agregar
                     </button>
                   </div>
 
@@ -371,16 +361,16 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                 </div>
 
                 {/* Studio Product Image Stage */}
-                <div className="hero-main-img-stage">
+                <div className="hero-main-img-stage" style={{ cursor: "pointer" }} onClick={() => currentHero?.product && onOpenProductModal(currentHero.product)}>
                   <div className="img-glow-backdrop"></div>
                   <img 
-                    src={currentHero.image} 
-                    alt={currentHero.title} 
+                    src={currentHero?.image} 
+                    alt={currentHero?.title} 
                     className="hero-real-product-img"
                   />
                   <div className="hero-badge-floating floating-top">
                     <Star size={15} fill="#f59e0b" color="#f59e0b" />
-                    <span>{currentHero.rating}</span>
+                    <span>{currentHero?.rating}</span>
                   </div>
                   <div className="hero-badge-floating floating-bottom">
                     <ShieldCheck size={16} className="text-blue" />
