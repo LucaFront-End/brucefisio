@@ -149,7 +149,7 @@ export default function Navbar({
                   >
                     <div className="specialty-links">
                       <a 
-                        href="https://cureo.de/en/" 
+                        href="https://bruce-medica-cureo.vercel.app/" 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="specialty-card"
@@ -163,7 +163,7 @@ export default function Navbar({
                       </a>
 
                       <a 
-                        href="https://www.chelttherapy.com/" 
+                        href="https://chelt-therapy.vercel.app/" 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="specialty-card"
@@ -314,8 +314,8 @@ export default function Navbar({
               <li>
                 <button className="mobile-header-btn">Alta Especialidad</button>
                 <div className="mobile-sublinks">
-                  <a href="https://cureo.de/en/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>CUREO® 5.0 VR ↗</a>
-                  <a href="https://www.chelttherapy.com/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>CHELT Therapy ↗</a>
+                  <a href="https://bruce-medica-cureo.vercel.app/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>CUREO® 5.0 VR ↗</a>
+                  <a href="https://chelt-therapy.vercel.app/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>CHELT Therapy ↗</a>
                 </div>
               </li>
               <li>
