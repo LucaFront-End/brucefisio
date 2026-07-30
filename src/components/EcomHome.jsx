@@ -174,9 +174,49 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     }
   ];
 
-  // Map products with enhanced real images and e-commerce fields
+  // Utility functions to clean raw HTML descriptions and format ALL CAPS titles
+  const cleanHtmlText = (str) => {
+    if (!str) return "";
+    return str
+      .replace(/&nbsp;/gi, " ")
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+
+  const formatProductTitle = (name) => {
+    if (!name) return "";
+    const clean = cleanHtmlText(name);
+    if (clean === clean.toUpperCase() && clean.length > 5) {
+      return clean
+        .toLowerCase()
+        .split(" ")
+        .map(word => {
+          if (["de", "p/", "para", "en", "con", "y", "e", "del"].includes(word)) return word;
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ")
+        .replace(/P\/(\d+)/gi, "para $1");
+    }
+    return clean;
+  };
+
+  const getCleanSubtitle = (desc, fallback) => {
+    const text = cleanHtmlText(desc);
+    if (!text || text.length < 15) return fallback;
+    if (text.length > 130) {
+      const truncated = text.substring(0, 130);
+      const lastSpace = truncated.lastIndexOf(" ");
+      return (lastSpace > 60 ? truncated.substring(0, lastSpace) : truncated) + "...";
+    }
+    return text;
+  };
+
+  // Map products with clean titles, clean descriptions, real images, and e-commerce fields
   const enhancedProducts = products.map((p, index) => {
     const imgSrc = getRealProductImage(p);
+    const cleanName = formatProductTitle(p.name);
+    const cleanDesc = cleanHtmlText(p.description);
     const discounts = [15, 20, 25, 10, 30, 0];
     const discount = discounts[index % discounts.length];
     const originalPrice = discount > 0 ? Math.round(p.price / (1 - discount / 100)) : Math.round(p.price * 1.18);
@@ -188,6 +228,8 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
 
     return {
       ...p,
+      name: cleanName,
+      description: cleanDesc,
       image: imgSrc,
       discount,
       originalPrice,
@@ -235,39 +277,66 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     };
   });
 
-  // Filter Featured Products by active category tab
-  const filteredProducts = catalogFeaturedList.filter(p => {
-    if (activeTab === "all") return true;
-    return p.catKey === activeTab;
-  });
+  // Filter Featured Products by active category tab and LIMIT TO MAX 8 ITEMS (prevents huge scroll!)
+  const filteredProducts = catalogFeaturedList
+    .filter(p => {
+      if (activeTab === "all") return true;
+      return p.catKey === activeTab;
+    })
+    .slice(0, 8);
 
-  const spotlightProduct = enhancedProducts[1] || enhancedProducts[0] || {};
+  // Helper to select top flagship products for Hero
+  const findFlagshipProduct = (keywords, fallbackIdx) => {
+    for (const kw of keywords) {
+      const match = enhancedProducts.find(p => {
+        const n = (p.name || '').toLowerCase();
+        const c = (p.category || '').toLowerCase();
+        return n.includes(kw) || c.includes(kw);
+      });
+      if (match) return match;
+    }
+    return enhancedProducts[fallbackIdx] || enhancedProducts[0] || PRODUCTS[0];
+  };
 
-  // Connect Hero Slides directly to REAL connected catalog products
-  const heroProducts = [
-    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('electro') || (p.name || '').toLowerCase().includes('intelect')) || enhancedProducts[1] || enhancedProducts[0],
-    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('pistola') || (p.name || '').toLowerCase().includes('masaje') || (p.name || '').toLowerCase().includes('pulse')) || enhancedProducts[0],
-    enhancedProducts.find(p => (p.name || '').toLowerCase().includes('ultrasonido') || (p.name || '').toLowerCase().includes('us pro')) || enhancedProducts[2] || enhancedProducts[0]
-  ].filter(Boolean);
+  const heroItem1 = findFlagshipProduct(['electro', 'intelect', 'estimul'], 1);
+  const heroItem2 = findFlagshipProduct(['pistola', 'masaje', 'pulse', 'percus'], 0);
+  const heroItem3 = findFlagshipProduct(['ultrasonido', 'laser', 'us pro', 'theal'], 2);
 
-  const heroSlides = heroProducts.map((p, idx) => {
-    const badges = [
-      "⚡ EQUIPO BIOMÉDICO DE ALTA ESPECIALIDAD",
-      "🔥 TOP SELLER TERAPIA PERCUTIVA",
-      "🔬 ULTRASONIDO CLÍNICO DUAL"
-    ];
-    return {
-      product: p,
-      badge: badges[idx % badges.length],
-      title: p.name,
-      subtitle: p.description || "Equipamiento profesional de alta precisión para clínicas y terapeutas.",
-      price: `$${p.price.toLocaleString("es-MX")} MXN`,
-      oldPrice: `$${(p.originalPrice || Math.round(p.price * 1.18)).toLocaleString("es-MX")} MXN`,
-      discount: p.discount ? `${p.discount}% OFF` : "15% OFF",
-      image: p.image || getRealProductImage(p),
-      rating: `${p.rating || "4.9"} ★★★★★ (${p.reviewsCount || 140}+ Reseñas)`
-    };
-  });
+  const heroSlides = [
+    {
+      product: heroItem1,
+      badge: "⚡ ESTÁNDAR CLÍNICO CHATTANOOGA®",
+      title: heroItem1.name,
+      subtitle: getCleanSubtitle(heroItem1.description, "Estándar de oro en electroterapia clínica. 4 canales independientes y estimulación biomédica de alta precisión."),
+      price: `$${heroItem1.price.toLocaleString("es-MX")} MXN`,
+      oldPrice: `$${(heroItem1.originalPrice || Math.round(heroItem1.price * 1.18)).toLocaleString("es-MX")} MXN`,
+      discount: heroItem1.discount ? `${heroItem1.discount}% OFF` : "15% OFF",
+      image: heroItem1.image || "/images/hero_electroterapia.png",
+      rating: `${heroItem1.rating || "4.9"} ★★★★★ (140+ Reseñas)`
+    },
+    {
+      product: heroItem2,
+      badge: "🔥 TERAPIA DE PERCUSIÓN BRUCE PRO™",
+      title: heroItem2.name,
+      subtitle: getCleanSubtitle(heroItem2.description, "Terapia de percusión muscular profunda con motor de 60W y 6 cabezales ergonómicos intercambiables."),
+      price: `$${heroItem2.price.toLocaleString("es-MX")} MXN`,
+      oldPrice: `$${(heroItem2.originalPrice || Math.round(heroItem2.price * 1.18)).toLocaleString("es-MX")} MXN`,
+      discount: heroItem2.discount ? `${heroItem2.discount}% OFF` : "20% OFF",
+      image: heroItem2.image || "/images/hero_massage_gun.png",
+      rating: `${heroItem2.rating || "5.0"} ★★★★★ (320+ Vendidos)`
+    },
+    {
+      product: heroItem3,
+      badge: "🔬 ULTRASONIDO CLÍNICO DUAL 1-3 MHz",
+      title: heroItem3.name,
+      subtitle: getCleanSubtitle(heroItem3.description, "Ondas profundas de 1 y 3 MHz para tratamiento acelerado de tejidos inflamados y analgesia rápida."),
+      price: `$${heroItem3.price.toLocaleString("es-MX")} MXN`,
+      oldPrice: `$${(heroItem3.originalPrice || Math.round(heroItem3.price * 1.18)).toLocaleString("es-MX")} MXN`,
+      discount: heroItem3.discount ? `${heroItem3.discount}% OFF` : "18% OFF",
+      image: heroItem3.image || "/images/hero_ultrasonido.png",
+      rating: `${heroItem3.rating || "4.9"} ★★★★★ (95+ Reseñas)`
+    }
+  ];
 
   const currentHero = heroSlides[currentSlide] || heroSlides[0];
 
