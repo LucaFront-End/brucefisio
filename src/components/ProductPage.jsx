@@ -116,20 +116,10 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
     
     let targetPrice = product.price;
     let targetSku = product.sku;
-    let targetImage = product.image;
+    let targetImage = product.image; // Start with main product image as base
 
-    // 1. Get image from variables options (Wix stores images in the choice options)
-    if (product.variables?.options) {
-      const optObj = product.variables.options.find(o => {
-        const val = typeof o === 'object' ? o.value : o;
-        return val === variantVal;
-      });
-      if (optObj && typeof optObj === 'object' && optObj.image) {
-        targetImage = optObj.image;
-      }
-    }
-
-    // 2. Get price and SKU from full variants array
+    // 1. PRIORITY: Get price, SKU, and image from actual Wix variants array
+    //    (variants have per-combination real product photos)
     if (product.variants && product.variants.length > 0 && variantVal) {
       const optionName = product.variables?.name;
       const matched = product.variants.find(v => {
@@ -139,7 +129,18 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
       if (matched) {
         if (matched.price > 0) targetPrice = matched.price;
         if (matched.sku) targetSku = matched.sku;
-        if (matched.image) targetImage = matched.image; // Fallback if image exists here
+        if (matched.image) targetImage = matched.image; // Real product variant photo
+      }
+    }
+
+    // 2. FALLBACK: Only use variables.options image if variant had no image
+    if (targetImage === product.image && product.variables?.options) {
+      const optObj = product.variables.options.find(o => {
+        const val = typeof o === 'object' ? o.value : o;
+        return val === variantVal;
+      });
+      if (optObj && typeof optObj === 'object' && optObj.image) {
+        targetImage = optObj.image;
       }
     }
 
