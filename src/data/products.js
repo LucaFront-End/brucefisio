@@ -25,7 +25,7 @@ export const PRODUCTS = [
     price: 3899,
     category: "Terapia Manual",
     brand: "Bruce Pro",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
+    image: "/images/hero_massage_gun.png",
     imageBg: "linear-gradient(135deg, #e0f2fe 0%, #007EE5 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,7 +48,7 @@ export const PRODUCTS = [
     price: 7499,
     category: "Electroterapia",
     brand: "Chattanooga",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
+    image: "/images/hero_electroterapia.png",
     imageBg: "linear-gradient(135deg, #e0f2fe 0%, #003057 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@ export const PRODUCTS = [
     price: 499,
     category: "Ejercicio Activo",
     brand: "Bruce Pro",
-    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
+    image: "/images/cat_vendaje.png",
     imageBg: "linear-gradient(135deg, #ffedd5 0%, #f97316 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +94,7 @@ export const PRODUCTS = [
     price: 2999,
     category: "Terapia Manual",
     brand: "Hyperice",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
+    image: "/images/chelt_laser_showcase.png",
     imageBg: "linear-gradient(135deg, #f1f5f9 0%, #475569 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,7 +116,7 @@ export const PRODUCTS = [
     price: 4590,
     category: "Movilidad y Camillas",
     brand: "Bruce Pro",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
+    image: "/images/cat_camilla.png",
     imageBg: "linear-gradient(135deg, #fef3c7 0%, #d97706 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -139,7 +139,7 @@ export const PRODUCTS = [
     price: 320,
     category: "Vendaje y Cuidado",
     brand: "Kinesio",
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop",
+    image: "/images/cat_vendaje.png",
     imageBg: "linear-gradient(135deg, #fae8ff 0%, #d946ef 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -160,7 +160,7 @@ export const PRODUCTS = [
     price: 850,
     category: "Ejercicio Activo",
     brand: "Gymnic",
-    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
+    image: "/images/hero_device.png",
     imageBg: "linear-gradient(135deg, #dbeafe 0%, #2563eb 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +182,7 @@ export const PRODUCTS = [
     price: 8900,
     category: "Electroterapia",
     brand: "Chattanooga",
-    image: "https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=800&auto=format&fit=crop",
+    image: "/images/hero_ultrasonido.png",
     imageBg: "linear-gradient(135deg, #ecfdf5 0%, #059669 100%)",
     imageSvg: `
       <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">

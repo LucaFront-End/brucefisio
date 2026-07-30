@@ -78,8 +78,28 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     { name: "Terapia Manual", count: "18 Equipos", image: "/images/hero_massage_gun.png" },
     { name: "Alta Especialidad", count: "5 Sistemas", image: "/images/hero_vr.png" },
     { name: "Camillas & Mobiliario", count: "9 Equipos", image: "/images/cat_camilla.png" },
-    { name: "Ejercicio Activo", count: "22 Equipos", image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=300&auto=format&fit=crop" }
+    { name: "Ejercicio Activo", count: "22 Equipos", image: "/images/cat_vendaje.png" }
   ];
+
+  // Helper to ensure real connected product images without generic stock fallbacks
+  const getRealProductImage = (p) => {
+    if (p.image && !p.image.includes('unsplash.com')) return p.image;
+    if (p.mediaUrl && !p.mediaUrl.includes('unsplash.com')) return p.mediaUrl;
+    
+    const name = (p.name || '').toLowerCase();
+    const cat = (p.category || '').toLowerCase();
+    const brand = (p.brand || '').toLowerCase();
+    
+    if (name.includes('electro') || name.includes('intelect') || cat.includes('electro')) return '/images/hero_electroterapia.png';
+    if (name.includes('ultrasonido') || name.includes('us pro')) return '/images/hero_ultrasonido.png';
+    if (name.includes('pistola') || name.includes('masaje') || name.includes('pulse')) return '/images/hero_massage_gun.png';
+    if (name.includes('camilla') || cat.includes('camilla') || cat.includes('movilidad')) return '/images/cat_camilla.png';
+    if (name.includes('vendaje') || name.includes('kinesio') || name.includes('cinta')) return '/images/cat_vendaje.png';
+    if (name.includes('láser') || name.includes('laser') || brand.includes('chelt')) return '/images/chelt_laser_showcase.png';
+    if (name.includes('vr') || name.includes('cureo') || brand.includes('cureo')) return '/images/cureo_vr_showcase.png';
+    
+    return '/images/hero_device.png';
+  };
 
   // Official Brands showcase list with clean vector SVG brand logos
   const brandListShowcase = [
@@ -94,25 +114,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <path d="M22 10C18.5 10 10 12 10 16C10 20 18.5 22 22 22C17 22 10 24 10 27" stroke="#007EE5" strokeWidth="3" strokeLinecap="round"/>
           <circle cx="23" cy="10" r="2.5" fill="#00A0E3"/>
         </svg>
-      ),
-      products: [
-        {
-          id: "b-chat-1",
-          name: "Electroestimulador Chattanooga Intelect® 4C",
-          price: 7499,
-          badge: "CLÍNICO APROBADO",
-          image: "/images/hero_electroterapia.png",
-          specs: "4 Canales • Pantalla Táctil • 25+ Protocolos"
-        },
-        {
-          id: "b-chat-2",
-          name: "Ultrasonido Terapéutico Chattanooga US Pro",
-          price: 8900,
-          badge: "FOTOTERAPIA",
-          image: "/images/hero_ultrasonido.png",
-          specs: "1 & 3 MHz Dual • Cabezal Ergonómico 5cm²"
-        }
-      ]
+      )
     },
     { 
       id: "brucepro", 
@@ -130,25 +132,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
             </linearGradient>
           </defs>
         </svg>
-      ),
-      products: [
-        {
-          id: "b-bruce-1",
-          name: "Pistola de Masaje Bruce Pro Pulse™ 5V",
-          price: 3899,
-          badge: "BESTSELLER",
-          image: "/images/hero_massage_gun.png",
-          specs: "Motor 60W • 6 Cabezales • Estuche Rígido"
-        },
-        {
-          id: "b-bruce-2",
-          name: "Camilla Portátil Madera de Haya Bruce Confort",
-          price: 4590,
-          badge: "RESISTENCIA 250KG",
-          image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
-          specs: "Espuma 5cm • Tensores de Acero • Bolsa de Viaje"
-        }
-      ]
+      )
     },
     { 
       id: "hyperice", 
@@ -160,17 +144,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <rect width="32" height="32" rx="8" fill="#1E293B"/>
           <path d="M19 6L9 18H16L13 26L23 14H16L19 6Z" fill="#007EE5" stroke="#FFFFFF" strokeWidth="0.5"/>
         </svg>
-      ),
-      products: [
-        {
-          id: "b-hyp-1",
-          name: "Rodillo Vibratorio Hyperice Vyper 3",
-          price: 2999,
-          badge: "VIBRACIÓN 3V",
-          image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
-          specs: "Espuma Alta Densidad • Batería 2h • Bluetooth"
-        }
-      ]
+      )
     },
     { 
       id: "kinesio", 
@@ -184,17 +158,7 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <circle cx="16" cy="16" r="7" stroke="#00A0E3" strokeWidth="2" strokeDasharray="3 2"/>
           <circle cx="16" cy="16" r="3" fill="#00A0E3"/>
         </svg>
-      ),
-      products: [
-        {
-          id: "b-kin-1",
-          name: "Kit de Vendajes Kinesiológicos Kinesio Classic (10 Rollos)",
-          price: 2499,
-          badge: "GRADO CLÍNICO",
-          image: "/images/cat_vendaje.png",
-          specs: "100% Algodón • Resistente al Agua • Adhesivo en Onda"
-        }
-      ]
+      )
     },
     { 
       id: "gymnic", 
@@ -206,34 +170,13 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <circle cx="16" cy="16" r="14" fill="#E40D2C"/>
           <path d="M12 11C8 11 8 21 12 21C16 21 16 11 20 11C24 11 24 21 20 21" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round"/>
         </svg>
-      ),
-      products: [
-        {
-          id: "b-gym-1",
-          name: "Balón de Ejercicio Suizo Gymnic Plus 65cm",
-          price: 850,
-          badge: "ANTI-ESTALLIDO",
-          image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
-          specs: "Soporta hasta 300kg • Libre de Látex • Fabricación Italiana"
-        }
-      ]
+      )
     }
   ];
 
   // Map products with enhanced real images and e-commerce fields
   const enhancedProducts = products.map((p, index) => {
-    const defaultImages = [
-      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1583912267670-657592e4abf0?q=80&w=800&auto=format&fit=crop"
-    ];
-
-    const imgSrc = p.image || p.mediaUrl || defaultImages[index % defaultImages.length];
+    const imgSrc = getRealProductImage(p);
     const discounts = [15, 20, 25, 10, 30, 0];
     const discount = discounts[index % discounts.length];
     const originalPrice = discount > 0 ? Math.round(p.price / (1 - discount / 100)) : Math.round(p.price * 1.18);
@@ -256,185 +199,41 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     };
   });
 
-  // 1. DEDICATED FLASH DEALS (4 EXCLUSIVE OFFERS FOR FLASH SALES)
-  const flashDeals = [
-    {
-      id: "flash-1",
-      name: "Pistola de Masaje Bruce Pro Pulse™ 5V",
-      description: "Terapia de percusión profunda con motor ultra silencioso de 60W y 6 cabezales ergonómicos.",
-      price: 3899,
-      originalPrice: 4899,
-      discount: 20,
-      badge: "20% OFF",
-      category: "Terapia Manual",
-      image: "/images/hero_massage_gun.png",
-      rating: "5.0",
-      reviewsCount: 320,
-      soldCount: 14,
-      totalStock: 16
-    },
-    {
-      id: "flash-2",
-      name: "Ultrasonido Terapéutico US Pro 3MHz",
-      description: "Ondas profundas de 1 y 3 MHz para tratamiento acelerado de tejidos inflamados.",
-      price: 8900,
-      originalPrice: 11500,
-      discount: 22,
-      badge: "22% OFF",
-      category: "Electroterapia",
-      image: "/images/hero_ultrasonido.png",
-      rating: "4.9",
-      reviewsCount: 185,
-      soldCount: 9,
-      totalStock: 12
-    },
-    {
-      id: "flash-3",
-      name: "Kit de Vendajes Kinesiológicos (10 Rollos)",
-      description: "Algodón elástico de alta adherencia y resistencia al agua para clínicas.",
-      price: 2499,
-      originalPrice: 3500,
-      discount: 28,
-      badge: "28% OFF",
-      category: "Vendaje y Cuidado",
-      image: "/images/cat_vendaje.png",
-      rating: "4.8",
-      reviewsCount: 94,
-      soldCount: 22,
-      totalStock: 25
-    },
-    {
-      id: "flash-4",
-      name: "Camilla Médica Hidráulica Pro Treatment",
-      description: "Estructura reforzada de acero con ajuste hidráulico suave para consulta intensiva.",
-      price: 12400,
-      originalPrice: 14900,
-      discount: 16,
-      badge: "16% OFF",
-      category: "Movilidad y Camillas",
-      image: "/images/cat_camilla.png",
-      rating: "4.9",
-      reviewsCount: 62,
-      soldCount: 5,
-      totalStock: 6
-    }
-  ];
+  // 1. DEDICATED FLASH DEALS (derived directly from real connected catalog products)
+  const flashDeals = enhancedProducts.slice(0, 4).map((p, idx) => {
+    const flashDiscounts = [20, 22, 28, 16];
+    const discount = flashDiscounts[idx % flashDiscounts.length];
+    const origPrice = Math.round(p.price / (1 - discount / 100));
+    return {
+      ...p,
+      originalPrice: origPrice,
+      discount,
+      badge: `${discount}% OFF`,
+      rating: (4.9 - (idx % 2) * 0.1).toFixed(1),
+      reviewsCount: 180 + idx * 45,
+      soldCount: 9 + idx * 4,
+      totalStock: 12 + idx * 3
+    };
+  });
 
-  // 2. DEDICATED FEATURED PRODUCTS (VARIED REAL DISTINCT ITEMS PER CATEGORY)
-  const catalogFeaturedList = [
-    {
-      id: "feat-1",
-      name: "Electroestimulador Chattanooga Intelect® 4C",
-      description: "Estándar de oro en electroterapia clínica. 4 canales independientes.",
-      price: 7499,
-      originalPrice: 8900,
-      discount: 15,
-      badge: "Bestseller",
-      category: "Electroterapia",
-      catKey: "electro",
-      image: "/images/hero_electroterapia.png",
-      rating: "4.9",
-      reviewsCount: 142
-    },
-    {
-      id: "feat-2",
-      name: "Láser de Alta Potencia THEAL 92W",
-      description: "Fotobiomodulación directa para acelerar regeneración muscular profunda.",
-      price: 12990,
-      originalPrice: 15500,
-      discount: 16,
-      badge: "ALTA ESPECIALIDAD",
-      category: "Alta Especialidad",
-      catKey: "especialidad",
-      image: "/images/chelt_laser_showcase.png",
-      rating: "4.9",
-      reviewsCount: 58
-    },
-    {
-      id: "feat-3",
-      name: "Sistema de Realidad Virtual CUREO® 5.0 VR",
-      description: "Rehabilitación neuro-motora inmersiva con biofeedback en tiempo real.",
-      price: 18500,
-      originalPrice: 21000,
-      discount: 12,
-      badge: "VR NEURO-REHAB",
-      category: "Alta Especialidad",
-      catKey: "especialidad",
-      image: "/images/cureo_vr_showcase.png",
-      rating: "5.0",
-      reviewsCount: 39
-    },
-    {
-      id: "feat-4",
-      name: "Rodillo Vibratorio Hyperice Vyper 3",
-      description: "Rodillo de espuma de alta densidad con 3 niveles de vibración asistida.",
-      price: 2999,
-      originalPrice: 3499,
-      discount: 14,
-      badge: "MÚSCULO PROFUNDO",
-      category: "Terapia Manual",
-      catKey: "manual",
-      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
-      rating: "4.8",
-      reviewsCount: 110
-    },
-    {
-      id: "feat-5",
-      name: "Balón de Ejercicio Suizo Gymnic Plus 65cm",
-      description: "Resistencia anti-estallido para cinesiterapia y entrenamiento de postura.",
-      price: 850,
-      originalPrice: 1050,
-      discount: 19,
-      badge: "CINESITERAPIA",
-      category: "Ejercicio Activo",
-      catKey: "ejercicio",
-      image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop",
-      rating: "4.7",
-      reviewsCount: 215
-    },
-    {
-      id: "feat-6",
-      name: "Bandas Elásticas Loop de Resistencia (Set 5)",
-      description: "Set de látex natural para fortalecimiento graduado en clínica.",
-      price: 499,
-      originalPrice: 650,
-      discount: 23,
-      badge: "POPULAR",
-      category: "Ejercicio Activo",
-      catKey: "ejercicio",
-      image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?q=80&w=800&auto=format&fit=crop",
-      rating: "4.8",
-      reviewsCount: 340
-    },
-    {
-      id: "feat-7",
-      name: "Camilla Portátil Madera de Haya Bruce Confort",
-      description: "Acolchado de 5cm con sistema tensor de acero de alta resistencia.",
-      price: 4590,
-      originalPrice: 5300,
-      discount: 13,
-      badge: "MOVILIDAD",
-      category: "Movilidad y Camillas",
-      catKey: "camillas",
-      image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop",
-      rating: "4.9",
-      reviewsCount: 88
-    },
-    {
-      id: "feat-8",
-      name: "Gel Conductor Electroterapia 5 Litros",
-      description: "Gel de alta viscosidad no irritante para electrodos y ecografía.",
-      price: 380,
-      originalPrice: 450,
-      discount: 15,
-      badge: "INSUMOS",
-      category: "Vendaje y Cuidado",
-      catKey: "camillas",
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=800&auto=format&fit=crop",
-      rating: "4.9",
-      reviewsCount: 165
-    }
-  ];
+  // 2. DEDICATED FEATURED PRODUCTS (derived directly from real connected catalog products)
+  const catalogFeaturedList = enhancedProducts.map((p, idx) => {
+    const cat = (p.category || '').toLowerCase();
+    const brand = (p.brand || '').toLowerCase();
+    let catKey = "all";
+    if (cat.includes("electro")) catKey = "electro";
+    else if (cat.includes("especialidad") || brand.includes("chelt") || brand.includes("cureo")) catKey = "especialidad";
+    else if (cat.includes("manual")) catKey = "manual";
+    else if (cat.includes("ejercicio")) catKey = "ejercicio";
+    else if (cat.includes("movilidad") || cat.includes("camilla") || cat.includes("vendaje")) catKey = "camillas";
+    else catKey = (idx % 2 === 0) ? "electro" : "ejercicio";
+
+    return {
+      ...p,
+      catKey,
+      badge: p.badge || (idx === 0 ? "Bestseller" : "POPULAR")
+    };
+  });
 
   // Filter Featured Products by active category tab
   const filteredProducts = catalogFeaturedList.filter(p => {
@@ -1041,6 +840,14 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <div className="active-brand-showcase-box">
             {(() => {
               const currentBrandObj = brandListShowcase.find(b => b.id === selectedBrand) || brandListShowcase[0];
+              const brandProds = enhancedProducts.filter(p => {
+                const b = (p.brand || '').toLowerCase();
+                const n = (p.name || '').toLowerCase();
+                const target = currentBrandObj.id.toLowerCase();
+                return b.includes(target) || n.includes(target);
+              });
+              const currentBrandProducts = brandProds.length > 0 ? brandProds : enhancedProducts.slice(0, 2);
+
               return (
                 <div>
                   <div className="brand-box-header">
@@ -1057,14 +864,14 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                   </div>
 
                   <div className="brand-products-grid">
-                    {(currentBrandObj?.products || []).map((prod) => (
+                    {currentBrandProducts.map((prod) => (
                       <div key={prod.id} className="brand-product-card" onClick={() => onOpenProductModal(prod)}>
                         <div className="brand-prod-img-box">
-                          <span className="brand-prod-badge">{prod.badge}</span>
+                          <span className="brand-prod-badge">{prod.badge || "DESTACADO"}</span>
                           <img src={prod.image} alt={prod.name} className="brand-prod-img" />
                         </div>
                         <div className="brand-prod-content">
-                          <span className="brand-prod-specs">{prod.specs}</span>
+                          <span className="brand-prod-specs">{prod.description || `${prod.category || "Fisioterapia"} • Grado Clínico`}</span>
                           <h4 className="brand-prod-name">{prod.name}</h4>
                           <div className="brand-prod-bottom">
                             <span className="brand-prod-price">${prod.price.toLocaleString()} MXN</span>
