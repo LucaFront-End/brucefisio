@@ -20,6 +20,7 @@ import HomeCompare from "./components/HomeCompare";
 import HomeReviews from "./components/HomeReviews";
 import HomeCTA from "./components/HomeCTA";
 import EcomHome from "./components/EcomHome";
+import ProductModal from "./components/ProductModal";
 
 // Mock Data
 import { PRODUCTS } from "./data/products";
@@ -118,6 +119,8 @@ export default function App() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quickBuyProduct, setQuickBuyProduct] = useState(null);
+  const [isQuickBuyOpen, setIsQuickBuyOpen] = useState(false);
   const [isCheckoutSuccess, setIsCheckoutSuccess] = useState(false);
   
   // States for Shop filtering
@@ -212,11 +215,13 @@ export default function App() {
 
   const handleOpenProductModal = (product) => {
     setSelectedProduct(product);
-    if (product.slug) {
-      navigate(`/product/${product.slug}`);
-    } else {
-      navigate(`/product/${product.id}`);
-    }
+    setQuickBuyProduct(product);
+    setIsQuickBuyOpen(true);
+  };
+
+  const handleCloseQuickBuy = () => {
+    setIsQuickBuyOpen(false);
+    setQuickBuyProduct(null);
   };
 
   const handleCheckout = () => {
@@ -1076,6 +1081,13 @@ export default function App() {
           }
         }
       `}</style>
+      {/* Quick Buy Popup Modal */}
+      <ProductModal 
+        product={quickBuyProduct} 
+        isOpen={isQuickBuyOpen} 
+        onClose={handleCloseQuickBuy} 
+        onAddToCart={handleAddToCart} 
+      />
     </div>
   );
 }
