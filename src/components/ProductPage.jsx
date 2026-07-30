@@ -219,13 +219,47 @@ export default function ProductPage({ product, onBack, onAddToCart, onQuickAdd, 
     relatedProducts.push(...fillers);
   }
 
-  // Collect all unique gallery images from Wix mediaGallery + options + main image
-  const galleryImages = Array.from(new Set([
-    product?.image,
-    ...(product?.mediaGallery || []),
-    ...(product?.variables?.options || []).map(o => (typeof o === 'object' ? o.image : null)).filter(Boolean),
-    ...(product?.variants || []).map(v => v.image).filter(Boolean)
-  ])).filter(Boolean);
+  // Resolve gallery images dynamically for the selected variant to prevent mixing different variant photos
+  const getDynamicGalleryImages = () => {
+    let images = [];
+    
+    // 1. If a specific variant/option is selected, include its specific photo first
+    if (selectedVariant && product?.variables?.options) {
+      const selectedOpt = product.variables.options.find(o => {
+        const val = typeof o === 'object' ? o.value : o;
+        return val === selectedVariant;
+      });
+      if (selectedOpt && typeof selectedOpt === 'object' && selectedOpt.image) {
+        images.push(selectedOpt.image);
+      }
+    }
+
+    // 2. Add main product image if not already included
+    if (product?.image && !images.includes(product.image)) {
+      images.push(product.image);
+    }
+    
+    // 3. Add general mediaGallery items (excluding photos belonging to OTHER options)
+    if (product?.mediaGallery && product.mediaGallery.length > 0) {
+      const otherOptionImages = (product.variables?.options || [])
+        .filter(o => {
+          const val = typeof o === 'object' ? o.value : o;
+          return val !== selectedVariant;
+        })
+        .map(o => (typeof o === 'object' ? o.image : null))
+        .filter(Boolean);
+        
+      product.mediaGallery.forEach(img => {
+        if (img && !otherOptionImages.includes(img) && !images.includes(img)) {
+          images.push(img);
+        }
+      });
+    }
+
+    return images.filter(Boolean);
+  };
+
+  const galleryImages = getDynamicGalleryImages();
 
   return (
     <div className="product-page-container container">
