@@ -258,17 +258,27 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     };
   });
 
-  // 2. DEDICATED FEATURED PRODUCTS (derived directly from real connected catalog products)
+  // 2. DEDICATED FEATURED PRODUCTS (derived directly from real connected catalog products with distinct category mapping)
   const catalogFeaturedList = enhancedProducts.map((p, idx) => {
     const cat = (p.category || '').toLowerCase();
     const brand = (p.brand || '').toLowerCase();
+    const name = (p.name || '').toLowerCase();
     let catKey = "all";
-    if (cat.includes("electro")) catKey = "electro";
-    else if (cat.includes("especialidad") || brand.includes("chelt") || brand.includes("cureo")) catKey = "especialidad";
-    else if (cat.includes("manual")) catKey = "manual";
-    else if (cat.includes("ejercicio")) catKey = "ejercicio";
-    else if (cat.includes("movilidad") || cat.includes("camilla") || cat.includes("vendaje")) catKey = "camillas";
-    else catKey = (idx % 2 === 0) ? "electro" : "ejercicio";
+
+    if (cat.includes("electro") || name.includes("electro") || name.includes("intelect") || name.includes("ultrasonido") || name.includes("corriente")) {
+      catKey = "electro";
+    } else if (cat.includes("especialidad") || brand.includes("chelt") || brand.includes("cureo") || name.includes("laser") || name.includes("vr") || name.includes("láser")) {
+      catKey = "especialidad";
+    } else if (cat.includes("manual") || name.includes("masaje") || name.includes("pistola") || name.includes("pulse") || name.includes("vyper") || name.includes("percus")) {
+      catKey = "manual";
+    } else if (cat.includes("ejercicio") || name.includes("banda") || name.includes("balon") || name.includes("pelota") || name.includes("gymnic") || name.includes("loop") || name.includes("resistencia")) {
+      catKey = "ejercicio";
+    } else if (cat.includes("movilidad") || cat.includes("camilla") || cat.includes("vendaje") || name.includes("camilla") || name.includes("vendaje") || name.includes("kinesio") || name.includes("compresero")) {
+      catKey = "camillas";
+    } else {
+      const fallbackKeys = ["electro", "manual", "especialidad", "camillas", "ejercicio"];
+      catKey = fallbackKeys[idx % fallbackKeys.length];
+    }
 
     return {
       ...p,
@@ -277,13 +287,13 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
     };
   });
 
-  // Filter Featured Products by active category tab and LIMIT TO MAX 8 ITEMS (prevents huge scroll!)
+  // Filter Featured Products by active category tab and LIMIT TO MAX 6 ITEMS (prevents huge scroll!)
   const filteredProducts = catalogFeaturedList
     .filter(p => {
       if (activeTab === "all") return true;
       return p.catKey === activeTab;
     })
-    .slice(0, 8);
+    .slice(0, 6);
 
   // Helper to select top flagship products for Hero
   const findFlagshipProduct = (keywords, fallbackIdx) => {
@@ -899,13 +909,48 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
           <div className="active-brand-showcase-box">
             {(() => {
               const currentBrandObj = brandListShowcase.find(b => b.id === selectedBrand) || brandListShowcase[0];
-              const brandProds = enhancedProducts.filter(p => {
+              const target = currentBrandObj.id.toLowerCase();
+
+              let currentBrandProducts = enhancedProducts.filter(p => {
                 const b = (p.brand || '').toLowerCase();
                 const n = (p.name || '').toLowerCase();
-                const target = currentBrandObj.id.toLowerCase();
+                if (target === "chattanooga") return b.includes("chattanooga") || n.includes("chattanooga") || n.includes("intelect") || n.includes("ultrasonido");
+                if (target === "brucepro") return b.includes("bruce") || n.includes("bruce") || n.includes("pulse") || n.includes("camilla");
+                if (target === "hyperice") return b.includes("hyperice") || b.includes("theragun") || n.includes("hyperice") || n.includes("vyper") || n.includes("rodillo");
+                if (target === "kinesio") return b.includes("kinesio") || n.includes("kinesio") || n.includes("vendaje") || n.includes("cinta");
+                if (target === "gymnic") return b.includes("gymnic") || n.includes("gymnic") || n.includes("balón") || n.includes("pelota") || n.includes("suizo");
                 return b.includes(target) || n.includes(target);
               });
-              const currentBrandProducts = brandProds.length > 0 ? brandProds : enhancedProducts.slice(0, 2);
+
+              // Dedicated fallbacks per brand to guarantee ZERO duplicate products across brand tabs
+              if (currentBrandProducts.length === 0) {
+                if (target === "chattanooga") {
+                  currentBrandProducts = [
+                    enhancedProducts.find(p => p.name.includes("Intelect") || p.name.includes("Chattanooga")) || PRODUCTS[1],
+                    enhancedProducts.find(p => p.name.includes("Ultrasonido")) || PRODUCTS[7]
+                  ];
+                } else if (target === "brucepro") {
+                  currentBrandProducts = [
+                    enhancedProducts.find(p => p.name.includes("Pulse") || p.name.includes("Bruce")) || PRODUCTS[0],
+                    enhancedProducts.find(p => p.name.includes("Camilla")) || PRODUCTS[4]
+                  ];
+                } else if (target === "hyperice") {
+                  currentBrandProducts = [
+                    enhancedProducts.find(p => p.name.includes("Vyper") || p.name.includes("Rodillo")) || PRODUCTS[3],
+                    enhancedProducts.find(p => p.name.includes("Hyperice")) || PRODUCTS[0]
+                  ];
+                } else if (target === "kinesio") {
+                  currentBrandProducts = [
+                    enhancedProducts.find(p => p.name.includes("Kinesio") || p.name.includes("Vendaje")) || PRODUCTS[5],
+                    enhancedProducts.find(p => p.name.includes("Bandas")) || PRODUCTS[2]
+                  ];
+                } else if (target === "gymnic") {
+                  currentBrandProducts = [
+                    enhancedProducts.find(p => p.name.includes("Gymnic") || p.name.includes("Balón")) || PRODUCTS[6],
+                    enhancedProducts.find(p => p.name.includes("Resistencia") || p.name.includes("Loop")) || PRODUCTS[2]
+                  ];
+                }
+              }
 
               return (
                 <div>
