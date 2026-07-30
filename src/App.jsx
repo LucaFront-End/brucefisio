@@ -24,7 +24,7 @@ import ProductModal from "./components/ProductModal";
 
 // Mock Data
 import { PRODUCTS } from "./data/products";
-import { fetchProductsFromWix, fetchProductById } from "./data/wixService";
+import { fetchProductsFromWix, fetchProductById, prefetchVariantPrices } from "./data/wixService";
 
 function ProductPageWrapper({ products, loadingWix, onAddToCart, onQuickAdd, onOpenProductModal }) {
   const { slug } = useParams();
@@ -105,6 +105,8 @@ export default function App() {
         const remoteProducts = await fetchProductsFromWix();
         if (remoteProducts && remoteProducts.length > 0) {
           setProducts(remoteProducts);
+          // Pre-warm variant price cache in background so Quick Buy modal shows prices instantly
+          prefetchVariantPrices(remoteProducts).catch(() => {});
         }
       } catch (err) {
         console.error("Error cargando el catálogo dinámico, usando local fallback", err);

@@ -15,7 +15,7 @@ import {
   Eye
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { fetchProductById } from "../data/wixService";
+import { fetchVariantPrices } from "../data/wixService";
 
 export default function ProductModal({ product, isOpen, onClose, onAddToCart }) {
   const navigate = useNavigate();
@@ -119,15 +119,8 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
 
       // Fetch individual variant prices if bulk query didn't include them
       if (product?.id && (!product.variants || product.variants.length === 0) && product.variables?.options?.length > 0) {
-        fetchProductById(product.id).then(res => {
-          if (res?.variants?.length > 0) {
-            const priceMap = {};
-            res.variants.forEach(v => {
-              if (v.choices) {
-                const choiceVal = Object.values(v.choices).join(" / ");
-                priceMap[choiceVal] = Number(v.price) || 0;
-              }
-            });
+        fetchVariantPrices(product.id).then(priceMap => {
+          if (Object.keys(priceMap).length > 0) {
             setVariantPrices(priceMap);
           }
         }).catch(err => console.warn("Variant prices fetch failed, using base price", err));

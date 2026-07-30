@@ -379,3 +379,53 @@ export async function fetchProductById(id) {
     return null;
   }
 }
+
+/**
+ * In-memory cache: productId -> { "CHOICE VALUE": price, ... }
+ */
+const variantPriceCache = new Map();
+
+/**
+ * Returns a price map { choiceValue: price } for a product.
+ * Reads from cache if available, otherwise fetches and caches.
+ */
+export async function fetchVariantPrices(productId) {
+  if (variantPriceCache.has(productId)) {
+    return variantPriceCache.get(productId);
+  }
+  try {
+    const fullProduct = await fetchProductById(productId);
+    const priceMap = {};
+    if (fullProduct?.variants?.length > 0) {
+      fullProduct.variants.forEach(v => {
+        if (v.choices) {
+          const choiceVal = Object.values(v.choices).join(" / ");
+          priceMap[choiceVal] = Number(v.price) > 0 ? Number(v.price) : 0;
+        }
+      });
+    }
+    variantPriceCache.set(productId, priceMap);
+    return priceMap;
+  } catch {
+    variantPriceCache.set(productId, {});
+    return {};
+  }
+}
+
+/**
+ * Pre-warms variant price cache for all products that have productOptions
+ * so the modal shows correct prices instantly with zero delay.
+ * Call this after fetchProductsFromWix() completes.
+ */
+export async function prefetchVariantPrices(products) {
+  const productsWithOptions = products.filter(
+    p => p.variables?.options?.length > 0 && (!p.variants || p.variants.length === 0)
+  );
+
+  // Fetch in parallel batches of 5 to avoid rate limits
+  const BATCH = 5;
+  for (let i = 0; i < productsWithOptions.length; i += BATCH) {
+    const batch = productsWithOptions.slice(i, i + BATCH);
+    await Promise.all(batch.map(p => fetchVariantPrices(p.id)));
+  }
+}
