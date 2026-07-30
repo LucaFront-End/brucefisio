@@ -11,7 +11,8 @@ export default function Shop({
   setBrandFilter, 
   searchQuery, 
   setSearchQuery,
-  onOpenProductModal, 
+  onOpenProductModal,
+  onOpenQuickBuy, 
   onQuickAdd,
   products = PRODUCTS
 }) {
@@ -246,7 +247,7 @@ export default function Shop({
                       <motionFramer.button 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => onQuickAdd(prod)}
+                        onClick={() => (onOpenQuickBuy || onQuickAdd)(prod)}
                         className="overlay-action-btn add-cart-overlay"
                       >
                         <ShoppingCart size={18} /> Compra Rápida

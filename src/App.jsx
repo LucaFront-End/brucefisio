@@ -215,6 +215,14 @@ export default function App() {
 
   const handleOpenProductModal = (product) => {
     setSelectedProduct(product);
+    if (product.slug) {
+      navigate(`/product/${product.slug}`);
+    } else {
+      navigate(`/product/${product.id}`);
+    }
+  };
+
+  const handleOpenQuickBuy = (product) => {
     setQuickBuyProduct(product);
     setIsQuickBuyOpen(true);
   };
@@ -410,17 +418,18 @@ export default function App() {
                   <EcomHome 
                     onQuickAdd={handleQuickAdd} 
                     onOpenProductModal={handleOpenProductModal} 
+                    onOpenQuickBuy={handleOpenQuickBuy}
                     products={products} 
                     setCategoryFilter={setCategoryFilter}
                   />
                 ) : (
                   <>
-                    <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} products={products} />
-                    <FeaturedRotary onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                    <Hero onShopClick={() => navigate("/shop")} onSpecialtyClick={() => navigate("/specialty")} onQuickAdd={handleQuickAdd} onOpenProductModal={handleOpenProductModal} onOpenQuickBuy={handleOpenQuickBuy} products={products} />
+                    <FeaturedRotary onOpenProductModal={handleOpenProductModal} onOpenQuickBuy={handleOpenQuickBuy} onQuickAdd={handleQuickAdd} products={products} />
                     <SpecialtyCurtain onExploreClick={() => navigate("/specialty")} />
-                    <HomeQuiz onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
-                    <HomeCompare onQuickAdd={handleQuickAdd} products={products} />
-                    <HomeReviews onOpenProductModal={handleOpenProductModal} products={products} />
+                    <HomeQuiz onOpenProductModal={handleOpenProductModal} onOpenQuickBuy={handleOpenQuickBuy} onQuickAdd={handleQuickAdd} products={products} />
+                    <HomeCompare onQuickAdd={handleQuickAdd} onOpenQuickBuy={handleOpenQuickBuy} products={products} />
+                    <HomeReviews onOpenProductModal={handleOpenProductModal} onOpenQuickBuy={handleOpenQuickBuy} products={products} />
                     <HomeCTA />
                   </>
                 )}
@@ -429,7 +438,7 @@ export default function App() {
             
             <Route path="/shop" element={
               <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
-                <Shop categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter} brandFilter={brandFilter} setBrandFilter={setBrandFilter} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onOpenProductModal={handleOpenProductModal} onQuickAdd={handleQuickAdd} products={products} />
+                <Shop categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter} brandFilter={brandFilter} setBrandFilter={setBrandFilter} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onOpenProductModal={handleOpenProductModal} onOpenQuickBuy={handleOpenQuickBuy} onQuickAdd={handleQuickAdd} products={products} />
               </motion.div>
             } />
             

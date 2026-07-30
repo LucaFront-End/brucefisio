@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { PRODUCTS } from "../data/products";
 import "./EcomHome.css";
 
-export default function EcomHome({ onQuickAdd, onOpenProductModal, products = [], setCategoryFilter }) {
+export default function EcomHome({ onQuickAdd, onOpenProductModal, onOpenQuickBuy, products = [], setCategoryFilter }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [activeFlagship, setActiveFlagship] = useState("chelt");
@@ -777,7 +777,10 @@ export default function EcomHome({ onQuickAdd, onOpenProductModal, products = []
                       className="product-real-img"
                     />
                     <div className="quick-view-overlay">
-                      <button className="btn-quick-view">
+                      <button 
+                        className="btn-quick-view"
+                        onClick={(e) => { e.stopPropagation(); (onOpenQuickBuy || onOpenProductModal)(prod); }}
+                      >
                         <Eye size={15} /> Vista Rápida
                       </button>
                     </div>
