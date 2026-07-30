@@ -129,43 +129,23 @@ export default function Navbar({
               </AnimatePresence>
             </li>
 
-            {/* Alta Especialidad Dropdown */}
-            <li className="dropdown-li" onMouseEnter={() => setActiveDropdown("specialty")} onMouseLeave={() => setActiveDropdown(null)}>
+            {/* Direct Links for CHELT & CUREO VR */}
+            <li>
               <button 
-                className={`nav-btn dropdown-trigger link-underline ${location.pathname === "/specialty" && "active"}`}
+                className={`nav-btn link-underline ${location.pathname === "/specialty" && "active"}`}
                 onClick={() => handleNavClick("/specialty")}
               >
-                Alta Especialidad <ChevronDown size={14} className={`chevron ${activeDropdown === "specialty" ? "rotate" : ""}`} />
+                Láser CHELT
               </button>
+            </li>
 
-              <AnimatePresence>
-                {activeDropdown === "specialty" && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="dropdown-menu glass specialty-dropdown"
-                  >
-                    <div className="specialty-links">
-                      <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
-                        <div className="specialty-card-icon cureo">C</div>
-                        <div>
-                          <h4>CUREO® 5.0</h4>
-                          <p>Rehabilitación con Realidad Virtual Inmersiva</p>
-                        </div>
-                      </div>
-                      <div className="specialty-card" onClick={() => handleNavClick("/specialty")}>
-                        <div className="specialty-card-icon chelt">Ch</div>
-                        <div>
-                          <h4>CHELT Therapy</h4>
-                          <p>5 Terapias Integradas — Láser THEAL 92W + Crio -40°C</p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <li>
+              <button 
+                className={`nav-btn link-underline ${location.pathname === "/specialty" && "active"}`}
+                onClick={() => handleNavClick("/specialty")}
+              >
+                CUREO® VR
+              </button>
             </li>
 
             <li>
@@ -299,11 +279,10 @@ export default function Navbar({
                 </div>
               </li>
               <li>
-                <button className="mobile-header-btn">Alta Especialidad</button>
-                <div className="mobile-sublinks">
-                  <button onClick={() => handleNavClick("/specialty")}>Cureo</button>
-                  <button onClick={() => handleNavClick("/specialty")}>Chelt</button>
-                </div>
+                <button onClick={() => handleNavClick("/specialty")}>Láser CHELT</button>
+              </li>
+              <li>
+                <button onClick={() => handleNavClick("/specialty")}>CUREO® VR</button>
               </li>
               <li>
                 <button onClick={() => handleNavClick("/about")}>Nosotros</button>
