@@ -231,7 +231,24 @@ export async function fetchProductsFromWix() {
         image: imageUrl,
         quoteOnly: !prod.price?.price || prod.price.price === 0,
         variables: parseProductVariables(prod, resolvedCategory),
-        additionalInfoSections: prod.additionalInfoSections || []
+        additionalInfoSections: prod.additionalInfoSections || [],
+        variants: (prod.variants || []).map(v => {
+          let vImg = v.variant?.media?.mainMedia?.image?.url || null;
+          if (vImg && vImg.startsWith('wix:image://v1/')) {
+             const parts = vImg.split('/');
+             const filename = parts[3];
+             vImg = `https://static.wixstatic.com/media/${filename}`;
+          }
+          return {
+            id: v.id,
+            choices: v.choices,
+            price: Number(v.variant?.priceData?.price || v.variant?.price?.price || 0),
+            sku: v.variant?.sku || "",
+            image: vImg,
+            inStock: v.stock?.inStock ?? true,
+            quantity: v.stock?.quantity ?? 0
+          };
+        })
       };
     });
   } catch (err) {

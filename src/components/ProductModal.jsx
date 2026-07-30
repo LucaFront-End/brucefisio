@@ -15,9 +15,11 @@ import {
   Eye
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { fetchProductById } from "../data/wixService";
 
 export default function ProductModal({ product, isOpen, onClose, onAddToCart }) {
   const navigate = useNavigate();
+  const [currentProduct, setCurrentProduct] = useState(product);
   const [quantities, setQuantities] = useState({});
   const [addedVariants, setAddedVariants] = useState({});
   const [customerNotes, setCustomerNotes] = useState("");
@@ -85,10 +87,23 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     ];
   };
 
-  const variants = getResolvedVariants(product);
+  const activeProd = currentProduct || product;
+  const variants = getResolvedVariants(activeProd);
 
   useEffect(() => {
-    if (product && isOpen) {
+    setCurrentProduct(product);
+    if (product?.id) {
+      // Fetch full variants with prices from Wix if not already attached
+      fetchProductById(product.id).then(res => {
+        if (res && res.variants && res.variants.length > 0) {
+          setCurrentProduct(res);
+        }
+      }).catch(err => console.error("Error fetching modal product variants", err));
+    }
+  }, [product, isOpen]);
+
+  useEffect(() => {
+    if (activeProd && isOpen) {
       const initialQty = {};
       variants.forEach(v => {
         initialQty[v.value] = 1;
@@ -97,9 +112,9 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
       setAddedVariants({});
       setCustomerNotes("");
     }
-  }, [product, isOpen]);
+  }, [activeProd, isOpen]);
 
-  if (!isOpen || !product) return null;
+  if (!isOpen || !activeProd) return null;
 
   const handleIncrement = (variantValue) => {
     setQuantities(prev => ({
@@ -120,10 +135,10 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
     
     onAddToCart([{
       product: {
-        ...product,
+        ...activeProd,
         price: variant.price
       },
-      variantName: product.variables?.name || "Opción / Versión",
+      variantName: activeProd.variables?.name || "Opción / Versión",
       variantValue: variant.value,
       quantity: qty,
       notes: customerNotes
@@ -137,7 +152,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
 
   const handleGoToFullDetails = () => {
     onClose();
-    const targetPath = product.slug ? `/product/${product.slug}` : `/product/${product.id}`;
+    const targetPath = activeProd.slug ? `/product/${activeProd.slug}` : `/product/${activeProd.id}`;
     navigate(targetPath);
   };
 
@@ -161,17 +176,17 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
             {/* LEFT COLUMN: Main Image & Features */}
             <div className="quickbuy-left-col">
               <div className="quickbuy-img-stage">
-                <span className="quickbuy-badge-tag">{product.badge || "OFERTA RÁPIDA"}</span>
+                <span className="quickbuy-badge-tag">{activeProd.badge || "OFERTA RÁPIDA"}</span>
                 <img 
-                  src={product.image} 
-                  alt={product.name} 
+                  src={activeProd.image} 
+                  alt={activeProd.name} 
                   className="quickbuy-main-img" 
                 />
               </div>
 
               <div className="quickbuy-info-meta">
-                <span className="quickbuy-category-pill">{product.brand || "BRUCE MÉDICA"} • {product.category || "Grado Clínico"}</span>
-                <h2 className="quickbuy-product-title">{product.name}</h2>
+                <span className="quickbuy-category-pill">{activeProd.brand || "BRUCE MÉDICA"} • {activeProd.category || "Grado Clínico"}</span>
+                <h2 className="quickbuy-product-title">{activeProd.name}</h2>
                 <div className="quickbuy-rating-row">
                   <div className="quickbuy-stars">
                     {[...Array(5)].map((_, i) => (
@@ -183,7 +198,7 @@ export default function ProductModal({ product, isOpen, onClose, onAddToCart }) 
                 </div>
 
                 <p className="quickbuy-short-desc">
-                  {cleanDescription(product.description).substring(0, 160)}...
+                  {cleanDescription(activeProd.description).substring(0, 160)}...
                 </p>
 
                 <div className="quickbuy-guarantee-pills">
